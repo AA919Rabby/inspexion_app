@@ -57,7 +57,7 @@ class OnboardingScreen extends StatelessWidget {
                               child: Image.asset(
                                 item['image']!,
                                 width: double.infinity,
-                                height: 0.48.sh,
+                                height: 0.52.sh,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -104,6 +104,7 @@ class OnboardingScreen extends StatelessWidget {
                                 text: item['description']!,
                                 color: AllColor.whiteColor,
                                 fontSize: 15,
+                                textAlign: TextAlign.center,
                                 softWrap: true,
                               ),
                             ],

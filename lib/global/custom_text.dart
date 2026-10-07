@@ -64,7 +64,7 @@ class CustomText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle poppinsStyle = GoogleFonts.abrilFatface(
+    final TextStyle poppinsStyle = GoogleFonts.poppins(
       fontSize: fontSize ?? 16.sp,
       fontWeight: fontWeight ?? FontWeight.w500,
       fontStyle: fontStyle,

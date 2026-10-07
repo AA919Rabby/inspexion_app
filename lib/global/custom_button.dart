@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomButton extends StatefulWidget {
   final String text;
@@ -68,7 +68,7 @@ class _CustomButtonState extends State<CustomButton> {
             child: Center(
               child: AnimatedDefaultTextStyle(
                 duration: const Duration(milliseconds: 150),
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                   color: widget.textColor,
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
