@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-void CustomSnackbar(
+void customSnackbar(
     BuildContext context, {
       required String title,
       required String message,
