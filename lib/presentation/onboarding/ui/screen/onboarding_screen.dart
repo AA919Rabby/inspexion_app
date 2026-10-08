@@ -8,6 +8,7 @@ import 'package:inspexion_ai/global/custom_text.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../controller/onboarding_controller.dart';
 
+
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
 
@@ -46,68 +47,76 @@ class OnboardingScreen extends StatelessWidget {
                     final item = onboardingController.onboardingData[index];
                     return Column(
                       children: [
-                        // Image Stack
-                        Stack(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(28.r),
-                                bottomRight: Radius.circular(28.r),
+                        // Image Stack wrapped in Expanded with flex
+                        Expanded(
+                          flex: 6,
+                          child: Stack(
+                            fit: StackFit.expand,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(28.r),
+                                  bottomRight: Radius.circular(28.r),
+                                ),
+                                child: Image.asset(
+                                  item['image']!,
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                              child: Image.asset(
-                                item['image']!,
-                                width: double.infinity,
-                                height: 0.52.sh,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
 
-                            // Skip Button: ONLY shown on the 1st screen
-                            Positioned(
-                              top: MediaQuery.of(context).padding.top + 10.h,
-                              right: 20.w,
-                              child: Obx(
-                                    () => onboardingController.currentPage.value == 0
-                                    ? GestureDetector(
-                                  onTap: onboardingController.skip,
-                                  behavior: HitTestBehavior.opaque,
-                                  child: Padding(
-                                    padding: EdgeInsets.all(8.r),
-                                    child: CustomText(
-                                      text: 'Skip',
-                                      color: AllColor.whiteColor
-                                          .withValues(alpha: 0.85),
-                                      fontSize: 16,
+                              // Skip Button: ONLY shown on the 1st screen
+                              Positioned(
+                                top: MediaQuery.of(context).padding.top + 10.h,
+                                right: 20.w,
+                                child: Obx(
+                                      () => onboardingController.currentPage.value == 0
+                                      ? GestureDetector(
+                                    onTap: onboardingController.skip,
+                                    behavior: HitTestBehavior.opaque,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.r),
+                                      child: CustomText(
+                                        text: 'Skip',
+                                        color: AllColor.whiteColor
+                                            .withValues(alpha: 0.85),
+                                        fontSize: 16,
+                                      ),
                                     ),
-                                  ),
-                                )
-                                    : const SizedBox.shrink(),
+                                  )
+                                      : const SizedBox.shrink(),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                         const Gap(24),
 
-                        // Title & Description
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 24.w),
-                          child: Column(
-                            children: [
-                              CustomText(
-                                text: item['title']!,
-                                color: AllColor.yellowColor,
-                                fontSize: 26,
-                                softWrap: true,
-                              ),
-                              const Gap(14),
-                              CustomText(
-                                text: item['description']!,
-                                color: AllColor.whiteColor,
-                                fontSize: 15,
-                                textAlign: TextAlign.center,
-                                softWrap: true,
-                              ),
-                            ],
+                        // Title & Description wrapped in Expanded with flex
+                        Expanded(
+                          flex: 4,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 24.w),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CustomText(
+                                  text: item['title']!,
+                                  color: AllColor.yellowColor,
+                                  fontSize: 26,
+                                  softWrap: true,
+                                ),
+                                const Gap(14),
+                                CustomText(
+                                  text: item['description']!,
+                                  color: AllColor.whiteColor,
+                                  fontSize: 15,
+                                  textAlign: TextAlign.center,
+                                  softWrap: true,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -123,7 +132,7 @@ class OnboardingScreen extends StatelessWidget {
                 effect: WormEffect(
                   dotHeight: 8.h,
                   dotWidth: 8.w, // Circle when resting (8x8)
-                 // expansionFactor: 3, // Expands its width dynamically when swiping
+                  // expansionFactor: 3, // Expands its width dynamically when swiping
                   spacing: 6.w,
                   activeDotColor: AllColor.yellowColor,
                   dotColor: AllColor.whiteColor.withValues(alpha: 0.35),

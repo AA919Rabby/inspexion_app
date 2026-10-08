@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inspexion_ai/all_route.dart';
 
 class OnboardingController extends GetxController {
   final PageController pageController = PageController();
@@ -46,7 +47,7 @@ class OnboardingController extends GetxController {
   }
 
   void goToHomeScreen() {
-    Get.offAllNamed('/home');
+    Get.offAllNamed(AllRoute.bottomNavScreen);
   }
 
   @override

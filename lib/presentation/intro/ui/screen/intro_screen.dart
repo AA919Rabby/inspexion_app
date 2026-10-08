@@ -33,7 +33,7 @@ class IntroScreen extends StatelessWidget {
           children: [
             const Spacer(),
             Center(
-              child: CustomText(text: "InspeXion AI",color: AllColor.whiteColor,fontSize: 40,softWrap: true,),
+              child: CustomText(text: "InspeXion AI",color: AllColor.whiteColor,fontSize: 40,),
             ),
             const Spacer(),
             const CustomLoader(),
