@@ -1,4 +1,4 @@
-package com.example.inspexion_ai
+package com.yourcompany.inspexionai
 
 import io.flutter.embedding.android.FlutterActivity
 

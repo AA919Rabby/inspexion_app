@@ -11,7 +11,7 @@ class HeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 1,
-      color:AllColor.greyColor400,
+      color:AllColor.whiteColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.r),
       ),
@@ -40,13 +40,14 @@ class HeaderWidget extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              height: 100.h,
-              width: 100.w,
+              height: 90.h,
+              width: 70.w,
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: AllColor.yellowColor
               ),
             ),
+            const Gap(10),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inspexion_ai/all_route.dart';
+import 'package:inspexion_ai/presentation/auth/controller/auth_controller.dart';
 
 class OnboardingController extends GetxController {
   final PageController pageController = PageController();
@@ -47,7 +47,8 @@ class OnboardingController extends GetxController {
   }
 
   void goToHomeScreen() {
-    Get.offAllNamed(AllRoute.bottomNavScreen);
+    final AuthController authController = Get.find<AuthController>();
+    authController.googleLogin(); // Clean call without context argument
   }
 
   @override

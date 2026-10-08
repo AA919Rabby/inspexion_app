@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1018837083142",
+    "project_id": "inspexion-ai",
+    "storage_bucket": "inspexion-ai.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1018837083142:android:5fa64bd6f91a83d5b30f87",
+        "android_client_info": {
+          "package_name": "com.yourcompany.inspexionai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBX2d7S88kSBAjbN43H4GN5qh677Ac_gss"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
