@@ -35,7 +35,7 @@ class AuthController extends GetxController {
 
       if (idToken == null) {
         if (Get.context != null) {
-          CustomSnackbar(
+          customSnackbar(
             Get.context!,
             title: 'Google Error',
             message: 'Failed to retrieve Google token. Ensure SHA-1/Web Client ID is configured.',
@@ -68,7 +68,7 @@ class AuthController extends GetxController {
     } on DioException catch (dioError) {
       log('Dio Error in googleLogin: ${dioError.response?.data ?? dioError.message}');
       if (Get.context != null) {
-        CustomSnackbar(
+        customSnackbar(
           Get.context!,
           title: 'Authentication Failed',
           message: dioError.response?.data?['message'] ?? 'Could not verify token with server',
@@ -78,7 +78,7 @@ class AuthController extends GetxController {
     } catch (e) {
       log('Error in googleLogin: $e');
       if (Get.context != null) {
-        CustomSnackbar(
+        customSnackbar(
           Get.context!,
           title: 'Error',
           message: e.toString(),
