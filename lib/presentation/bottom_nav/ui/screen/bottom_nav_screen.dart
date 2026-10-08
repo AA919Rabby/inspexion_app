@@ -1,6 +1,7 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gap/flutter_gap.dart';
+import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:get/get.dart';
 import 'package:inspexion_ai/core/theme/all_color.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
@@ -14,15 +15,14 @@ class BottomNavScreen extends StatelessWidget {
     final bottomNavController = Get.find<BottomNavController>();
 
     return Scaffold(
-      extendBody: true, // Seamlessly extends dark background behind the notched bar
+      extendBody: true,
       backgroundColor: Colors.transparent,
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(
-         color: AllColor.whiteColor,
+        decoration: const BoxDecoration(
+          color: Colors.transparent,
         ),
-        // Preserves the state of HomeScreen and Settings
         child: Obx(
               () => IndexedStack(
             index: bottomNavController.selectedIndex.value,
@@ -31,16 +31,19 @@ class BottomNavScreen extends StatelessWidget {
         ),
       ),
 
-      // Center Floating Action Button (Camera / Add)
-      floatingActionButton: FloatingActionButton(
-        elevation: 6,
-        backgroundColor: AllColor.blueColor,
-        shape: const CircleBorder(),
-        onPressed: bottomNavController.onCameraTap,
-        child: Icon(
-          Icons.camera_alt_rounded,
-          color: AllColor.whiteColor,
-          size: 28,
+      // Center Floating Action Button (Raised with bottom padding)
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: 14.h), // Lifts the button up from the bottom edge
+        child: FloatingActionButton(
+          elevation: 5,
+          backgroundColor: AllColor.blueColor,
+          shape: const CircleBorder(),
+          onPressed: bottomNavController.onCameraTap,
+          child: Icon(
+            Icons.camera_alt_rounded,
+            color: AllColor.whiteColor,
+            size: 28,
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -77,7 +80,8 @@ class BottomNavScreen extends StatelessWidget {
           },
           activeIndex: bottomNavController.selectedIndex.value,
           gapLocation: GapLocation.center,
-          notchSmoothness: NotchSmoothness.verySmoothEdge,
+          notchSmoothness: NotchSmoothness.softEdge,
+          notchMargin: 0,
           leftCornerRadius: 20,
           rightCornerRadius: 20,
           backgroundColor: AllColor.blueColor,

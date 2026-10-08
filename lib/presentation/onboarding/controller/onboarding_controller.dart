@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inspexion_ai/all_route.dart';
 import 'package:inspexion_ai/presentation/auth/controller/auth_controller.dart';
 
 class OnboardingController extends GetxController {
@@ -43,7 +44,8 @@ class OnboardingController extends GetxController {
   }
 
   void skip() {
-    goToHomeScreen();
+    Get.offAllNamed(AllRoute.bottomNavScreen);
+    //goToHomeScreen();
   }
 
   void goToHomeScreen() {

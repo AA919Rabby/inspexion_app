@@ -70,7 +70,7 @@ class _CustomButtonState extends State<CustomButton> {
             child: Center(
               child: AnimatedDefaultTextStyle(
                 duration: const Duration(milliseconds: 150),
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.nunito(
                   color: widget.textColor,
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,

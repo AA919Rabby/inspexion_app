@@ -10,17 +10,17 @@ class HeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 1,
+      elevation: 3,
       color:AllColor.whiteColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.r),
-      ),
+      // shape: RoundedRectangleBorder(
+      //   borderRadius: BorderRadius.circular(20.r),
+      // ),
       child: Container(
-        padding: EdgeInsets.all(8.r),
+        padding: EdgeInsets.all(10.r),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.r),
           //   color: AllColor.greyColor300,
-          // border: Border.all(color: AllColor.blueColor, width: 0.3.w),
+          // border: Border.all(color: AllColor.blackColor, width: 0.05.w),
           // boxShadow: [
           //   BoxShadow(
           //     color: AllColor.greyColor400,
@@ -43,6 +43,7 @@ class HeaderWidget extends StatelessWidget {
               height: 90.h,
               width: 70.w,
               decoration: BoxDecoration(
+                  border: Border.all(color: AllColor.blueColor, width:2.w),
                   shape: BoxShape.circle,
                   color: AllColor.yellowColor
               ),

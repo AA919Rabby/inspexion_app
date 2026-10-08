@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gap/flutter_gap.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:inspexion_ai/core/theme/all_color.dart';
+import 'package:inspexion_ai/global/custom_text.dart';
+import 'package:inspexion_ai/presentation/home/ui/widget/dashboard_stats_widget.dart';
 import 'package:inspexion_ai/presentation/home/ui/widget/header_widget.dart';
 
 
@@ -15,6 +18,8 @@ class HomeScreen extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(20.r),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
              // Card(
              //   elevation: 1,
@@ -69,6 +74,9 @@ class HomeScreen extends StatelessWidget {
              //   ),
              // ),
               HeaderWidget(),
+              const Gap(15),
+              /// stats
+              DashboardStatsWidget(),
             ],
           ),
         ),
