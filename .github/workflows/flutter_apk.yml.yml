@@ -16,6 +16,14 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      # 1. Setup Java 17 for Gradle
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # 2. Setup Flutter
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
