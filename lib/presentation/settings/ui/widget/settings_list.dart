@@ -34,7 +34,7 @@ class SettingsList extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.symmetric(
             horizontal: 16.w,
-            vertical: 10.h,
+            vertical: 12.h,
           ),
           child: Row(
             children: [
@@ -43,7 +43,7 @@ class SettingsList extends StatelessWidget {
               Expanded(
                 child: CustomText(
                   text: title,
-                  fontSize: 18,
+                  fontSize: 20,
                 ),
               ),
               Icon(

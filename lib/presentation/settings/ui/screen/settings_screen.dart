@@ -20,7 +20,7 @@ class SettingsScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomText(text: "Settings"),
+              CustomText(text: "Settings",fontSize: 25,),
               const Gap(10),
               /// settings list 
               SettingsList(),

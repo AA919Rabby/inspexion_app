@@ -40,15 +40,15 @@ class HeaderWidget extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              height: 100.h,
-              width: 100.w,
+              height: 65.h,
+              width: 65.w,
               decoration: BoxDecoration(
                   border: Border.all(color: AllColor.blueColor, width:2.w),
                   shape: BoxShape.circle,
                   color: AllColor.yellowColor
               ),
             ),
-            //const Gap(5),
+            const Gap(10),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
