@@ -1,50 +1,58 @@
-name: Flutter APK Build
 
-on:
-  push:
-    branches:
-      - main
-      - Rabbi
+  name: Flutter APK Build
 
-  workflow_dispatch:
+  on:
+    push:
+      branches:
+        - main
+        - Rabbi
 
-jobs:
-  build-apk:
-    runs-on: ubuntu-latest
+    workflow_dispatch:
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+  jobs:
+    build-apk:
+      runs-on: ubuntu-latest
 
-      # 1. Setup Java 17 for Gradle
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
+      steps:
+        - name: Checkout Repository
+          uses: actions/checkout@v4
 
-      # 2. Setup Flutter
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.44.1'
-          channel: stable
-          cache: true
+        # 1. Setup Java 17 for Gradle
+        - name: Setup Java
+          uses: actions/setup-java@v4
+          with:
+            distribution: 'temurin'
+            java-version: '17'
 
-      - name: Check Flutter
-        run: flutter --version
+        # 2. Setup Flutter
+        - name: Setup Flutter
+          uses: subosito/flutter-action@v2
+          with:
+            flutter-version: '3.44.1'
+            channel: stable
+            cache: true
 
-      - name: Get Dependencies
-        run: flutter pub get
+        - name: Check Flutter
+          run: flutter --version
 
-      - name: Analyze Project
-        run: flutter analyze
+        - name: Get Dependencies
+          run: flutter pub get
 
-      - name: Build APK
-        run: flutter build apk --release
+        - name: Analyze Project
+          run: flutter analyze
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: Inspexion-AI-APK
-          path: build/app/outputs/flutter-apk/app-release.apk
+        # 3. Check Android Signing Certificate
+        - name: Check Android Signing Certificate
+          run: |
+            cd android
+            ./gradlew signingReport
+
+        - name: Build APK
+          run: flutter build apk --release
+
+        - name: Upload APK
+          uses: actions/upload-artifact@v4
+          with:
+            name: Inspexion-AI-APK
+            path: build/app/outputs/flutter-apk/app-release.apk
+
