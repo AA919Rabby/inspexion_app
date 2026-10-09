@@ -17,7 +17,7 @@ class HeaderWidget extends StatelessWidget {
       //   borderRadius: BorderRadius.circular(20.r),
       // ),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 5.w,vertical: 2.h),
+        padding: EdgeInsets.symmetric(horizontal: 10.w,vertical: 5.h),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.r),
           //   color: AllColor.greyColor300,
@@ -40,8 +40,8 @@ class HeaderWidget extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              height: 65.h,
-              width: 65.w,
+              height: 75.h,
+              width: 75.w,
               decoration: BoxDecoration(
                   border: Border.all(color: AllColor.blueColor, width:2.w),
                   shape: BoxShape.circle,
@@ -56,7 +56,7 @@ class HeaderWidget extends StatelessWidget {
                 CustomText(text: "Welcome,",color: AllColor.blackColor,
                   fontSize: 15,),
                 const Gap(5),
-                CustomText(text: "Md Rabbi",fontWeight: FontWeight.w600,),
+                CustomText(text: "Md Rabbi",fontWeight: FontWeight.w600,fontSize: 25,),
               ],
             ),
           ],
