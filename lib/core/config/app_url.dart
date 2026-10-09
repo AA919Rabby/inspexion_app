@@ -4,7 +4,7 @@ class AppUrl {
 
   static String get baseUrl => dotenv.get('BASE_URL');
   static String get googleAuth => "$baseUrl/api/v1/auth/google";
-  //  static String get googleAuth => "$baseUrl/api/v1/auth/google";
+
 ///
 ///
 ///
