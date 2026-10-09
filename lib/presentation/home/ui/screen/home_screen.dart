@@ -74,7 +74,7 @@ class HomeScreen extends StatelessWidget {
              // ),
               HeaderWidget(),
               const Gap(15),
-              /// stats
+              // stats
               DashboardStatsWidget(),
             ],
           ),
