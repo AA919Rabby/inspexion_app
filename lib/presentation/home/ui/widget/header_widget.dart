@@ -12,7 +12,7 @@ class HeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
        elevation: 2,
-      color:AllColor.whiteColor,
+      color:AllColor.blueColor,
       // shape: RoundedRectangleBorder(
       //   borderRadius: BorderRadius.circular(20.r),
       // ),
@@ -43,9 +43,9 @@ class HeaderWidget extends StatelessWidget {
               height: 75.h,
               width: 75.w,
               decoration: BoxDecoration(
-                  border: Border.all(color: AllColor.blueColor, width:2.w),
+                  border: Border.all(color: AllColor.greyColor400, width:2.w),
                   shape: BoxShape.circle,
-                  color: AllColor.yellowColor
+                  color: AllColor.whiteColor
               ),
             ),
             const Gap(10),
@@ -53,10 +53,10 @@ class HeaderWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomText(text: "Welcome,",color: AllColor.blackColor,
+                CustomText(text: "Welcome,",color: AllColor.whiteColor,
                   fontSize: 17,),
                 const Gap(5),
-                CustomText(text: "Md Rabbi",fontWeight: FontWeight.w600,fontSize: 25,),
+                CustomText(text: "Md Rabbi",fontWeight: FontWeight.w600,fontSize: 20,color: AllColor.whiteColor,),
               ],
             ),
           ],
