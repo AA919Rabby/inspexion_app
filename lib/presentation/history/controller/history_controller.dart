@@ -70,18 +70,27 @@ class HistoryController extends GetxController {
     }
   }
 
-  // 2. Initial Picker (Gallery direct analysis vs Camera to staging)
+// 2. Initial Picker (Gallery direct analysis vs Camera to staging)
   Future<void> pickAndInspectImages(ImageSource source) async {
     try {
       if (source == ImageSource.gallery) {
-        // GALLERY: Multiple selection, direct analysis
-        final List<XFile> galleryPhotos = await _picker.pickMultiImage(imageQuality: 85);
+        // GALLERY: Apply heavy compression to stop 502 Server Crashes
+        final List<XFile> galleryPhotos = await _picker.pickMultiImage(
+          imageQuality: 60, // Compress quality
+          maxWidth: 1024,   // Resize to max 1024px
+          maxHeight: 1024,
+        );
         if (galleryPhotos.isNotEmpty) {
           await _runInspectionPipeline(galleryPhotos);
         }
       } else {
-        // CAMERA: Take one photo, go to Staging Screen
-        final XFile? photo = await _picker.pickImage(source: ImageSource.camera, imageQuality: 85);
+        // CAMERA: Apply heavy compression to stop 502 Server Crashes
+        final XFile? photo = await _picker.pickImage(
+          source: ImageSource.camera,
+          imageQuality: 60,
+          maxWidth: 1024,
+          maxHeight: 1024,
+        );
         if (photo != null) {
           stagedImages.clear();
           stagedImages.add(photo);
@@ -99,7 +108,12 @@ class HistoryController extends GetxController {
   // 3. Add more photos from camera (Used in Staging Screen)
   Future<void> addMoreFromCamera() async {
     try {
-      final XFile? photo = await _picker.pickImage(source: ImageSource.camera, imageQuality: 85);
+      final XFile? photo = await _picker.pickImage(
+        source: ImageSource.camera,
+        imageQuality: 60,
+        maxWidth: 1024,
+        maxHeight: 1024,
+      );
       if (photo != null) {
         stagedImages.add(photo);
       }

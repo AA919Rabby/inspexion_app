@@ -58,10 +58,6 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
 
-
-
-
-
       // appBar: AppBar(
       //   backgroundColor: AllColor.blueColor,
       //   elevation: 0,

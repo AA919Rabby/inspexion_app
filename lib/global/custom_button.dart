@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
-
 class CustomButton extends StatefulWidget {
   final String text;
   final Color backgroundColor;
@@ -12,7 +10,7 @@ class CustomButton extends StatefulWidget {
   final double? width;
   final double? height;
   final double? borderRadius;
-
+  final bool isOutlined;
   const CustomButton({
     super.key,
     required this.text,
@@ -22,20 +20,18 @@ class CustomButton extends StatefulWidget {
     this.width,
     this.height,
     this.borderRadius,
+    this.isOutlined = false,
   });
-
   @override
   State<CustomButton> createState() => _CustomButtonState();
 }
 
 class _CustomButtonState extends State<CustomButton> {
   bool _isPressed = false;
-
   @override
   Widget build(BuildContext context) {
     final double effectiveRadius = widget.borderRadius ?? 12.r;
     final double effectiveHeight = widget.height ?? 50.h;
-
     return AnimatedScale(
       scale: _isPressed ? 0.96 : 1.0,
       duration: const Duration(milliseconds: 120),
@@ -47,6 +43,9 @@ class _CustomButtonState extends State<CustomButton> {
         decoration: BoxDecoration(
           color: widget.backgroundColor,
           borderRadius: BorderRadius.circular(effectiveRadius),
+          border: widget.isOutlined
+              ? Border.all(color: Colors.blue, width: 2)
+              : null,
           boxShadow: [
             BoxShadow(
               color: widget.backgroundColor.withValues(
@@ -74,7 +73,6 @@ class _CustomButtonState extends State<CustomButton> {
                   color: widget.textColor,
                   fontSize: 18.sp,
                   fontWeight: FontWeight.w600,
-                 // letterSpacing: 0.3,
                 ),
                 child: Text(widget.text),
               ),

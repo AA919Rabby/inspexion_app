@@ -75,6 +75,7 @@ class CameraStagingScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       CustomButton(
+                        isOutlined: true,
                         text: 'Add More Photo',
                         backgroundColor: AllColor.whiteColor,
                         textColor: AllColor.blueColor,
