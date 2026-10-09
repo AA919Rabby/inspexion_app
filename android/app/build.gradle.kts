@@ -24,6 +24,14 @@ android {
     }
 
     signingConfigs {
+        // FIX: Points debug signing config to the copied debug.keystore for CI/CD
+        getByName("debug") {
+            storeFile = file("debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+
         create("release") {
             if (keystorePropertiesFile.exists()) {
                 storeFile = rootProject.file(keystoreProperties.getProperty("storeFile"))
@@ -47,6 +55,7 @@ android {
             if (keystorePropertiesFile.exists()) {
                 signingConfig = signingConfigs.getByName("release")
             } else {
+                // When on GitHub CI/CD, uses the debug.keystore that has your Firebase SHA-1
                 signingConfig = signingConfigs.getByName("debug")
             }
         }
