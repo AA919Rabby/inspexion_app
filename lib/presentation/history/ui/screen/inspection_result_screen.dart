@@ -115,7 +115,7 @@ class InspectionResultScreen extends StatelessWidget {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: data.results.length,
-                      separatorBuilder: (_, __) => const Gap(10),
+                      separatorBuilder: (_, _) => const Gap(10),
                       itemBuilder: (context, index) {
                         final item = data.results[index];
                         return Container(
