@@ -17,7 +17,7 @@ class HeaderWidget extends StatelessWidget {
       //   borderRadius: BorderRadius.circular(20.r),
       // ),
       child: Container(
-        padding: EdgeInsets.all(10.r),
+        padding: EdgeInsets.all(8.r),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.r),
           //   color: AllColor.greyColor300,
