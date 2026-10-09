@@ -2,13 +2,14 @@ import 'dart:developer';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:inspexion_ai/core/services/auth_services.dart';
 import 'package:inspexion_ai/firebase_options.dart';
 import 'package:inspexion_ai/presentation/intro/ui/screen/intro_screen.dart';
 import 'app.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await AuthServices.init();
   try {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,

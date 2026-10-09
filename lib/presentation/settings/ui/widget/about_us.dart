@@ -153,12 +153,6 @@ class AboutUs extends StatelessWidget {
                         ),
                         const Gap(12),
                         _buildInfoRow(
-                          icon: Icons.language,
-                          label: 'Website',
-                          value: 'www.inspexion.ai',
-                        ),
-                        const Gap(12),
-                        _buildInfoRow(
                           icon: Icons.email,
                           label: 'Email',
                           value: 'support@inspexion.ai',

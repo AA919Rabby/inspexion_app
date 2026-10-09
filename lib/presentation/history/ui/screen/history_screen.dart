@@ -17,7 +17,7 @@ class HistoryScreen extends StatelessWidget {
     final controller = Get.put(HistoryController());
 
     return Scaffold(
-      backgroundColor:AllColor.greyColor400,
+      backgroundColor:AllColor.greyColor300,
       appBar: AppBar(
         leading: IconButton(onPressed: (){
           Get.back();

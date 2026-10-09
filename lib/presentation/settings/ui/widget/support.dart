@@ -148,15 +148,6 @@ class _SupportState extends State<Support> {
                     // Handle phone
                   },
                 ),
-                const Gap(12),
-                _buildContactCard(
-                  icon: Icons.chat_bubble,
-                  title: 'Live Chat',
-                  subtitle: 'Available 24/7',
-                  onTap: () {
-                    // Handle live chat
-                  },
-                ),
                 const Gap(28),
 
                 // Frequently Asked Questions
@@ -178,51 +169,6 @@ class _SupportState extends State<Support> {
                       question: faqItems[index]['question']!,
                       answer: faqItems[index]['answer']!,
                     );
-                  },
-                ),
-                const Gap(28),
-
-                // Resources
-                CustomText(
-                  text: 'Resources',
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: AllColor.blackColor,
-                ),
-                const Gap(12),
-                _buildResourceCard(
-                  icon: Icons.school,
-                  title: 'User Guide',
-                  description: 'Learn how to use Inspexion AI',
-                  onTap: () {
-                    // Navigate to user guide
-                  },
-                ),
-                const Gap(12),
-                _buildResourceCard(
-                  icon: Icons.video_library,
-                  title: 'Video Tutorials',
-                  description: 'Watch step-by-step tutorials',
-                  onTap: () {
-                    // Navigate to video tutorials
-                  },
-                ),
-                const Gap(12),
-                _buildResourceCard(
-                  icon: Icons.bug_report,
-                  title: 'Report a Bug',
-                  description: 'Help us improve the app',
-                  onTap: () {
-                    // Navigate to bug report
-                  },
-                ),
-                const Gap(12),
-                _buildResourceCard(
-                  icon: Icons.lightbulb,
-                  title: 'Feature Request',
-                  description: 'Suggest a new feature',
-                  onTap: () {
-                    // Navigate to feature request
                   },
                 ),
                 const Gap(28),
@@ -263,7 +209,7 @@ class _SupportState extends State<Support> {
                         const Gap(12),
                         CustomText(
                           text:
-                              'Our support team is ready to help. Reach out to us via email or live chat and we\'ll get back to you as soon as possible.',
+                              'Our support team is ready to help. Reach out to us via email and we\'ll get back to you as soon as possible.',
                           fontSize: 13,
                           color: AllColor.blackColor,
                           maxLines: 5,
@@ -389,62 +335,62 @@ class _SupportState extends State<Support> {
       ),
     );
   }
-
-  Widget _buildResourceCard({
-    required IconData icon,
-    required String title,
-    required String description,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Card(
-        color: AllColor.whiteColor,
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(14.r),
-          child: Row(
-            children: [
-              Container(
-                padding: EdgeInsets.all(10.r),
-                decoration: BoxDecoration(
-                  color: AllColor.blueColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                child: Icon(icon, color: AllColor.blueColor, size: 24.r),
-              ),
-              const Gap(12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomText(
-                      text: title,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: AllColor.blackColor,
-                    ),
-                    const Gap(4),
-                    CustomText(
-                      text: description,
-                      fontSize: 12,
-                      color: AllColor.greyColor400,
-                    ),
-                  ],
-                ),
-              ),
-              // Icon(
-              //   Icons.arrow_forward_ios,
-              //   color: AllColor.blueColor,
-              //   size: 16.r,
-              // ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  //
+  // Widget _buildResourceCard({
+  //   required IconData icon,
+  //   required String title,
+  //   required String description,
+  //   required VoidCallback onTap,
+  // }) {
+  //   return GestureDetector(
+  //     onTap: onTap,
+  //     child: Card(
+  //       color: AllColor.whiteColor,
+  //       elevation: 2,
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(12.r),
+  //       ),
+  //       child: Padding(
+  //         padding: EdgeInsets.all(14.r),
+  //         child: Row(
+  //           children: [
+  //             Container(
+  //               padding: EdgeInsets.all(10.r),
+  //               decoration: BoxDecoration(
+  //                 color: AllColor.blueColor.withValues(alpha: 0.1),
+  //                 borderRadius: BorderRadius.circular(8.r),
+  //               ),
+  //               child: Icon(icon, color: AllColor.blueColor, size: 24.r),
+  //             ),
+  //             const Gap(12),
+  //             Expanded(
+  //               child: Column(
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: [
+  //                   CustomText(
+  //                     text: title,
+  //                     fontSize: 14,
+  //                     fontWeight: FontWeight.bold,
+  //                     color: AllColor.blackColor,
+  //                   ),
+  //                   const Gap(4),
+  //                   CustomText(
+  //                     text: description,
+  //                     fontSize: 12,
+  //                     color: AllColor.greyColor400,
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //             // Icon(
+  //             //   Icons.arrow_forward_ios,
+  //             //   color: AllColor.blueColor,
+  //             //   size: 16.r,
+  //             // ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }
