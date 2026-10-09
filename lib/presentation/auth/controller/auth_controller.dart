@@ -14,7 +14,7 @@ class AuthController extends GetxController {
   final Dio _dio = Dio();
 
   final String _googleServerClientId = const String.fromEnvironment(
-    'GOOGLE_WEB_CLIENT_ID',
+    '1018837083142-djl6au9ver94edknnou7gb981ftj5qgs.apps.googleusercontent.com',
     defaultValue: '',
   );
 
