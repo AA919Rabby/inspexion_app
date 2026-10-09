@@ -8,19 +8,14 @@ import 'package:inspexion_ai/core/config/app_url.dart';
 import 'package:inspexion_ai/global/custom_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class AuthController extends GetxController {
   final RxBool isLoading = false.obs;
   final Dio _dio = Dio();
 
-  final String _googleServerClientId = const String.fromEnvironment(
-    '1018837083142-djl6au9ver94edknnou7gb981ftj5qgs.apps.googleusercontent.com',
-    defaultValue: '',
-  );
-
-  late final GoogleSignIn _googleSignIn = GoogleSignIn(
+  // ✅ FIXED: Directly passed without String.fromEnvironment
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: ['email', 'profile'],
-    serverClientId: _googleServerClientId.isNotEmpty ? _googleServerClientId : null,
+    serverClientId: '1018837083142-djl6au9ver94edknnou7gb981ftj5qgs.apps.googleusercontent.com',
   );
 
   Future<void> googleLogin() async {
@@ -33,7 +28,8 @@ class AuthController extends GetxController {
         return;
       }
 
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+      await googleUser.authentication;
       final String? idToken = googleAuth.idToken;
 
       if (idToken == null || idToken.isEmpty) {
