@@ -5,6 +5,8 @@ import 'package:inspexion_ai/presentation/history/ui/screen/history_screen.dart'
 import 'package:inspexion_ai/presentation/history/ui/screen/inspection_result_screen.dart';
 import 'package:inspexion_ai/presentation/intro/ui/screen/intro_screen.dart';
 import 'package:inspexion_ai/presentation/onboarding/ui/screen/onboarding_screen.dart';
+import 'package:inspexion_ai/presentation/settings/ui/widget/about_us.dart';
+import 'package:inspexion_ai/presentation/settings/ui/widget/support.dart';
 import 'all_binding.dart';
 
 
@@ -15,6 +17,9 @@ class AllRoute {
   static const String historyScreen = '/historyScreen';
   static const String inspectionResultScreen = '/inspectionResultScreen';
   static const String cameraStagingScreen = '/cameraStagingScreen';
+  static const String aboutUs = '/aboutUs';
+  static const String support = '/support';
+
 
   static final List<GetPage> routes = [
     GetPage(
@@ -45,6 +50,16 @@ class AllRoute {
     GetPage(
       name: cameraStagingScreen,
       page: () => CameraStagingScreen(),
+      binding: AllBinding(),
+    ),
+    GetPage(
+      name: aboutUs,
+      page: () => AboutUs(),
+      binding: AllBinding(),
+    ),
+    GetPage(
+      name: support,
+      page: () =>Support(),
       binding: AllBinding(),
     ),
 

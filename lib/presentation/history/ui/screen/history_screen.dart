@@ -17,15 +17,18 @@ class HistoryScreen extends StatelessWidget {
     final controller = Get.put(HistoryController());
 
     return Scaffold(
-      backgroundColor: AllColor.whiteColor,
+      backgroundColor:AllColor.greyColor400,
       appBar: AppBar(
+        leading: IconButton(onPressed: (){
+          Get.back();
+        }, icon: Icon(Icons.arrow_back_ios_new,color: AllColor.whiteColor,)),
+        scrolledUnderElevation: 0,
         backgroundColor: AllColor.blueColor,
         elevation: 0,
-        centerTitle: true,
+       // centerTitle: true,
         title: CustomText(
           text: 'Inspection History',
-          fontSize: 18.sp,
-          fontWeight: FontWeight.w600,
+          fontSize: 25,
           color: AllColor.whiteColor,
         ),
       ),
@@ -42,19 +45,10 @@ class HistoryScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.inventory_2_outlined, size: 80.r, color: AllColor.greyColor400),
-                  const Gap(16),
-                  CustomText(text: 'Nothing is here', fontSize: 20.sp, fontWeight: FontWeight.bold, color: AllColor.blackColor),
                   const Gap(8),
                   CustomText(
-                    text: 'Your inspection history is empty. Tap the camera button below to inspect.',
-                    fontSize: 13.sp, color: AllColor.greyColor400, textAlign: TextAlign.center,
-                  ),
-                  const Gap(24),
-                  CustomButton(
-                    text: 'Refresh',
-                    backgroundColor: AllColor.blueColor,
-                    textColor: AllColor.whiteColor,
-                    onPressed: controller.fetchHistory,
+                    text: 'Your inspection history is empty.',
+                    fontSize: 15, color: AllColor.greyColor400, textAlign: TextAlign.center,
                   ),
                 ],
               ),

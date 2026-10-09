@@ -18,15 +18,18 @@ class CameraStagingScreen extends StatelessWidget {
     final controller = Get.find<HistoryController>();
 
     return Scaffold(
-      backgroundColor: AllColor.whiteColor,
+      backgroundColor:AllColor.greyColor400,
       appBar: AppBar(
+        leading: IconButton(onPressed: (){
+          Get.back();
+        }, icon: Icon(Icons.arrow_back_ios_new,color: AllColor.whiteColor,)),
         backgroundColor: AllColor.blueColor,
         elevation: 0,
-        centerTitle: true,
+       scrolledUnderElevation: 0,
+       // centerTitle: true,
         title: CustomText(
           text: 'Selected Photos',
-          fontSize: 18.sp,
-          fontWeight: FontWeight.bold,
+          fontSize: 25,
           color: AllColor.whiteColor,
         ),
       ),

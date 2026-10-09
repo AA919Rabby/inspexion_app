@@ -21,8 +21,12 @@ class SettingsList extends StatelessWidget {
           Get.toNamed(AllRoute.historyScreen);
             }
         ),
-        _buildSettingsList(title: "About Us", icon: Icons.info, color: AllColor.blueColor,onTap: (){}),
-        _buildSettingsList(title: "Help & Support", icon: Icons.help, color: AllColor.blueColor,onTap: (){}),
+        _buildSettingsList(title: "About Us", icon: Icons.info, color: AllColor.blueColor,onTap: (){
+          Get.toNamed(AllRoute.aboutUs);
+        }),
+        _buildSettingsList(title: "Help & Support", icon: Icons.help, color: AllColor.blueColor,onTap: (){
+          Get.toNamed(AllRoute.support);
+        }),
         _buildSettingsList(title: "Logout", icon: Icons.logout, color: AllColor.redColor,onTap: (){}),
 
       ],

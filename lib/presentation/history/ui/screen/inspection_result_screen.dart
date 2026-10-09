@@ -17,16 +17,19 @@ class InspectionResultScreen extends StatelessWidget {
     final controller = Get.find<HistoryController>();
 
     return Scaffold(
-      backgroundColor: AllColor.whiteColor,
+      backgroundColor:AllColor.greyColor400,
       appBar: AppBar(
+        leading: IconButton(onPressed: (){
+          Get.back();
+        }, icon: Icon(Icons.arrow_back_ios_new,color: AllColor.whiteColor,)),
+        scrolledUnderElevation: 0,
         backgroundColor: AllColor.blueColor,
         elevation: 0,
-        centerTitle: true,
+      //  centerTitle: true,
         title: Obx(
               () => CustomText(
             text: 'Results (#${controller.currentInspection.value?.sessionId ?? 0})',
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold,
+            fontSize: 25,
             color: AllColor.whiteColor,
           ),
         ),
