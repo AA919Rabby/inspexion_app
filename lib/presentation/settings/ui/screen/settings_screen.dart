@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gap/flutter_gap.dart';
+import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
+import 'package:inspexion_ai/core/theme/all_color.dart';
+import 'package:inspexion_ai/global/custom_text.dart';
+import 'package:inspexion_ai/presentation/settings/ui/widget/settings_list.dart';
+
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen ({super.key});
@@ -6,12 +12,20 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor:AllColor.greyColor300,
       body: SafeArea(child: SingleChildScrollView(
-        child: Column(
-          children: [
-
-          ],
+        child: Padding(
+          padding: EdgeInsets.all(20.r),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomText(text: "Settings"),
+              const Gap(10),
+              /// settings list 
+              SettingsList(),
+            ],
+          ),
         ),
       )),
     );

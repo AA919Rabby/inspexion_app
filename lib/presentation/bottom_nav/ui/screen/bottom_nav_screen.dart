@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gap/flutter_gap.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:inspexion_ai/core/theme/all_color.dart';
+import 'package:inspexion_ai/global/custom_image_picker_sheet.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 import 'package:inspexion_ai/presentation/bottom_nav/controller/bottom_nav_controller.dart';
 
@@ -39,10 +41,19 @@ class BottomNavScreen extends StatelessWidget {
           backgroundColor: AllColor.blueColor,
           shape: const CircleBorder(),
           onPressed: bottomNavController.onCameraTap,
-          child: Icon(
-            Icons.camera_alt_rounded,
-            color: AllColor.whiteColor,
-            size: 28,
+          child: GestureDetector(
+            onTap: (){
+              CustomImagePickerSheet.show(
+                onPick: (ImageSource source) {
+                  // Your image picking logic goes here
+                },
+              );
+            },
+            child: Icon(
+              Icons.camera_alt_rounded,
+              color: AllColor.whiteColor,
+              size: 28,
+            ),
           ),
         ),
       ),

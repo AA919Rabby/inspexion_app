@@ -11,13 +11,13 @@ class HeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 3,
+       elevation: 2,
       color:AllColor.whiteColor,
       // shape: RoundedRectangleBorder(
       //   borderRadius: BorderRadius.circular(20.r),
       // ),
       child: Container(
-        padding: EdgeInsets.all(8.r),
+        padding: EdgeInsets.symmetric(horizontal: 5.w,vertical: 2.h),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.r),
           //   color: AllColor.greyColor300,
@@ -36,20 +36,19 @@ class HeaderWidget extends StatelessWidget {
           //     offset: Offset(-4, -4), // changes position of shadow
           //   ),
           // ],
-
         ),
         child: Row(
           children: [
             Container(
-              height: 90.h,
-              width: 70.w,
+              height: 100.h,
+              width: 100.w,
               decoration: BoxDecoration(
                   border: Border.all(color: AllColor.blueColor, width:2.w),
                   shape: BoxShape.circle,
                   color: AllColor.yellowColor
               ),
             ),
-            const Gap(10),
+            //const Gap(5),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,

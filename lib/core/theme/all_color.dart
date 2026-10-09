@@ -9,6 +9,7 @@ class AllColor {
   static final Color greyColor300 = Colors.grey[200]!;
   static final Color greyColor400 = Colors.grey.shade400;
   static final Color blackColor = Color(0xFF050505);
+  static final Color redColor = Color(0xFFED0909);
 
 
 

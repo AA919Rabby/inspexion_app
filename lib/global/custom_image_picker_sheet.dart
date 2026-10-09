@@ -78,10 +78,10 @@ class CustomImagePickerSheet {
             height: 60.h,
             width: 60.w,
             decoration: BoxDecoration(
-              color:  AllColor.yellowColor.withValues(alpha: 0.2),
+              color:  AllColor.blueColor,
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, color: AllColor.yellowColor, size: 30.sp),
+            child: Icon(icon, color: AllColor.whiteColor, size: 30.r),
           ),
           const Gap(10),
           CustomText(
