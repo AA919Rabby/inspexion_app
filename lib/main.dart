@@ -1,11 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:inspexion_ai/firebase_options.dart';
 import 'package:inspexion_ai/presentation/intro/ui/screen/intro_screen.dart';
 import 'app.dart';
 import 'dart:developer';
 
 
 Future<void> main() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   WidgetsFlutterBinding.ensureInitialized();
 
   try {

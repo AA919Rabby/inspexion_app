@@ -12,7 +12,20 @@
           "package_name": "com.yourcompany.inspexionai"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1018837083142-eng7rkbbojn3cmrgeadqp61nrdgr7t5l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yourcompany.inspexionai",
+            "certificate_hash": "5d22060902e9683b8f240092654e565ef36f0702"
+          }
+        },
+        {
+          "client_id": "1018837083142-djl6au9ver94edknnou7gb981ftj5qgs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBX2d7S88kSBAjbN43H4GN5qh677Ac_gss"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1018837083142-djl6au9ver94edknnou7gb981ftj5qgs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
