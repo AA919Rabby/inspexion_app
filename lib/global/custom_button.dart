@@ -72,9 +72,9 @@ class _CustomButtonState extends State<CustomButton> {
                 duration: const Duration(milliseconds: 150),
                 style: GoogleFonts.nunito(
                   color: widget.textColor,
-                  fontSize: 16.sp,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.w600,
-                  letterSpacing: 0.3,
+                 // letterSpacing: 0.3,
                 ),
                 child: Text(widget.text),
               ),

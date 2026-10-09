@@ -9,6 +9,7 @@ import 'package:inspexion_ai/presentation/auth/controller/auth_controller.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../controller/onboarding_controller.dart';
 
+
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
 
@@ -21,17 +22,18 @@ class OnboardingScreen extends StatelessWidget {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF0A192F), // Deep Midnight Blue
-              Color(0xFF000439), // Rich Navy
-              Color(0xFF000000), // Pure Black
-            ],
-            stops: [0.0, 0.6, 1.0],
-          ),
+        decoration: BoxDecoration(
+          // gradient: LinearGradient(
+          //   begin: Alignment.topCenter,
+          //   end: Alignment.bottomCenter,
+          //   colors: [
+          //     Color(0xFF0A192F), // Deep Midnight Blue
+          //     Color(0xFF000439), // Rich Navy
+          //     Color(0xFF000000), // Pure Black
+          //   ],
+          //   stops: [0.0, 0.6, 1.0],
+          // ),
+          color: AllColor.greyColor300,
         ),
         child: SafeArea(
           top: false,
@@ -82,8 +84,7 @@ class OnboardingScreen extends StatelessWidget {
                                           padding: EdgeInsets.all(8.r),
                                           child: CustomText(
                                             text: 'Skip',
-                                            color: AllColor.whiteColor
-                                                .withValues(alpha: 0.85),
+                                            color: AllColor.whiteColor,
                                             fontSize: 16,
                                           ),
                                         ),
@@ -113,7 +114,7 @@ class OnboardingScreen extends StatelessWidget {
                                     const Gap(14),
                                     CustomText(
                                       text: item['description']!,
-                                      color: AllColor.whiteColor,
+                                      color: AllColor.blackColor,
                                       fontSize: 15,
                                       textAlign: TextAlign.center,
                                       softWrap: true,
@@ -137,7 +138,7 @@ class OnboardingScreen extends StatelessWidget {
                       dotWidth: 8.w,
                       spacing: 6.w,
                       activeDotColor: AllColor.yellowColor,
-                      dotColor: AllColor.whiteColor.withValues(alpha: 0.35),
+                      dotColor: AllColor.greyColor400,
                     ),
                   ),
                   const Gap(32),

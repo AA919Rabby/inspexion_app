@@ -13,6 +13,12 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor:AllColor.greyColor300,
+      appBar: AppBar(
+        backgroundColor: AllColor.blueColor,
+        scrolledUnderElevation: 0,
+        elevation: 3,
+        title: CustomText(text: "Settings",fontSize: 25,color: AllColor.whiteColor,),
+      ),
       body: SafeArea(child: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(20.r),
@@ -20,8 +26,8 @@ class SettingsScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomText(text: "Settings",fontSize: 25,),
-              const Gap(10),
+             // CustomText(text: "Settings",fontSize: 25,),
+            //  const Gap(10),
               /// settings list 
               SettingsList(),
             ],

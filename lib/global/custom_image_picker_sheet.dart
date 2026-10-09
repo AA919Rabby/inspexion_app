@@ -12,7 +12,7 @@ class CustomImagePickerSheet {
   static void show({required Function(ImageSource) onPick}) {
     Get.bottomSheet(
       Container(
-        padding: EdgeInsets.all(20.w),
+        padding: EdgeInsets.all(10.r),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -34,7 +34,7 @@ class CustomImagePickerSheet {
             const Gap(20),
             CustomText(
               text: "Select Image Source",
-              fontSize: 18.sp,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               color: AllColor.blackColor,
             ),

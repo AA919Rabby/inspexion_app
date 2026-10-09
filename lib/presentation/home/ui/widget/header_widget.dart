@@ -54,7 +54,7 @@ class HeaderWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(text: "Welcome,",color: AllColor.blackColor,
-                  fontSize: 15,),
+                  fontSize: 17,),
                 const Gap(5),
                 CustomText(text: "Md Rabbi",fontWeight: FontWeight.w600,fontSize: 25,),
               ],

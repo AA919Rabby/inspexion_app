@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gap/flutter_gap.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
+import 'package:inspexion_ai/all_route.dart';
 import 'package:inspexion_ai/core/theme/all_color.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
+import 'package:get/get.dart';
+
 
 
 class SettingsList extends StatelessWidget {
@@ -12,11 +15,15 @@ class SettingsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _buildSettingsList(title: "Profile", icon: Icons.person, color: AllColor.blueColor),
-        _buildSettingsList(title: "History", icon: Icons.history_edu_outlined, color: AllColor.blueColor),
-        _buildSettingsList(title: "About Us", icon: Icons.info, color: AllColor.blueColor),
-        _buildSettingsList(title: "Help & Support", icon: Icons.help, color: AllColor.blueColor),
-        _buildSettingsList(title: "Logout", icon: Icons.logout, color: AllColor.redColor),
+        _buildSettingsList(title: "Profile", icon: Icons.person, color: AllColor.blueColor,onTap: (){}),
+        _buildSettingsList(title: "History", icon: Icons.history_edu_outlined, color: AllColor.blueColor,
+            onTap: (){
+          Get.toNamed(AllRoute.historyScreen);
+            }
+        ),
+        _buildSettingsList(title: "About Us", icon: Icons.info, color: AllColor.blueColor,onTap: (){}),
+        _buildSettingsList(title: "Help & Support", icon: Icons.help, color: AllColor.blueColor,onTap: (){}),
+        _buildSettingsList(title: "Logout", icon: Icons.logout, color: AllColor.redColor,onTap: (){}),
 
       ],
     );
@@ -26,9 +33,10 @@ class SettingsList extends StatelessWidget {
     required String title,
     required IconData icon,
     required Color color,
+    required VoidCallback onTap,
   }) {
     return GestureDetector(
-      onTap: () {},
+      onTap: onTap,
       child: Card(
         color: AllColor.whiteColor,
         child: Container(
