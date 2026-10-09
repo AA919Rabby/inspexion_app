@@ -16,7 +16,7 @@ class BottomNavScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bottomNavController = Get.find<BottomNavController>();
-    final historyController = Get.put(HistoryController());
+    final historyController = Get.find<HistoryController>();
 
     return Scaffold(
       extendBody: true,

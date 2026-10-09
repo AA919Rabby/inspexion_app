@@ -11,7 +11,7 @@ class AboutUs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AllColor.greyColor400,
+      backgroundColor: AllColor.greyColor300,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {

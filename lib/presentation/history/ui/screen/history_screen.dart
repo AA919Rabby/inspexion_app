@@ -44,11 +44,11 @@ class HistoryScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.inventory_2_outlined, size: 80.r, color: AllColor.greyColor400),
+                  Icon(Icons.inventory_2_outlined, size: 80.r),
                   const Gap(8),
                   CustomText(
                     text: 'Your inspection history is empty.',
-                    fontSize: 15, color: AllColor.greyColor400, textAlign: TextAlign.center,
+                    fontSize: 15, textAlign: TextAlign.center,
                   ),
                 ],
               ),

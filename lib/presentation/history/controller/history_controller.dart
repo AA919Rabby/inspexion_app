@@ -1,16 +1,18 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
+// 1. FIX: Hide conflicting classes from GetX so Dio's FormData works
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:image_picker/image_picker.dart';
+// 2. FIX: Add missing imports for downloading and opening PDFs
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
+
 import 'package:inspexion_ai/all_route.dart';
 import 'package:inspexion_ai/core/config/app_url.dart';
 import 'package:inspexion_ai/core/services/auth_services.dart';
 import 'package:inspexion_ai/global/custom_snackbar.dart';
 import 'package:inspexion_ai/presentation/history/data/history_model.dart';
 import 'package:inspexion_ai/presentation/history/data/inspection_result_model.dart';
-
 
 class HistoryController extends GetxController {
   final Dio _dio = Dio();
