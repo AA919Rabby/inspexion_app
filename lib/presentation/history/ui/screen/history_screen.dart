@@ -58,7 +58,10 @@ class HistoryScreen extends StatelessWidget {
 
         return RefreshIndicator(
           color: AllColor.blueColor,
-          onRefresh: controller.fetchHistory,
+          //onRefresh: controller.fetchHistory,
+           onRefresh: ()async{
+             await Future.delayed(const Duration(seconds: 2));
+           },
           child: ListView.separated(
             padding: EdgeInsets.all(16.r),
             itemCount: controller.reports.length,
