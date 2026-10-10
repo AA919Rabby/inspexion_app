@@ -48,6 +48,7 @@ class SettingsList extends StatelessWidget {
           horizontal: 16.w,
           vertical: 12.h,
         ),
+        margin: EdgeInsets.only(bottom: 5.h),
         decoration: BoxDecoration(
           color: AllColor.whiteColor,
          borderRadius: BorderRadius.circular(12.r),
