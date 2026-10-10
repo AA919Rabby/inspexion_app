@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget {
         elevation: 0,
         scrolledUnderElevation: 0,
         automaticallyImplyLeading: false,
-        toolbarHeight: 80.h,
+        toolbarHeight: 90.h,
         // FIXED: Using title with absolute horizontal padding to fill the screen edges completely
         titleSpacing: 0,
         title: Padding(
