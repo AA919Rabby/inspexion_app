@@ -5,6 +5,7 @@ import 'package:inspexion_ai/presentation/history/controller/history_controller.
 import 'package:inspexion_ai/presentation/home/controller/home_controller.dart';
 import 'package:inspexion_ai/presentation/intro/controller/intro_controller.dart';
 import 'package:inspexion_ai/presentation/onboarding/controller/onboarding_controller.dart';
+import 'package:inspexion_ai/presentation/profile/controller/profile_controller.dart';
 
 
 class AllBinding extends Bindings {

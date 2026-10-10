@@ -5,6 +5,7 @@ import 'package:inspexion_ai/presentation/history/ui/screen/history_screen.dart'
 import 'package:inspexion_ai/presentation/history/ui/screen/inspection_result_screen.dart';
 import 'package:inspexion_ai/presentation/intro/ui/screen/intro_screen.dart';
 import 'package:inspexion_ai/presentation/onboarding/ui/screen/onboarding_screen.dart';
+import 'package:inspexion_ai/presentation/profile/ui/screen/profile_screen.dart';
 import 'package:inspexion_ai/presentation/settings/ui/widget/about_us.dart';
 import 'package:inspexion_ai/presentation/settings/ui/widget/support.dart';
 import 'all_binding.dart';
