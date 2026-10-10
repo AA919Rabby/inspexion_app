@@ -65,7 +65,7 @@ class CustomText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextStyle poppinsStyle = GoogleFonts.nunito(
-      fontSize: fontSize ?? 16.sp,
+      fontSize: fontSize ?? 17.sp,
       fontWeight: fontWeight ?? FontWeight.w500,
       fontStyle: fontStyle,
       color: color,

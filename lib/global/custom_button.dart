@@ -44,7 +44,7 @@ class _CustomButtonState extends State<CustomButton> {
           color: widget.backgroundColor,
           borderRadius: BorderRadius.circular(effectiveRadius),
           border: widget.isOutlined
-              ? Border.all(color: Colors.blue, width: 2)
+              ? Border.all(color: Color(0xFF6200EE), width: 1)
               : null,
           boxShadow: [
             BoxShadow(

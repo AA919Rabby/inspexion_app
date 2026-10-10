@@ -1,9 +1,7 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
-// 1. FIX: Hide conflicting classes from GetX so Dio's FormData works
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:image_picker/image_picker.dart';
-// 2. FIX: Add missing imports for downloading and opening PDFs
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -15,7 +13,13 @@ import 'package:inspexion_ai/presentation/history/data/history_model.dart';
 import 'package:inspexion_ai/presentation/history/data/inspection_result_model.dart';
 
 class HistoryController extends GetxController {
-  final Dio _dio = Dio();
+  // FIX: Added explicit timeouts. It will wait up to 3 minutes for heavy AI processing
+  // but will NEVER spin infinitely if the server hangs.
+  final Dio _dio = Dio(BaseOptions(
+    connectTimeout: const Duration(seconds: 30),
+    receiveTimeout: const Duration(minutes: 3),
+  ));
+
   final ImagePicker _picker = ImagePicker();
 
   // States
@@ -36,7 +40,7 @@ class HistoryController extends GetxController {
     fetchHistory();
   }
 
-  // 1. GET API call using Model
+  // 1. GET API call
   Future<void> fetchHistory() async {
     isLoading.value = true;
     try {
@@ -48,12 +52,7 @@ class HistoryController extends GetxController {
 
       final response = await _dio.get(
         AppUrl.getHistory,
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-            'Accept': 'application/json',
-          },
-        ),
+        options: Options(headers: {'Authorization': 'Bearer $token', 'Accept': 'application/json'}),
       );
 
       if (response.statusCode == 200 && response.data != null) {
@@ -70,21 +69,19 @@ class HistoryController extends GetxController {
     }
   }
 
-// 2. Initial Picker (Gallery direct analysis vs Camera to staging)
+  // 2. Initial Picker
   Future<void> pickAndInspectImages(ImageSource source) async {
     try {
       if (source == ImageSource.gallery) {
-        // GALLERY: Apply heavy compression to stop 502 Server Crashes
         final List<XFile> galleryPhotos = await _picker.pickMultiImage(
-          imageQuality: 60, // Compress quality
-          maxWidth: 1024,   // Resize to max 1024px
+          imageQuality: 60,
+          maxWidth: 1024,
           maxHeight: 1024,
         );
         if (galleryPhotos.isNotEmpty) {
           await _runInspectionPipeline(galleryPhotos);
         }
       } else {
-        // CAMERA: Apply heavy compression to stop 502 Server Crashes
         final XFile? photo = await _picker.pickImage(
           source: ImageSource.camera,
           imageQuality: 60,
@@ -105,7 +102,7 @@ class HistoryController extends GetxController {
     }
   }
 
-  // 3. Add more photos from camera (Used in Staging Screen)
+  // 3. Add more photos from camera
   Future<void> addMoreFromCamera() async {
     try {
       final XFile? photo = await _picker.pickImage(
@@ -122,11 +119,11 @@ class HistoryController extends GetxController {
     }
   }
 
-  // 4. Trigger Analysis from Staging Screen
+  // 4. Trigger Analysis
   Future<void> analyzeStagedImages() async {
     if (stagedImages.isEmpty) return;
     await _runInspectionPipeline(stagedImages.toList());
-    stagedImages.clear(); // Clear memory after sending
+    stagedImages.clear();
   }
 
   // 5. The Core Pipeline
@@ -142,6 +139,7 @@ class HistoryController extends GetxController {
     isInspecting.value = true;
 
     try {
+      log('Step 1: Creating Session...');
       final sessionResponse = await _dio.post(
         AppUrl.createSession,
         data: {'title': 'Asset Damage Inspection', 'asset_type': 'Physical Machinery'},
@@ -150,11 +148,13 @@ class HistoryController extends GetxController {
 
       final int sessionId = sessionResponse.data['id'];
 
+      log('Step 2: Preparing ${files.length} files for upload...');
       final formData = FormData();
       for (var file in files) {
         formData.files.add(MapEntry('photos', await MultipartFile.fromFile(file.path, filename: file.name)));
       }
 
+      log('Step 3: Uploading & Running AI (This may take up to 2 minutes)...');
       final uploadResponse = await _dio.post(
         AppUrl.uploadPhotos(sessionId),
         data: formData,
@@ -164,21 +164,20 @@ class HistoryController extends GetxController {
       if (uploadResponse.statusCode == 200 && uploadResponse.data != null) {
         currentInspection.value = InspectionResultModel.fromJson(uploadResponse.data);
         isInspecting.value = false;
-
-        // Navigate using Route Name (No constructors)
         Get.toNamed(AllRoute.inspectionResultScreen);
       }
 
       await fetchHistory();
     } on DioException catch (e) {
-      isInspecting.value = false;
+      log('Dio Error in Inspection: ${e.response?.data ?? e.message}');
       _showErrorSnackbar(e);
     } catch (e) {
-      isInspecting.value = false;
+      log('Unexpected Error: $e');
       if (Get.context != null) {
-        customSnackbar(Get.context!, title: 'Inspection Failed', message: e.toString(), isError: true);
+        customSnackbar(Get.context!, title: 'Inspection Failed', message: 'System error: $e', isError: true);
       }
     } finally {
+      // GUARANTEES the loading spinner turns off no matter what happens
       isInspecting.value = false;
     }
   }
@@ -236,7 +235,7 @@ class HistoryController extends GetxController {
 
   void _showErrorSnackbar(DioException dioError) {
     final dynamic serverData = dioError.response?.data;
-    String errorMessage = 'Server error (${dioError.response?.statusCode ?? 'Unknown'})';
+    String errorMessage = 'Network error or Timeout (${dioError.response?.statusCode ?? 'Try again'})';
 
     if (serverData is Map) {
       errorMessage = serverData['detail']?.toString() ?? serverData['message']?.toString() ?? serverData.toString();
