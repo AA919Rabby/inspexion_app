@@ -15,7 +15,9 @@ class SettingsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _buildSettingsList(title: "Profile", icon: Icons.person, color: AllColor.blueColor,onTap: (){}),
+        _buildSettingsList(title: "Edit Profile", icon: Icons.edit_note_rounded, color: AllColor.blueColor,onTap: (){
+          Get.toNamed(AllRoute.profile);
+        }),
         _buildSettingsList(title: "History", icon: Icons.history_edu_outlined, color: AllColor.blueColor,
             onTap: (){
           Get.toNamed(AllRoute.historyScreen);
@@ -41,30 +43,32 @@ class SettingsList extends StatelessWidget {
   }) {
     return GestureDetector(
       onTap: onTap,
-      child: Card(
-        color: AllColor.whiteColor,
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 16.w,
-            vertical: 12.h,
-          ),
-          child: Row(
-            children: [
-              Icon(icon, color: color),
-              const Gap(16),
-              Expanded(
-                child: CustomText(
-                  text: title,
-                  fontSize: 20,
-                ),
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: 16.w,
+          vertical: 12.h,
+        ),
+        decoration: BoxDecoration(
+          color: AllColor.whiteColor,
+         borderRadius: BorderRadius.circular(12.r),
+         // border: Border.all(color: AllColor.)
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: color),
+            const Gap(16),
+            Expanded(
+              child: CustomText(
+                text: title,
+                fontSize: 18,
               ),
-              Icon(
-                Icons.arrow_forward_ios,
-                color: AllColor.blueColor,
-                size: 15.r,
-              ),
-            ],
-          ),
+            ),
+            Icon(
+              Icons.arrow_forward_ios,
+              color: AllColor.blueColor,
+              size: 15.r,
+            ),
+          ],
         ),
       ),
     );

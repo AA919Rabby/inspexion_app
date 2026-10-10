@@ -17,6 +17,7 @@ class AllBinding extends Bindings {
     Get.lazyPut(() => AuthController(), fenix: true);
     Get.lazyPut(() => HomeController(), fenix: true);
     Get.lazyPut(() => HistoryController(), fenix: true);
+    Get.lazyPut(() => ProfileController(), fenix: true);
 
 
   }

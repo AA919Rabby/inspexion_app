@@ -19,6 +19,7 @@ class AllRoute {
   static const String cameraStagingScreen = '/cameraStagingScreen';
   static const String aboutUs = '/aboutUs';
   static const String support = '/support';
+  static const String profile = '/profile';
 
 
   static final List<GetPage> routes = [
@@ -60,6 +61,11 @@ class AllRoute {
     GetPage(
       name: support,
       page: () =>Support(),
+      binding: AllBinding(),
+    ),
+    GetPage(
+      name: profile,
+      page: () =>ProfileScreen(),
       binding: AllBinding(),
     ),
 
