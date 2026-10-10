@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
+import 'package:inspexion_ai/global/custom_text.dart'; // Adjust path if needed
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController? controller;
@@ -84,12 +85,10 @@ class CustomTextField extends StatelessWidget {
       return Padding(
         padding: EdgeInsets.symmetric(horizontal: 12.w),
         child: Center(
-          child: Text(
-            icon,
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: hintColor ?? Colors.grey,
-            ),
+          child: CustomText(
+            text: icon,
+            fontSize: 14.sp,
+            color: hintColor ?? Colors.grey,
           ),
         ),
       );

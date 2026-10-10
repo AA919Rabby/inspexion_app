@@ -4,7 +4,6 @@ import 'package:flutter_gap/flutter_gap.dart';
 import 'package:inspexion_ai/core/theme/all_color.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 
-
 class CustomConfirmDialog extends StatelessWidget {
   /// Custom widget at the top (optional)
   final Widget? headerWidget;
@@ -159,7 +158,7 @@ class CustomConfirmDialog extends StatelessWidget {
 
                       if (_hasHeader()) const Gap(16),
 
-                      // Single Title
+                      // Single Title using CustomText
                       CustomText(
                         text: title,
                         fontSize: 20,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inspexion_ai/global/custom_text.dart'; // Adjust this import path if needed
 
 void customSnackbar(
     BuildContext context, {
@@ -22,20 +23,16 @@ void customSnackbar(
     duration: const Duration(seconds: 3),
     dismissDirection: DismissDirection.up,
     isDismissible: true,
-    titleText: Text(
-      title,
-      style: const TextStyle(
-        fontWeight: FontWeight.bold,
-        fontSize: 16.0,
-        color: Colors.white,
-      ),
+    titleText: CustomText(
+      text: title,
+      fontWeight: FontWeight.bold,
+      fontSize: 16.0,
+      color: Colors.white,
     ),
-    messageText: Text(
-      message,
-      style: const TextStyle(
-        fontSize: 14.0,
-        color: Colors.white,
-      ),
+    messageText: CustomText(
+      text: message,
+      fontSize: 14.0,
+      color: Colors.white,
     ),
   );
 }

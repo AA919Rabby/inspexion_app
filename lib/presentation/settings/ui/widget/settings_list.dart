@@ -3,6 +3,7 @@ import 'package:flutter_gap/flutter_gap.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:inspexion_ai/all_route.dart';
 import 'package:inspexion_ai/core/theme/all_color.dart';
+import 'package:inspexion_ai/global/custom_dialog.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 import 'package:get/get.dart';
 
@@ -29,7 +30,27 @@ class SettingsList extends StatelessWidget {
         _buildSettingsList(title: "Help & Support", icon: Icons.help, color: AllColor.blueColor,onTap: (){
           Get.toNamed(AllRoute.support);
         }),
-        _buildSettingsList(title: "Logout", icon: Icons.logout, color: AllColor.redColor,onTap: (){}),
+        _buildSettingsList(title: "Logout", icon: Icons.logout, color: AllColor.redColor,onTap: (){
+          CustomDialog.show(
+           /// content: Icon(Icons.logout,color: AllColor.redColor,size: 40.r,),
+            context: context,
+            backgroundColor: AllColor.whiteColor,
+            title: "Logout",
+            titleColor: AllColor.blackColor,
+            message: "Are you sure you want to log out?",
+            messageColor: AllColor.blackColor,
+            confirmText: "Yes",
+            cancelText: "No",
+            cancelColor: AllColor.blueColor,
+            onConfirm: () {
+              // TODO: Add your logout logic here
+            },
+            onCancel: () {
+              Get.back();
+              // Optional: Handle cancel action
+            },
+          );
+        }),
 
       ],
     );

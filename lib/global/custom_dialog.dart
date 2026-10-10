@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gap/flutter_gap.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
+import 'package:inspexion_ai/global/custom_text.dart';
+
+// Make sure to import your CustomText file if it's in another file:
+// import 'path_to_custom_text.dart';
 
 class CustomDialog extends StatelessWidget {
   final String? image;
@@ -92,7 +96,6 @@ class CustomDialog extends StatelessWidget {
       child: SizedBox(
         height: 52.r,
         child: OutlinedButton(
-          // FIX: Always close dialog first, then run action
           onPressed: () {
             Navigator.of(context).pop();
             if (onCancel != null) onCancel!();
@@ -110,13 +113,12 @@ class CustomDialog extends StatelessWidget {
               borderRadius: BorderRadius.circular(16.r),
             ),
           ),
-          child: Text(
-            cancelText ?? 'No',
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w600,
-              letterSpacing: -0.2,
-            ),
+          child: CustomText(
+            text: cancelText ?? 'No',
+            color: cancelColor,
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w600,
+            letterSpacing: -0.2,
           ),
         ),
       ),
@@ -128,7 +130,6 @@ class CustomDialog extends StatelessWidget {
       child: SizedBox(
         height: 52.r,
         child: ElevatedButton(
-          // FIX: Always close dialog first, then run action
           onPressed: () {
             Navigator.of(context).pop();
             if (onConfirm != null) onConfirm!();
@@ -143,13 +144,12 @@ class CustomDialog extends StatelessWidget {
               borderRadius: BorderRadius.circular(16.r),
             ),
           ),
-          child: Text(
-            confirmText ?? 'Yes',
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w600,
-              letterSpacing: -0.2,
-            ),
+          child: CustomText(
+            text: confirmText ?? 'Yes',
+            color: Colors.white,
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w600,
+            letterSpacing: -0.2,
           ),
         ),
       ),
@@ -199,30 +199,26 @@ class CustomDialog extends StatelessWidget {
                   const Gap(18),
                 ],
                 if (title != null) ...[
-                  Text(
-                    title!,
+                  CustomText(
+                    text: title!,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 22.sp,
-                      fontWeight: FontWeight.w700,
-                      height: 1.15,
-                      letterSpacing: -0.5,
-                      color: titleColor,
-                    ),
+                    color: titleColor,
+                    fontSize: 22.sp,
+                    fontWeight: FontWeight.w700,
+                    height: 1.15,
+                    letterSpacing: -0.5,
                   ),
                   const Gap(10),
                 ],
                 if (message != null) ...[
-                  Text(
-                    message!,
+                  CustomText(
+                    text: message!,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w400,
-                      height: 1.4,
-                      letterSpacing: -0.1,
-                      color: messageColor,
-                    ),
+                    color: messageColor,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w400,
+                    height: 1.4,
+                    letterSpacing: -0.1,
                   ),
                   const Gap(24),
                 ],
@@ -235,8 +231,7 @@ class CustomDialog extends StatelessWidget {
                     children: [
                       if (showCancelButton)
                         _buildCancelButton(context),
-                      if (showCancelButton &&
-                          showConfirmButton)
+                      if (showCancelButton && showConfirmButton)
                         const Gap(10),
                       if (showConfirmButton)
                         _buildConfirmButton(context),
