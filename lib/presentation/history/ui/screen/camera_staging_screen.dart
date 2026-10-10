@@ -29,7 +29,7 @@ class CameraStagingScreen extends StatelessWidget {
        // centerTitle: true,
         title: CustomText(
           text: 'Selected Photos',
-          fontSize: 25,
+          fontSize: 22,
           color: AllColor.whiteColor,
         ),
       ),

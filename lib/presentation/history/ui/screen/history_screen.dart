@@ -27,8 +27,8 @@ class HistoryScreen extends StatelessWidget {
         elevation: 0,
        // centerTitle: true,
         title: CustomText(
-          text: 'Inspection History',
-          fontSize: 25,
+          text: 'History',
+          fontSize: 22,
           color: AllColor.whiteColor,
         ),
       ),

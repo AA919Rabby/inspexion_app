@@ -26,6 +26,7 @@ class HomeScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
           child: Row(
             children: [
+              const Gap(15),
               Container(
                 height: 75.h,
                 width: 75.w,
@@ -43,8 +44,8 @@ class HomeScreen extends StatelessWidget {
                     text: "Welcome,",
                     color: AllColor.whiteColor,
                     fontSize: 17,
+                    fontWeight: FontWeight.w400,
                   ),
-                  const Gap(5),
                   CustomText(
                     text: "Md Rabbi",
                     fontWeight: FontWeight.w600,

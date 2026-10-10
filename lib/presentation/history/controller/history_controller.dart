@@ -4,13 +4,13 @@ import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:image_picker/image_picker.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
-
 import 'package:inspexion_ai/all_route.dart';
 import 'package:inspexion_ai/core/config/app_url.dart';
 import 'package:inspexion_ai/core/services/auth_services.dart';
 import 'package:inspexion_ai/global/custom_snackbar.dart';
 import 'package:inspexion_ai/presentation/history/data/history_model.dart';
 import 'package:inspexion_ai/presentation/history/data/inspection_result_model.dart';
+
 
 class HistoryController extends GetxController {
   // FIX: Added explicit timeouts. It will wait up to 3 minutes for heavy AI processing
@@ -74,9 +74,9 @@ class HistoryController extends GetxController {
     try {
       if (source == ImageSource.gallery) {
         final List<XFile> galleryPhotos = await _picker.pickMultiImage(
-          imageQuality: 60,
-          maxWidth: 1024,
-          maxHeight: 1024,
+          imageQuality: 50,
+          maxWidth: 640,
+          maxHeight: 640,
         );
         if (galleryPhotos.isNotEmpty) {
           await _runInspectionPipeline(galleryPhotos);
@@ -84,9 +84,9 @@ class HistoryController extends GetxController {
       } else {
         final XFile? photo = await _picker.pickImage(
           source: ImageSource.camera,
-          imageQuality: 60,
-          maxWidth: 1024,
-          maxHeight: 1024,
+          imageQuality: 50,
+          maxWidth: 640,
+          maxHeight: 640,
         );
         if (photo != null) {
           stagedImages.clear();
@@ -107,9 +107,9 @@ class HistoryController extends GetxController {
     try {
       final XFile? photo = await _picker.pickImage(
         source: ImageSource.camera,
-        imageQuality: 60,
-        maxWidth: 1024,
-        maxHeight: 1024,
+        imageQuality: 50,
+        maxWidth: 640,
+        maxHeight: 640,
       );
       if (photo != null) {
         stagedImages.add(photo);

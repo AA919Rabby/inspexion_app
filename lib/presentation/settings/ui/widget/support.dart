@@ -77,7 +77,7 @@ class _SupportState extends State<Support> {
         scrolledUnderElevation: 0,
         title: CustomText(
           text: 'Help & Support',
-          fontSize: 25,
+          fontSize: 22,
           color: AllColor.whiteColor,
         ),
       ),

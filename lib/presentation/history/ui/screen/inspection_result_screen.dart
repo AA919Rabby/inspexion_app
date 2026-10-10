@@ -29,7 +29,7 @@ class InspectionResultScreen extends StatelessWidget {
         title: Obx(
               () => CustomText(
             text: 'Results (#${controller.currentInspection.value?.sessionId ?? 0})',
-            fontSize: 25,
+            fontSize: 22,
             color: AllColor.whiteColor,
           ),
         ),

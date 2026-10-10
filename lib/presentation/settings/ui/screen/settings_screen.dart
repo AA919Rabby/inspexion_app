@@ -16,7 +16,7 @@ class SettingsScreen extends StatelessWidget {
         backgroundColor: AllColor.blueColor,
         scrolledUnderElevation: 0,
         elevation: 0,
-        title: CustomText(text: "Settings",fontSize: 25,color: AllColor.whiteColor,),
+        title: CustomText(text: "Settings",fontSize: 22,color: AllColor.whiteColor,),
       ),
       body: SafeArea(child: SingleChildScrollView(
         child: Padding(

@@ -46,15 +46,15 @@ class _CustomButtonState extends State<CustomButton> {
           border: widget.isOutlined
               ? Border.all(color: Color(0xFF6200EE), width: 1)
               : null,
-          boxShadow: [
-            BoxShadow(
-              color: widget.backgroundColor.withValues(
-                alpha: _isPressed ? 0.2 : 0.4,
-              ),
-              blurRadius: _isPressed ? 6 : 16,
-              offset: Offset(0, _isPressed ? 2 : 6),
-            ),
-          ],
+          // boxShadow: [
+          //   BoxShadow(
+          //     color: widget.backgroundColor.withValues(
+          //       alpha: _isPressed ? 0.2 : 0.4,
+          //     ),
+          //     blurRadius: _isPressed ? 6 : 16,
+          //     offset: Offset(0, _isPressed ? 2 : 6),
+          //   ),
+          // ],
         ),
         child: Material(
           color: Colors.transparent,

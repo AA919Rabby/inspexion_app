@@ -27,7 +27,7 @@ class AboutUs extends StatelessWidget {
         scrolledUnderElevation: 0,
         title: CustomText(
           text: 'About Us',
-          fontSize: 25,
+          fontSize: 22,
           color: AllColor.whiteColor,
         ),
       ),
