@@ -73,7 +73,7 @@ class HistoryScreen extends StatelessWidget {
                 color: AllColor.whiteColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14.r),
-                  side: BorderSide(color: AllColor.greyColor300, width: 1.5),
+                 // side: BorderSide(color: AllColor.greyColor300, width: 1.5),
                 ),
                 child: Padding(
                   padding: EdgeInsets.all(16.r),
