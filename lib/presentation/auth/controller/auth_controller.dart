@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -7,13 +8,12 @@ import 'package:inspexion_ai/all_route.dart';
 import 'package:inspexion_ai/core/config/app_url.dart';
 import 'package:inspexion_ai/core/services/auth_services.dart';
 import 'package:inspexion_ai/global/custom_snackbar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthController extends GetxController {
   final RxBool isLoading = false.obs;
   final Dio _dio = Dio();
 
-  // Directly passed Client ID
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: ['email', 'profile'],
     serverClientId: '1018837083142-djl6au9ver94edknnou7gb981ftj5qgs.apps.googleusercontent.com',
@@ -56,8 +56,9 @@ class AuthController extends GetxController {
       if (response.statusCode == 200 && response.data != null) {
         final String accessToken = response.data['access_token'] ?? '';
 
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('access_token', accessToken);
+        // Save token to AuthServices so the user never has to see onboarding again
+        await AuthServices.setAccessToken(accessToken);
+        await AuthServices.setIsLoggedIn(true);
 
         Get.offAllNamed(AllRoute.bottomNavScreen);
       }
@@ -113,20 +114,84 @@ class AuthController extends GetxController {
     }
   }
 
-  // 2. Logout (Clears tokens, disconnects Google, and redirects)
+  Future<void> appleLogin() async {
+    // Only available on iOS devices
+    if (!Platform.isIOS) return;
+
+    isLoading.value = true;
+    try {
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+
+      final String? identityToken = credential.identityToken;
+      if (identityToken == null || identityToken.isEmpty) {
+        throw Exception("Apple authorization failed: Identity token is null.");
+      }
+
+      // Build name if provided by Apple on initial sign in
+      String? fullName;
+      if (credential.givenName != null || credential.familyName != null) {
+        fullName = '${credential.givenName ?? ''} ${credential.familyName ?? ''}'.trim();
+      }
+
+      // Call FastAPI Apple endpoint
+      final response = await _dio.post(
+        AppUrl.appleAuth,
+        data: {
+          'identity_token': identityToken,
+          'email': credential.email,
+          'full_name': fullName,
+        },
+      );
+
+      if (response.statusCode == 200 && response.data != null) {
+        final String accessToken = response.data['access_token'] ?? '';
+
+        await AuthServices.setAccessToken(accessToken);
+        await AuthServices.setIsLoggedIn(true);
+
+        Get.offAllNamed(AllRoute.bottomNavScreen);
+      }
+    } on DioException catch (dioError) {
+      log('Dio Error in appleLogin: ${dioError.response?.data ?? dioError.message}');
+      if (Get.context != null) {
+        customSnackbar(
+          Get.context!,
+          title: 'Sign In Failed',
+          message: dioError.response?.data?['detail']?.toString() ?? 'Server error',
+          isError: true,
+        );
+      }
+    } catch (e) {
+      log('Apple Sign In Error: $e');
+      if (Get.context != null) {
+        customSnackbar(
+          Get.context!,
+          title: 'Apple Sign-In Error',
+          message: e.toString(),
+          isError: true,
+        );
+      }
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+
+  // 2. Logout (Clears tokens & returns to Onboarding Screen)
   Future<void> logout() async {
     isLoading.value = true;
     try {
-      // Step A: Sign out from Google Account
       await _googleSignIn.signOut();
-
-      // Step B: Clear all local user tokens & preferences
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.clear();
       await AuthServices.clearAll();
 
-      // Step C: Route to Login Screen
-      Get.offAllNamed(AllRoute.intro);
+
+      // Send logged-out user to OnboardingScreen
+      Get.offAllNamed(AllRoute.onboardingScreen);
     } catch (e) {
       log('Error during logout: $e');
       if (Get.context != null) {

@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class AppUrl {
   static String get baseUrl => dotenv.get('BASE_URL');
   static String get googleAuth => "$baseUrl/api/v1/auth/google";
+  static String get appleAuth => "$baseUrl/api/v1/auth/apple";
   //
   static String get getProfile => "$baseUrl/api/v1/users/me";
   static String get updateProfile => "$baseUrl/api/v1/users/me";

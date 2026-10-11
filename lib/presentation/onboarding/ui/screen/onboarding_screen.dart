@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_gap/flutter_gap.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
@@ -6,9 +7,9 @@ import 'package:inspexion_ai/core/theme/all_color.dart';
 import 'package:inspexion_ai/global/custom_button.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 import 'package:inspexion_ai/presentation/auth/controller/auth_controller.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../controller/onboarding_controller.dart';
-
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
@@ -22,19 +23,7 @@ class OnboardingScreen extends StatelessWidget {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(
-          // gradient: LinearGradient(
-          //   begin: Alignment.topCenter,
-          //   end: Alignment.bottomCenter,
-          //   colors: [
-          //     Color(0xFF0A192F), // Deep Midnight Blue
-          //     Color(0xFF000439), // Rich Navy
-          //     Color(0xFF000000), // Pure Black
-          //   ],
-          //   stops: [0.0, 0.6, 1.0],
-          // ),
-          color: AllColor.greyColor300,
-        ),
+        color: AllColor.greyColor300,
         child: SafeArea(
           top: false,
           bottom: true,
@@ -52,7 +41,7 @@ class OnboardingScreen extends StatelessWidget {
                         final item = onboardingController.onboardingData[index];
                         return Column(
                           children: [
-                            // Image Stack wrapped in Expanded with flex
+                            // Top Image Container
                             Expanded(
                               flex: 7,
                               child: Stack(
@@ -71,7 +60,7 @@ class OnboardingScreen extends StatelessWidget {
                                     ),
                                   ),
 
-                                  // Skip Button: ONLY shown on the 1st screen
+                                  // Skip Button: ONLY shown on 1st screen
                                   Positioned(
                                     top: MediaQuery.of(context).padding.top + 10.h,
                                     right: 20.w,
@@ -97,7 +86,7 @@ class OnboardingScreen extends StatelessWidget {
                             ),
                             const Gap(15),
 
-                            // Title & Description wrapped in Expanded with flex
+                            // Title & Description
                             Expanded(
                               flex: 3,
                               child: Padding(
@@ -109,6 +98,7 @@ class OnboardingScreen extends StatelessWidget {
                                       text: item['title']!,
                                       color: AllColor.yellowColor,
                                       fontSize: 26,
+                                      fontWeight: FontWeight.w700,
                                       softWrap: true,
                                     ),
                                     const Gap(14),
@@ -116,6 +106,7 @@ class OnboardingScreen extends StatelessWidget {
                                       text: item['description']!,
                                       color: AllColor.blackColor,
                                       fontSize: 15,
+                                      fontWeight: FontWeight.w500,
                                       textAlign: TextAlign.center,
                                       softWrap: true,
                                     ),
@@ -129,7 +120,7 @@ class OnboardingScreen extends StatelessWidget {
                     ),
                   ),
 
-                  // Simple Expanding Dots Indicator
+                  // Expanding Dots Indicator
                   SmoothPageIndicator(
                     controller: onboardingController.pageController,
                     count: onboardingController.onboardingData.length,
@@ -141,28 +132,55 @@ class OnboardingScreen extends StatelessWidget {
                       dotColor: AllColor.greyColor400,
                     ),
                   ),
-                  const Gap(32),
+                  const Gap(24),
 
-                  // Custom Button (Next / Get Started)
+                  // Bottom Action Buttons (Next / Google / Apple)
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 24.w),
-                    child: Obx(
-                          () => CustomButton(
-                        text: onboardingController.currentPage.value ==
-                            onboardingController.onboardingData.length - 1
-                            ? 'Get Started'
-                            : 'Next',
-                        onPressed: onboardingController.nextPage,
-                        textColor: AllColor.whiteColor,
-                        backgroundColor: AllColor.blueColor,
-                      ),
-                    ),
+                    child: Obx(() {
+                      final bool isLastPage = onboardingController.currentPage.value ==
+                          onboardingController.onboardingData.length - 1;
+
+                      // Pages 1 & 2: Show simple 'Next' Button
+                      if (!isLastPage) {
+                        return CustomButton(
+                          text: 'Next',
+                          onPressed: onboardingController.nextPage,
+                          textColor: AllColor.whiteColor,
+                          backgroundColor: AllColor.blueColor,
+                        );
+                      }
+
+                      // Last Page: Sign-In Actions
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Google Login Button (Available on Android & iOS)
+                          CustomButton(
+                            text: Platform.isIOS ? 'Continue with Google' : 'Get Started',
+                            onPressed: onboardingController.loginWithGoogle,
+                            textColor: AllColor.whiteColor,
+                            backgroundColor: AllColor.blueColor,
+                          ),
+
+                          // Apple Sign-In Button (ONLY on iOS devices)
+                          if (Platform.isIOS) ...[
+                            const Gap(12),
+                            SignInWithAppleButton(
+                              onPressed: onboardingController.loginWithApple,
+                              height: 48.h,
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                          ],
+                        ],
+                      );
+                    }),
                   ),
                   const Gap(24),
                 ],
               ),
 
-              // Full-screen overlay loader using plain CircularProgressIndicator()
+              // Full-screen loading overlay
               Obx(
                     () => authController.isLoading.value
                     ? Container(

@@ -39,18 +39,22 @@ class OnboardingController extends GetxController {
         curve: Curves.easeInOut,
       );
     } else {
-      goToHomeScreen();
+      loginWithGoogle();
     }
   }
 
   void skip() {
     Get.offAllNamed(AllRoute.bottomNavScreen);
-    //goToHomeScreen();
   }
 
-  void goToHomeScreen() {
+  void loginWithGoogle() {
     final AuthController authController = Get.find<AuthController>();
-    authController.googleLogin(); // Clean call without context argument
+    authController.googleLogin();
+  }
+
+  void loginWithApple() {
+    final AuthController authController = Get.find<AuthController>();
+    authController.appleLogin();
   }
 
   @override

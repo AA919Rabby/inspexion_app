@@ -7,13 +7,16 @@ import 'package:inspexion_ai/global/custom_loader.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 import 'package:inspexion_ai/presentation/intro/controller/intro_controller.dart';
 
-
 class IntroScreen extends StatelessWidget {
   const IntroScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.find<IntroController>();
+    // Ensures controller starts its 3-second timer
+    Get.isRegistered<IntroController>()
+        ? Get.find<IntroController>()
+        : Get.put(IntroController());
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -27,16 +30,24 @@ class IntroScreen extends StatelessWidget {
               Color(0xFF000439), // Rich Navy
               Color(0xFF000000), // Pure Black
             ],
-            stops: [0.0, 0.6, 1.0], // Optional: Fine-tunes color positioning
+            stops: [0.0, 0.6, 1.0],
           ),
         ),
         child: Column(
           children: [
             const Spacer(),
-            Image.asset("asset/image/logo.png",height: 100.h,width: 100.w,),
+            Image.asset(
+              "asset/image/logo.png",
+              height: 100.h,
+              width: 100.w,
+            ),
             const Gap(5),
             Center(
-              child: CustomText(text: "InspeXion AI",color: AllColor.whiteColor,fontSize: 40,),
+              child: CustomText(
+                text: "InspeXion AI",
+                color: AllColor.whiteColor,
+                fontSize: 40,
+              ),
             ),
             const Spacer(),
             const CustomLoader(),

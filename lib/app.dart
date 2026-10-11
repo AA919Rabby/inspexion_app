@@ -5,7 +5,6 @@ import 'package:inspexion_ai/presentation/intro/ui/screen/intro_screen.dart';
 import 'all_binding.dart';
 import 'all_route.dart';
 
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key, required home});
 
@@ -31,7 +30,7 @@ class MyApp extends StatelessWidget {
           home: child,
         );
       },
-      child: IntroScreen(),
+      child: const IntroScreen(),
     );
   }
 }
