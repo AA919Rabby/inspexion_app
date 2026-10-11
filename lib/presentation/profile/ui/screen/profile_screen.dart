@@ -86,7 +86,7 @@ class ProfileScreen extends StatelessWidget {
                                     return Image.file(
                                       profileController.selectedImage.value!,
                                       fit: BoxFit.cover,
-                                      width: 150.w,
+                                      width: 151.w,
                                       height: 150.h,
                                     );
                                   } else if (profileController.networkAvatarUrl.value.isNotEmpty) {
