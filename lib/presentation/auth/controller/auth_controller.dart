@@ -183,14 +183,45 @@ class AuthController extends GetxController {
 
 
   // 2. Logout (Clears tokens & returns to Onboarding Screen)
+  // Future<void> logout() async {
+  //   isLoading.value = true;
+  //   try {
+  //     await _googleSignIn.signOut();
+  //     await AuthServices.clearAll();
+  //
+  //
+  //     // Send logged-out user to OnboardingScreen
+  //     Get.offAllNamed(AllRoute.onboardingScreen);
+  //   } catch (e) {
+  //     log('Error during logout: $e');
+  //     if (Get.context != null) {
+  //       customSnackbar(
+  //         Get.context!,
+  //         title: 'Logout Error',
+  //         message: e.toString(),
+  //         isError: true,
+  //       );
+  //     }
+  //   } finally {
+  //     isLoading.value = false;
+  //   }
+  // }
+
+// 2. Logout (Safe for BOTH Google and Apple)
   Future<void> logout() async {
     isLoading.value = true;
     try {
-      await _googleSignIn.signOut();
+      // Step A: Safely disconnect Google if used (won't crash Apple users)
+      try {
+        await _googleSignIn.signOut();
+      } catch (_) {
+        // Ignored if user signed in with Apple
+      }
+
+      // Step B: Clear all local tokens & user preferences (Logs out BOTH Google and Apple!)
       await AuthServices.clearAll();
 
-
-      // Send logged-out user to OnboardingScreen
+      // Step C: Route back to Onboarding Screen
       Get.offAllNamed(AllRoute.onboardingScreen);
     } catch (e) {
       log('Error during logout: $e');
@@ -206,4 +237,6 @@ class AuthController extends GetxController {
       isLoading.value = false;
     }
   }
+
+
 }

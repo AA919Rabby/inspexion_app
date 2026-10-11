@@ -7,7 +7,6 @@ import 'package:inspexion_ai/core/theme/all_color.dart';
 import 'package:inspexion_ai/global/custom_button.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 import 'package:inspexion_ai/presentation/auth/controller/auth_controller.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../controller/onboarding_controller.dart';
 
@@ -165,18 +164,24 @@ class OnboardingScreen extends StatelessWidget {
 
                           // Apple Sign-In Button (ONLY on iOS devices)
                           if (Platform.isIOS) ...[
-                            const Gap(12),
-                            SignInWithAppleButton(
-                              onPressed: onboardingController.loginWithApple,
-                              height: 48.h,
-                              borderRadius: BorderRadius.circular(10.r),
-                            ),
+                            const Gap(7),
+                            CustomButton(text: "Continue with Apple",
+                                backgroundColor: AllColor.whiteColor,
+                                /// outlined color is black
+                                isOutlined: true,
+                                textColor: AllColor.blackColor,
+                                onPressed: onboardingController.loginWithApple),
+                            // SignInWithAppleButton(
+                            //   onPressed: onboardingController.loginWithApple,
+                            //   height: 48.h,
+                            //   borderRadius: BorderRadius.circular(10.r),
+                            // ),
                           ],
                         ],
                       );
                     }),
                   ),
-                  const Gap(24),
+                  const Gap(20),
                 ],
               ),
 

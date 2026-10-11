@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:inspexion_ai/core/theme/all_color.dart';
 
 class CustomButton extends StatefulWidget {
   final String text;
@@ -44,7 +45,7 @@ class _CustomButtonState extends State<CustomButton> {
           color: widget.backgroundColor,
           borderRadius: BorderRadius.circular(effectiveRadius),
           border: widget.isOutlined
-              ? Border.all(color: Color(0xFF3169E4), width: 1)
+              ? Border.all(color: AllColor.blackColor, width: 1)
               : null,
           // boxShadow: [
           //   BoxShadow(

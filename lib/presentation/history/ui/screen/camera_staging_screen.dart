@@ -77,7 +77,7 @@ class CameraStagingScreen extends StatelessWidget {
                       CustomButton(
                         text: 'Add More Photo',
                         backgroundColor: AllColor.whiteColor,
-                        textColor: AllColor.blueColor,
+                        textColor: AllColor.blackColor,
                         onPressed: controller.addMoreFromCamera,
                       ),
                       const Gap(12),
