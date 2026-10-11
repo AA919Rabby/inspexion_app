@@ -69,7 +69,12 @@ class ProfileController extends GetxController {
         final model = UserProfileModel.fromJson(response.data);
         userProfile.value = model;
         nameClt.text = model.fullName;
-        networkAvatarUrl.value = model.avatarUrl;
+
+        if (model.avatarUrl.isNotEmpty) {
+          networkAvatarUrl.value = '${model.avatarUrl}?t=${DateTime.now().millisecondsSinceEpoch}';
+        } else {
+          networkAvatarUrl.value = '';
+        }
 
         userProfile.refresh();
         networkAvatarUrl.refresh();
@@ -105,7 +110,7 @@ class ProfileController extends GetxController {
     }
   }
 
-  // 3. Update Profile & Receive New Avatar URL from Backend
+  // 3. Update Profile & Fetch fresh Profile Data from Backend
   Future<void> updateProfile() async {
     if (!profileKey.currentState!.validate()) return;
 
@@ -150,24 +155,19 @@ class ProfileController extends GetxController {
         options: Options(
           headers: {
             'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
           },
         ),
       );
 
       if (response.statusCode == 200 && response.data != null) {
-        log('Server returned profile: ${response.data}');
-        final model = UserProfileModel.fromJson(response.data);
+        log('Server returned profile update: ${response.data}');
 
-        // Update with cache-buster timestamp so Flutter immediately dumps Google's old avatar
-        userProfile.value = model;
-        if (model.avatarUrl.isNotEmpty) {
-          networkAvatarUrl.value = '${model.avatarUrl}?t=${DateTime.now().millisecondsSinceEpoch}';
-        }
+        // Clear local temporary file preview
+        selectedImage.value = null;
 
-        selectedImage.value = null; // Clear local preview
-
-        userProfile.refresh();
-        networkAvatarUrl.refresh();
+        // Fetch fresh profile from backend to ensure networkAvatarUrl is updated correctly
+        await fetchUserProfile();
 
         if (Get.context != null) {
           customSnackbar(

@@ -14,12 +14,15 @@ class UserProfileModel {
   });
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) {
+    // Gracefully handle nested API responses (e.g., json['data'] or json['user'])
+    final data = json['data'] ?? json['user'] ?? json;
+
     return UserProfileModel(
-      id: json['id'] ?? 0,
-      email: json['email']?.toString() ?? '',
-      fullName: json['full_name']?.toString() ?? 'User',
-      avatarUrl: json['avatar_url']?.toString() ?? '',
-      createdAt: json['created_at']?.toString() ?? '',
+      id: data['id'] ?? 0,
+      email: data['email']?.toString() ?? '',
+      fullName: data['full_name']?.toString() ?? 'User',
+      avatarUrl: data['avatar_url']?.toString() ?? '',
+      createdAt: data['created_at']?.toString() ?? '',
     );
   }
 }

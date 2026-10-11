@@ -36,7 +36,7 @@ class HomeScreen extends StatelessWidget {
             children: [
               const Gap(15),
 
-              // Live Avatar fetched from the Backend API
+              // Live Avatar fetched from the Backend API (Circular Container)
               Container(
                 height: 75.h,
                 width: 75.w,
@@ -98,8 +98,8 @@ class HomeScreen extends StatelessWidget {
         child: RefreshIndicator(
           color: AllColor.blueColor,
           onRefresh: () async {
-            // Delay only as requested
-            await Future.delayed(const Duration(seconds: 2));
+            await profileController.fetchUserProfile();
+            await Future.delayed(const Duration(seconds: 1));
           },
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
@@ -131,11 +131,13 @@ class HomeScreen extends StatelessWidget {
         shape: BoxShape.circle,
         color: AllColor.whiteColor,
       ),
-      child: CustomText(
-        text: initial,
-        fontSize: 26,
-        color: AllColor.whiteColor,
-        fontWeight: FontWeight.bold,
+      child: Center(
+        child: CustomText(
+          text: initial,
+          fontSize: 26,
+          color: AllColor.blueColor,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
