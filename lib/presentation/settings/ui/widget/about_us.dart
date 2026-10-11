@@ -42,6 +42,8 @@ class AboutUs extends StatelessWidget {
                 Center(
                   child: Column(
                     children: [
+                      Image.asset("asset/image/logo.png",height: 100.h,width: 100.w,),
+                      const Gap(5),
                       CustomText(
                         text: 'Inspexion AI',
                         fontSize: 28,
