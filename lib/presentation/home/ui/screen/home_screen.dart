@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: AllColor.greyColor300,
       appBar: AppBar(
         backgroundColor: AllColor.blueColor,
-        elevation: 0,
+        elevation: 3,
         scrolledUnderElevation: 0,
         automaticallyImplyLeading: false,
         toolbarHeight: 90.h,
@@ -121,12 +121,16 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildInitialAvatar(ProfileController controller) {
-    final String name = controller.userProfile.value?.fullName ?? 'U';
-    final String initial = name.isNotEmpty ? name[0].toUpperCase() : 'U';
+    final String name = controller.userProfile.value?.fullName ?? '';
+    final String initial = name.isNotEmpty ? name[0].toUpperCase() : '';
 
     return Container(
-      color: AllColor.greyColor400,
-      alignment: Alignment.center,
+      height: 75.h,
+      width: 75.w,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: AllColor.whiteColor,
+      ),
       child: CustomText(
         text: initial,
         fontSize: 26,

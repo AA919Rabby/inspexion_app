@@ -15,7 +15,7 @@ class SettingsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AllColor.blueColor,
         scrolledUnderElevation: 0,
-        elevation: 0,
+        elevation: 3,
         title: CustomText(text: "Settings",fontSize: 23,color: AllColor.whiteColor,),
       ),
       body: SafeArea(child: SingleChildScrollView(
