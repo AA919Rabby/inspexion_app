@@ -50,7 +50,7 @@ class ProfileScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Perfect Circle Avatar Photo Container with Image Picker
+                      // PERFECT CIRCLE AVATAR WITH YELLOW BORDER (3.w)
                       Center(
                         child: GestureDetector(
                           onTap: () {
@@ -61,11 +61,15 @@ class ProfileScreen extends StatelessWidget {
                             );
                           },
                           child: Container(
-                            height: 150.h,
-                            width: 150.w,
+                            height: 150.r,
+                            width: 150.r,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: AllColor.whiteColor,
+                              border: Border.all(
+                                color: AllColor.yellowColor,
+                                width: 3.w,
+                              ),
                             ),
                             child: ClipOval(
                               child: Obx(() {
@@ -74,8 +78,8 @@ class ProfileScreen extends StatelessWidget {
                                   return Image.file(
                                     profileController.selectedImage.value!,
                                     fit: BoxFit.cover,
-                                    width: 150.w,
-                                    height: 150.h,
+                                    width: 150.r,
+                                    height: 150.r,
                                   );
                                 }
                                 // 2. Real network image loaded from backend server URL
@@ -84,8 +88,8 @@ class ProfileScreen extends StatelessWidget {
                                     profileController.networkAvatarUrl.value,
                                     key: ValueKey(profileController.networkAvatarUrl.value),
                                     fit: BoxFit.cover,
-                                    width: 150.w,
-                                    height: 150.h,
+                                    width: 150.r,
+                                    height: 150.r,
                                     errorBuilder: (_, _, _) => Icon(
                                       Icons.add_a_photo,
                                       color: AllColor.blueColor,

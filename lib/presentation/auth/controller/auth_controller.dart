@@ -5,10 +5,9 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:inspexion_ai/all_route.dart';
 import 'package:inspexion_ai/core/config/app_url.dart';
+import 'package:inspexion_ai/core/services/auth_services.dart';
 import 'package:inspexion_ai/global/custom_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-
 
 class AuthController extends GetxController {
   final RxBool isLoading = false.obs;
@@ -20,6 +19,7 @@ class AuthController extends GetxController {
     serverClientId: '1018837083142-djl6au9ver94edknnou7gb981ftj5qgs.apps.googleusercontent.com',
   );
 
+  // 1. Google Login
   Future<void> googleLogin() async {
     isLoading.value = true;
     try {
@@ -30,8 +30,7 @@ class AuthController extends GetxController {
         return;
       }
 
-      final GoogleSignInAuthentication googleAuth =
-      await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       final String? idToken = googleAuth.idToken;
 
       if (idToken == null || idToken.isEmpty) {
@@ -65,7 +64,6 @@ class AuthController extends GetxController {
     } on DioException catch (dioError) {
       log('Dio Error in googleLogin: ${dioError.response?.data ?? dioError.message}');
 
-      // Extract exact error details from backend (FastAPI, Django, Node, etc.)
       final dynamic serverData = dioError.response?.data;
       String errorMessage = 'Server error (${dioError.response?.statusCode ?? 'Unknown'})';
 
@@ -106,6 +104,35 @@ class AuthController extends GetxController {
         customSnackbar(
           Get.context!,
           title: 'Error',
+          message: e.toString(),
+          isError: true,
+        );
+      }
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  // 2. Logout (Clears tokens, disconnects Google, and redirects)
+  Future<void> logout() async {
+    isLoading.value = true;
+    try {
+      // Step A: Sign out from Google Account
+      await _googleSignIn.signOut();
+
+      // Step B: Clear all local user tokens & preferences
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+      await AuthServices.clearAll();
+
+      // Step C: Route to Login Screen
+      Get.offAllNamed(AllRoute.intro);
+    } catch (e) {
+      log('Error during logout: $e');
+      if (Get.context != null) {
+        customSnackbar(
+          Get.context!,
+          title: 'Logout Error',
           message: e.toString(),
           isError: true,
         );

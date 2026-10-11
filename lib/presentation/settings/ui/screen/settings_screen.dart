@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:inspexion_ai/core/theme/all_color.dart';
+import 'package:inspexion_ai/global/custom_divider.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 import 'package:inspexion_ai/presentation/settings/ui/widget/settings_list.dart';
 

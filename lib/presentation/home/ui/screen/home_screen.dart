@@ -3,6 +3,7 @@ import 'package:flutter_gap/flutter_gap.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:get/get.dart';
 import 'package:inspexion_ai/core/theme/all_color.dart';
+import 'package:inspexion_ai/global/custom_divider.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 import 'package:inspexion_ai/presentation/home/controller/home_controller.dart';
 import 'package:inspexion_ai/presentation/home/ui/widget/dashboard_stats_widget.dart';
@@ -25,7 +26,7 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: AllColor.greyColor300,
       appBar: AppBar(
         backgroundColor: AllColor.blueColor,
-        elevation: 0,
+        elevation: 3,
         scrolledUnderElevation: 0,
         automaticallyImplyLeading: false,
         toolbarHeight: 90.h,
@@ -36,13 +37,17 @@ class HomeScreen extends StatelessWidget {
             children: [
               const Gap(15),
 
-              // Perfect Circle Avatar Image Container
+              // PERFECT CIRCLE AVATAR WITH YELLOW BORDER (3.w)
               Container(
-                height: 70.h,
-                width: 70.w,
+                height: 70.r,
+                width: 70.r,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: AllColor.whiteColor,
+                  border: Border.all(
+                    color: AllColor.yellowColor,
+                    width: 3.w,
+                  ),
                 ),
                 child: ClipOval(
                   child: Obx(() {
@@ -55,8 +60,8 @@ class HomeScreen extends StatelessWidget {
                         avatar,
                         key: ValueKey(avatar),
                         fit: BoxFit.cover,
-                        width: 70.w,
-                        height: 70.h,
+                        width: 70.r,
+                        height: 70.r,
                         errorBuilder: (_, _, _) => _buildInitialAvatar(profileController),
                       );
                     }
@@ -124,6 +129,8 @@ class HomeScreen extends StatelessWidget {
     final String initial = name.isNotEmpty ? name[0].toUpperCase() : 'U';
 
     return Container(
+      height: 70.r,
+      width: 70.r,
       alignment: Alignment.center,
       color: AllColor.greyColor400,
       child: CustomText(

@@ -6,6 +6,7 @@ import 'package:inspexion_ai/core/theme/all_color.dart';
 import 'package:inspexion_ai/global/custom_dialog.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 import 'package:get/get.dart';
+import 'package:inspexion_ai/presentation/auth/controller/auth_controller.dart';
 
 
 
@@ -14,6 +15,7 @@ class SettingsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authController=Get.find<AuthController>();
     return Column(
       children: [
         _buildSettingsList(title: "Edit Profile", icon: Icons.edit_note_rounded, color: AllColor.blueColor,onTap: (){
@@ -43,7 +45,8 @@ class SettingsList extends StatelessWidget {
             cancelText: "No",
             cancelColor: AllColor.blueColor,
             onConfirm: () {
-              // TODO: Add your logout logic here
+              Get.back(); // Close Dialog
+              authController.logout(); // Trigger clean logout
             },
             onCancel: () {
               Get.back();
