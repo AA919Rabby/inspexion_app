@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:inspexion_ai/core/config/app_url.dart';
 import 'package:inspexion_ai/core/services/auth_services.dart';
 import 'package:inspexion_ai/global/custom_snackbar.dart';
+import 'package:inspexion_ai/presentation/profile/data/user_profile_model.dart';
 
 class ProfileController extends GetxController {
   final Dio _dio = Dio();
@@ -19,7 +20,8 @@ class ProfileController extends GetxController {
   final ageClt = TextEditingController();
   final profileKey = GlobalKey<FormState>();
 
-  // Reactive States
+  // Reactive State & Model
+  final Rx<UserProfileModel?> userProfile = Rx<UserProfileModel?>(null);
   final Rx<File?> selectedImage = Rx<File?>(null);
   final RxString networkAvatarUrl = ''.obs;
   final RxBool isLoading = false.obs;
@@ -40,7 +42,7 @@ class ProfileController extends GetxController {
     super.onClose();
   }
 
-  // 1. Fetch current profile data from backend
+  // 1. GET User Profile API call using Model
   Future<void> fetchUserProfile() async {
     final token = AuthServices.getAccessToken();
     if (token == null || token.isEmpty) return;
@@ -57,16 +59,17 @@ class ProfileController extends GetxController {
       );
 
       if (response.statusCode == 200 && response.data != null) {
-        final data = response.data;
-        nameClt.text = data['full_name']?.toString() ?? '';
-        networkAvatarUrl.value = data['avatar_url']?.toString() ?? '';
+        final model = UserProfileModel.fromJson(response.data);
+        userProfile.value = model;
+        nameClt.text = model.fullName;
+        networkAvatarUrl.value = model.avatarUrl;
       }
     } catch (e) {
       log('Error fetching user profile: $e');
     }
   }
 
-  // 2. Pick Profile Photo (Camera or Gallery)
+  // 2. Pick Profile Photo
   Future<void> pickImage(ImageSource source) async {
     try {
       final XFile? image = await _picker.pickImage(
@@ -92,7 +95,7 @@ class ProfileController extends GetxController {
     }
   }
 
-  // 3. Update Profile (Sends Name & Image to Backend via Dio)
+  // 3. Update Profile API call
   Future<void> updateProfile() async {
     if (!profileKey.currentState!.validate()) return;
 
@@ -112,7 +115,6 @@ class ProfileController extends GetxController {
     isLoading.value = true;
 
     try {
-      // Build Multipart FormData with full_name and avatar file
       final Map<String, dynamic> dataMap = {
         'full_name': nameClt.text.trim(),
       };
@@ -121,14 +123,6 @@ class ProfileController extends GetxController {
         dataMap['avatar'] = await MultipartFile.fromFile(
           selectedImage.value!.path,
           filename: 'avatar_${DateTime.now().millisecondsSinceEpoch}.jpg',
-        );
-      }
-      else{
-        customSnackbar(
-          Get.context!,
-          title: "Oop's",
-          message: 'select a profile picture.',
-          isError: false,
         );
       }
 
@@ -146,9 +140,10 @@ class ProfileController extends GetxController {
       );
 
       if (response.statusCode == 200 && response.data != null) {
-        final data = response.data;
-        networkAvatarUrl.value = data['avatar_url']?.toString() ?? '';
-        selectedImage.value = null; // Clear local file cache
+        final model = UserProfileModel.fromJson(response.data);
+        userProfile.value = model;
+        networkAvatarUrl.value = model.avatarUrl;
+        selectedImage.value = null;
 
         if (Get.context != null) {
           customSnackbar(
@@ -186,7 +181,7 @@ class ProfileController extends GetxController {
           serverData['message']?.toString() ??
           serverData.toString();
     } else if (dioError.message != null) {
-      errorMessage = dioError.message!;
+      errorMessage = serverData.toString();
     }
 
     if (Get.context != null) {
