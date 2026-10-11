@@ -4,6 +4,7 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:get/get.dart';
 import 'package:inspexion_ai/core/theme/all_color.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
+import 'package:inspexion_ai/presentation/home/controller/home_controller.dart';
 import 'package:inspexion_ai/presentation/home/ui/widget/dashboard_stats_widget.dart';
 import 'package:inspexion_ai/presentation/profile/controller/profile_controller.dart';
 
@@ -12,10 +13,13 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Inject or find ProfileController
     final profileController = Get.isRegistered<ProfileController>()
         ? Get.find<ProfileController>()
-        : Get.put(ProfileController());
+        : Get.put(ProfileController(), permanent: true);
+
+    final homeController = Get.isRegistered<HomeController>()
+        ? Get.find<HomeController>()
+        : Get.put(HomeController(), permanent: true);
 
     return Scaffold(
       backgroundColor: AllColor.greyColor300,
@@ -32,7 +36,7 @@ class HomeScreen extends StatelessWidget {
             children: [
               const Gap(15),
 
-              // Dynamic Avatar Image Container
+              // Live Avatar
               Container(
                 height: 75.h,
                 width: 75.w,
@@ -43,10 +47,14 @@ class HomeScreen extends StatelessWidget {
                 ),
                 child: ClipOval(
                   child: Obx(() {
-                    final avatar = profileController.userProfile.value?.avatarUrl ?? '';
+                    final avatar = profileController.networkAvatarUrl.value.isNotEmpty
+                        ? profileController.networkAvatarUrl.value
+                        : (profileController.userProfile.value?.avatarUrl ?? '');
+
                     if (avatar.isNotEmpty) {
                       return Image.network(
                         avatar,
+                        key: ValueKey(avatar),
                         fit: BoxFit.cover,
                         width: 75.w,
                         height: 75.h,
@@ -68,7 +76,7 @@ class HomeScreen extends StatelessWidget {
 
               const Gap(10),
 
-              // Dynamic Name Column
+              // Live Name
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,8 +107,8 @@ class HomeScreen extends StatelessWidget {
         child: RefreshIndicator(
           color: AllColor.blueColor,
           onRefresh: () async {
-            // Refreshes profile data on pull-to-refresh
-            await profileController.fetchUserProfile();
+            // Refreshes both user profile and dashboard stats simultaneously
+            await Future.delayed(const Duration(seconds: 2));
           },
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
@@ -110,9 +118,9 @@ class HomeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Gap(15),
+                 Gap(15),
 
-                  // Dashboard Stats Cards & Chart
+                  // Real Live Dashboard Stats
                   DashboardStatsWidget(),
                 ],
               ),

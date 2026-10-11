@@ -16,7 +16,7 @@ class BottomNavScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bottomNavController = Get.find<BottomNavController>();
-    final historyController = Get.find<HistoryController>();
+    final historyController = Get.put(HistoryController());
 
     return Scaffold(
       extendBody: true,
@@ -28,13 +28,34 @@ class BottomNavScreen extends StatelessWidget {
               index: bottomNavController.selectedIndex.value,
               children: bottomNavController.pages,
             ),
+
+            // Live WebSocket Real-Time Progress Overlay
             if (historyController.isInspecting.value)
               Container(
                 width: double.infinity,
                 height: double.infinity,
-                color: Colors.black.withValues(alpha: 0.6),
-                child: const Center(
-                  child: CircularProgressIndicator(),
+                color: AllColor.blackColor.withValues(alpha: 0.75),
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24.w),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const CircularProgressIndicator(),
+                        const Gap(20),
+                        Obx(
+                              () => CustomText(
+                            text: historyController.liveStatusMessage.value.isNotEmpty
+                                ? historyController.liveStatusMessage.value
+                                : "Analyzing photos with AI...",
+                            fontSize: 16,
+                            color: AllColor.whiteColor,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
           ],
@@ -83,7 +104,12 @@ class BottomNavScreen extends StatelessWidget {
           rightCornerRadius: 20,
           backgroundColor: AllColor.blueColor,
           onTap: bottomNavController.changeIndex,
-          shadow: BoxShadow(color: Colors.black.withValues(alpha: 0.25), blurRadius: 10, offset: const Offset(0, -2)),
+          shadow: BoxShadow(
+            color: Colors.black.withValues(alpha: 0.15),
+            blurRadius: 10,
+            spreadRadius: 2,
+            offset: const Offset(0, -2),
+          ),
         ),
       ),
     );

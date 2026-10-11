@@ -17,7 +17,7 @@ class InspectionResultScreen extends StatelessWidget {
     final controller = Get.find<HistoryController>();
 
     return Scaffold(
-      backgroundColor:AllColor.greyColor400,
+      backgroundColor:AllColor.greyColor300,
       appBar: AppBar(
         leading: IconButton(onPressed: (){
           Get.back();
@@ -29,7 +29,7 @@ class InspectionResultScreen extends StatelessWidget {
         title: Obx(
               () => CustomText(
             text: 'Results (#${controller.currentInspection.value?.sessionId ?? 0})',
-            fontSize: 22,
+            fontSize: 23,
             color: AllColor.whiteColor,
           ),
         ),

@@ -25,10 +25,10 @@ class HistoryScreen extends StatelessWidget {
         scrolledUnderElevation: 0,
         backgroundColor: AllColor.blueColor,
         elevation: 0,
-       // centerTitle: true,
+        // centerTitle: true,
         title: CustomText(
           text: 'History',
-          fontSize: 22,
+          fontSize: 23,
           color: AllColor.whiteColor,
         ),
       ),
@@ -59,9 +59,9 @@ class HistoryScreen extends StatelessWidget {
         return RefreshIndicator(
           color: AllColor.blueColor,
           //onRefresh: controller.fetchHistory,
-           onRefresh: ()async{
-             await Future.delayed(const Duration(seconds: 2));
-           },
+          onRefresh: ()async{
+            await Future.delayed(const Duration(seconds: 2));
+          },
           child: ListView.separated(
             padding: EdgeInsets.all(16.r),
             itemCount: controller.reports.length,
@@ -76,7 +76,7 @@ class HistoryScreen extends StatelessWidget {
                 color: AllColor.whiteColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14.r),
-                 // side: BorderSide(color: AllColor.greyColor300, width: 1.5),
+                  // side: BorderSide(color: AllColor.greyColor300, width: 1.5),
                 ),
                 child: Padding(
                   padding: EdgeInsets.all(16.r),

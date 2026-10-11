@@ -34,7 +34,7 @@ class ProfileScreen extends StatelessWidget {
         scrolledUnderElevation: 0,
         title: CustomText(
           text: 'Edit Profile',
-          fontSize: 22,
+          fontSize: 23,
           color: AllColor.whiteColor,
         ),
       ),
@@ -52,7 +52,7 @@ class ProfileScreen extends StatelessWidget {
                     children: [
                       // Avatar Photo Container with Image Picker
                       Center(
-                        child: InkWell(
+                        child: GestureDetector(
                           onTap: () {
                             CustomImagePickerSheet.show(
                               onPick: (ImageSource source) {
@@ -77,7 +77,7 @@ class ProfileScreen extends StatelessWidget {
                                   return Image.file(
                                     profileController.selectedImage.value!,
                                     fit: BoxFit.cover,
-                                    width: 151.w,
+                                    width: 150.w,
                                     height: 150.h,
                                   );
                                 } else if (profileController.networkAvatarUrl.value.isNotEmpty) {
@@ -214,7 +214,7 @@ class ProfileScreen extends StatelessWidget {
                       const Gap(50),
 
                       // Save Button
-                      Obx(()=>profileController.isLoading.value?CircularProgressIndicator():
+                      Obx(()=>profileController.isLoading.value?const Center(child: CircularProgressIndicator()):
                       CustomButton(
                         text: "Save",
                         backgroundColor: AllColor.blueColor,
@@ -222,7 +222,7 @@ class ProfileScreen extends StatelessWidget {
                         onPressed: profileController.updateProfile,
                       ),),
 
-                      const Gap(30),
+                      const Gap(50),
                     ],
                   ),
                 ),

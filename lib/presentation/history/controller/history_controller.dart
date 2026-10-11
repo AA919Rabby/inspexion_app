@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:image_picker/image_picker.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 import 'package:inspexion_ai/all_route.dart';
 import 'package:inspexion_ai/core/config/app_url.dart';
@@ -13,18 +15,21 @@ import 'package:inspexion_ai/presentation/history/data/history_model.dart';
 import 'package:inspexion_ai/presentation/history/data/inspection_result_model.dart';
 
 class HistoryController extends GetxController {
-  // TIMEOUT FIX: 5 minutes receive timeout so low-spec cloud servers don't get aborted
   final Dio _dio = Dio(BaseOptions(
     connectTimeout: const Duration(seconds: 45),
     receiveTimeout: const Duration(minutes: 5),
   ));
 
   final ImagePicker _picker = ImagePicker();
+  WebSocketChannel? _wsChannel;
 
   // States
   final RxBool isLoading = false.obs;
   final RxBool isInspecting = false.obs;
   final RxBool isGeneratingPdf = false.obs;
+
+  // Real-time WebSocket Live Status
+  final RxString liveStatusMessage = ''.obs;
 
   // Data Models
   final RxList<HistoryModel> reports = <HistoryModel>[].obs;
@@ -37,6 +42,17 @@ class HistoryController extends GetxController {
   void onInit() {
     super.onInit();
     fetchHistory();
+  }
+
+  @override
+  void onClose() {
+    _closeWebSocket();
+    super.onClose();
+  }
+
+  void _closeWebSocket() {
+    _wsChannel?.sink.close();
+    _wsChannel = null;
   }
 
   // 1. GET API call
@@ -125,7 +141,7 @@ class HistoryController extends GetxController {
     stagedImages.clear();
   }
 
-  // 5. The Core Pipeline
+  // 5. The Core Pipeline with Live WebSocket Streaming
   Future<void> _runInspectionPipeline(List<XFile> files) async {
     final token = AuthServices.getAccessToken();
     if (token == null) {
@@ -136,8 +152,10 @@ class HistoryController extends GetxController {
     }
 
     isInspecting.value = true;
+    liveStatusMessage.value = "Starting inspection session...";
 
     try {
+      // Step A: Create Inspection Session
       final sessionResponse = await _dio.post(
         AppUrl.createSession,
         data: {'title': 'Asset Damage Inspection', 'asset_type': 'Physical Machinery'},
@@ -146,6 +164,31 @@ class HistoryController extends GetxController {
 
       final int sessionId = sessionResponse.data['id'];
 
+      // Step B: Connect WebSocket for Live Real-Time Updates
+      final wsUrl = AppUrl.liveInspectionWs(sessionId);
+      try {
+        _wsChannel = WebSocketChannel.connect(Uri.parse(wsUrl));
+        _wsChannel?.stream.listen((message) {
+          try {
+            final data = jsonDecode(message.toString());
+            if (data['event'] == 'IMAGE_ANALYZED') {
+              final int index = data['index'] ?? 0;
+              final int total = data['total'] ?? files.length;
+              final String category = data['category'] ?? 'Component';
+              final double conf = ((data['confidence'] ?? 0.0) as num).toDouble() * 100;
+
+              // Updates live message in real time!
+              liveStatusMessage.value = "Analyzing $index of $total\n$category (${conf.toStringAsFixed(0)}%)";
+            }
+          } catch (_) {}
+        });
+      } catch (wsErr) {
+        log('WebSocket connection error (non-blocking): $wsErr');
+      }
+
+      liveStatusMessage.value = "Uploading ${files.length} photo(s)...";
+
+      // Step C: Upload photos
       final formData = FormData();
       for (var file in files) {
         formData.files.add(MapEntry('photos', await MultipartFile.fromFile(file.path, filename: file.name)));
@@ -157,6 +200,7 @@ class HistoryController extends GetxController {
         options: Options(headers: {'Authorization': 'Bearer $token', 'Content-Type': 'multipart/form-data'}),
       );
 
+      // Step D: Open results screen
       if (uploadResponse.statusCode == 200 && uploadResponse.data != null) {
         currentInspection.value = InspectionResultModel.fromJson(uploadResponse.data);
         isInspecting.value = false;
@@ -176,6 +220,8 @@ class HistoryController extends GetxController {
       }
     } finally {
       isInspecting.value = false;
+      liveStatusMessage.value = "";
+      _closeWebSocket();
     }
   }
 

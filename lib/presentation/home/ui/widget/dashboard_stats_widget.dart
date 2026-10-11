@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gap/flutter_gap.dart';
@@ -17,10 +18,17 @@ class DashboardStatsWidget extends StatelessWidget {
     return Obx(() {
       final data = homeController.statsData.value;
 
+      // Dynamically calculate Min and Max Y for real numbers
+      final double maxYValue = data.timelineTrend.isEmpty
+          ? 10.0
+          : data.timelineTrend.reduce(max);
+      final double calculatedMaxY = maxYValue == 0 ? 10.0 : (maxYValue * 1.3).ceilToDouble();
+      final double yInterval = (calculatedMaxY / 4).clamp(1.0, double.infinity);
+
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 1. Metric Cards Grid
+          // 1. Real Metric Cards
           Row(
             children: [
               Expanded(
@@ -66,10 +74,9 @@ class DashboardStatsWidget extends StatelessWidget {
           ),
           Gap(24.h),
 
-          // 2. Timeline Trend Section
+          // 2. Real Timeline Trend Chart
           CustomText(
             text: "Inspection Timeline Trend",
-            //color: AllColor.whiteColor,
             fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
@@ -86,20 +93,18 @@ class DashboardStatsWidget extends StatelessWidget {
                 height: 210.h,
                 child: LineChart(
                   LineChartData(
-                    minY: 7000,
-                    maxY: 10000,
-                    // FIX 1: Custom Tooltip and Selected Circle Highlight
+                    minY: 0,
+                    maxY: calculatedMaxY,
                     lineTouchData: LineTouchData(
                       touchTooltipData: LineTouchTooltipData(
                         getTooltipColor: (touchedSpot) => AllColor.blackColor,
-                       // tooltipRoundedRadius: 8.r,
                         tooltipPadding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
                         getTooltipItems: (List<LineBarSpot> touchedSpots) {
                           return touchedSpots.map((spot) {
                             return LineTooltipItem(
-                              spot.y.toInt().toString(),
+                              "${spot.y.toInt()} Defects",
                               TextStyle(
-                                color: AllColor.whiteColor, // Pure white text
+                                color: AllColor.whiteColor,
                                 fontSize: 13.sp,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -120,9 +125,9 @@ class DashboardStatsWidget extends StatelessWidget {
                               getDotPainter: (spot, percent, barData, index) =>
                                   FlDotCirclePainter(
                                     radius: 6,
-                                    color: AllColor.whiteColor, // White circle when clicked
+                                    color: AllColor.whiteColor,
                                     strokeWidth: 3,
-                                    strokeColor: AllColor.blackColor, // Black border
+                                    strokeColor: AllColor.blackColor,
                                   ),
                             ),
                           );
@@ -133,28 +138,24 @@ class DashboardStatsWidget extends StatelessWidget {
                     gridData: FlGridData(
                       show: true,
                       drawVerticalLine: false,
-                      horizontalInterval: 1000,
+                      horizontalInterval: yInterval,
                       getDrawingHorizontalLine: (value) => FlLine(
                         color: Colors.grey.withValues(alpha: 0.15),
                         strokeWidth: 1,
                       ),
                     ),
 
-                    // FIX 2: Fixed Y-axis interval (Eliminates 9.6K & 9.5K overlapping)
                     titlesData: FlTitlesData(
                       rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                       topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                       leftTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
-                          reservedSize: 38.w,
-                          interval: 1000, // Exact 1000 step so labels never collide
+                          reservedSize: 32.w,
+                          interval: yInterval,
                           getTitlesWidget: (value, meta) {
-                            if (value < 7000 || value > 10000 || value % 1000 != 0) {
-                              return const SizedBox.shrink();
-                            }
                             return Text(
-                              '${(value / 1000).toInt()}K',
+                              value.toInt().toString(),
                               style: TextStyle(
                                 color: Colors.grey.shade600,
                                 fontSize: 11.sp,
@@ -172,7 +173,7 @@ class DashboardStatsWidget extends StatelessWidget {
                             return Padding(
                               padding: EdgeInsets.only(top: 6.h),
                               child: Text(
-                                value.toInt().toString(),
+                                "#${value.toInt() + 1}",
                                 style: TextStyle(
                                   color: Colors.grey.shade600,
                                   fontSize: 11.sp,
@@ -219,10 +220,9 @@ class DashboardStatsWidget extends StatelessWidget {
           ),
           Gap(24.h),
 
-          // 3. Category Breakdown Section
+          // 3. Real Category Breakdown Section
           CustomText(
             text: "Categories Breakdown",
-            //color: AllColor.,
             fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
@@ -252,19 +252,7 @@ class DashboardStatsWidget extends StatelessWidget {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildLegendItem(
-                          color: AllColor.blueColor,
-                          label: "Structural",
-                          value: "8,026",
-                        ),
-                        Gap(12.h),
-                        _buildLegendItem(
-                          color: AllColor.yellowColor,
-                          label: "Surface",
-                          value: "6,308",
-                        ),
-                      ],
+                      children: _buildDynamicLegends(data.categoriesBreakdown),
                     ),
                   ),
                 ],
@@ -336,7 +324,13 @@ class DashboardStatsWidget extends StatelessWidget {
   }
 
   List<PieChartSectionData> _buildPieSections(Map<String, double> categories) {
-    final colors = [AllColor.blueColor, AllColor.yellowColor];
+    final colors = [
+      AllColor.blueColor,
+      AllColor.yellowColor,
+      Colors.redAccent,
+      const Color(0xFF00B4D8),
+      Colors.teal,
+    ];
     int index = 0;
     return categories.entries.map((entry) {
       final sectionColor = colors[index % colors.length];
@@ -350,37 +344,49 @@ class DashboardStatsWidget extends StatelessWidget {
     }).toList();
   }
 
-  Widget _buildLegendItem({
-    required Color color,
-    required String label,
-    required String value,
-  }) {
-    return Row(
-      children: [
-        Container(
-          width: 12.r,
-          height: 12.r,
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(3.r),
-          ),
+  List<Widget> _buildDynamicLegends(Map<String, double> categories) {
+    final colors = [
+      AllColor.blueColor,
+      AllColor.yellowColor,
+      Colors.redAccent,
+      const Color(0xFF00B4D8),
+      Colors.teal,
+    ];
+    int index = 0;
+
+    return categories.entries.map((entry) {
+      final color = colors[index % colors.length];
+      index++;
+      return Padding(
+        padding: EdgeInsets.only(bottom: 8.h),
+        child: Row(
+          children: [
+            Container(
+              width: 12.r,
+              height: 12.r,
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.circular(3.r),
+              ),
+            ),
+            Gap(8.w),
+            Expanded(
+              child: CustomText(
+                text: entry.key,
+                color: AllColor.blackColor,
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            CustomText(
+              text: entry.value.toInt().toString(),
+              color: AllColor.blackColor,
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+          ],
         ),
-        Gap(8.w),
-        Expanded(
-          child: CustomText(
-            text: label,
-            color: AllColor.blackColor,
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        CustomText(
-          text: value,
-          color: AllColor.blackColor,
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
-        ),
-      ],
-    );
+      );
+    }).toList();
   }
 }

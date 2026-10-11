@@ -8,8 +8,6 @@ import 'package:inspexion_ai/global/custom_button.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 import 'package:inspexion_ai/presentation/history/controller/history_controller.dart';
 
-
-
 class CameraStagingScreen extends StatelessWidget {
   const CameraStagingScreen({super.key});
 
@@ -18,18 +16,20 @@ class CameraStagingScreen extends StatelessWidget {
     final controller = Get.find<HistoryController>();
 
     return Scaffold(
-      backgroundColor:AllColor.greyColor400,
+      backgroundColor: AllColor.greyColor400,
       appBar: AppBar(
-        leading: IconButton(onPressed: (){
-          Get.back();
-        }, icon: Icon(Icons.arrow_back_ios_new,color: AllColor.whiteColor,)),
+        leading: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: Icon(Icons.arrow_back_ios_new, color: AllColor.whiteColor),
+        ),
         backgroundColor: AllColor.blueColor,
         elevation: 0,
-       scrolledUnderElevation: 0,
-       // centerTitle: true,
+        scrolledUnderElevation: 0,
         title: CustomText(
           text: 'Selected Photos',
-          fontSize: 22,
+          fontSize: 23,
           color: AllColor.whiteColor,
         ),
       ),
@@ -75,7 +75,6 @@ class CameraStagingScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       CustomButton(
-                        isOutlined: true,
                         text: 'Add More Photo',
                         backgroundColor: AllColor.whiteColor,
                         textColor: AllColor.blueColor,
@@ -94,14 +93,33 @@ class CameraStagingScreen extends StatelessWidget {
               ],
             ),
 
-            // Plain CircularProgressIndicator overlay
+            // Real-Time WebSocket Live Indicator Overlay
             if (controller.isInspecting.value)
               Container(
                 width: double.infinity,
                 height: double.infinity,
-                color: AllColor.blackColor.withValues(alpha: 0.6),
-                child: const Center(
-                  child: CircularProgressIndicator(),
+                color: AllColor.blackColor.withValues(alpha: 0.75),
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24.w),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const CircularProgressIndicator(),
+                        const Gap(20),
+                        Obx(
+                              () => CustomText(
+                            text: controller.liveStatusMessage.value.isNotEmpty
+                                ? controller.liveStatusMessage.value
+                                : "Analyzing photos with AI...",
+                            fontSize: 16,
+                            color: AllColor.whiteColor,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
           ],

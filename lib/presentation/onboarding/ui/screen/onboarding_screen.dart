@@ -54,7 +54,7 @@ class OnboardingScreen extends StatelessWidget {
                           children: [
                             // Image Stack wrapped in Expanded with flex
                             Expanded(
-                              flex: 7,
+                              flex: 8,
                               child: Stack(
                                 fit: StackFit.expand,
                                 children: [
@@ -95,11 +95,11 @@ class OnboardingScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            const Gap(24),
+                            const Gap(15),
 
                             // Title & Description wrapped in Expanded with flex
                             Expanded(
-                              flex: 3,
+                              flex: 2,
                               child: Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 24.w),
                                 child: Column(
