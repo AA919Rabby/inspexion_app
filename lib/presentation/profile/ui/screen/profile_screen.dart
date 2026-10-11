@@ -69,7 +69,7 @@ class ProfileScreen extends StatelessWidget {
                             ),
                             child: ClipOval(
                               child: Obx(() {
-                                // 1. Show newly picked image from gallery/camera
+                                // 1. Temporary local preview while choosing photo
                                 if (profileController.selectedImage.value != null) {
                                   return Image.file(
                                     profileController.selectedImage.value!,
@@ -78,8 +78,8 @@ class ProfileScreen extends StatelessWidget {
                                     height: 150.h,
                                   );
                                 }
-                                // 2. Show uploaded network avatar
-                                else if (profileController.networkAvatarUrl.value.isNotEmpty) {
+                                // 2. Real network image loaded from backend server URL
+                                if (profileController.networkAvatarUrl.value.isNotEmpty) {
                                   return Image.network(
                                     profileController.networkAvatarUrl.value,
                                     key: ValueKey(profileController.networkAvatarUrl.value),

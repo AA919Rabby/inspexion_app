@@ -36,7 +36,7 @@ class HomeScreen extends StatelessWidget {
             children: [
               const Gap(15),
 
-              // Live Avatar Image or Initial Circle
+              // Live Avatar fetched from the Backend API
               Container(
                 height: 75.h,
                 width: 75.w,
@@ -46,14 +46,14 @@ class HomeScreen extends StatelessWidget {
                 ),
                 child: ClipOval(
                   child: Obx(() {
-                    final avatar = profileController.networkAvatarUrl.value.isNotEmpty
+                    final avatarUrl = profileController.networkAvatarUrl.value.isNotEmpty
                         ? profileController.networkAvatarUrl.value
                         : (profileController.userProfile.value?.avatarUrl ?? '');
 
-                    if (avatar.isNotEmpty) {
+                    if (avatarUrl.isNotEmpty) {
                       return Image.network(
-                        avatar,
-                        key: ValueKey(avatar),
+                        avatarUrl,
+                        key: ValueKey(avatarUrl),
                         fit: BoxFit.cover,
                         width: 75.w,
                         height: 75.h,
@@ -67,7 +67,7 @@ class HomeScreen extends StatelessWidget {
 
               const Gap(10),
 
-              // Live User Name
+              // Live User Name from Backend API
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,7 +98,7 @@ class HomeScreen extends StatelessWidget {
         child: RefreshIndicator(
           color: AllColor.blueColor,
           onRefresh: () async {
-            // Only 2-second delay as requested (no fetch profile API calls here)
+            // Delay only as requested
             await Future.delayed(const Duration(seconds: 2));
           },
           child: SingleChildScrollView(

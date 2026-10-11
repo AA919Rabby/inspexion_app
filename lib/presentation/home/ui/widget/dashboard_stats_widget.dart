@@ -11,7 +11,6 @@ import '../../controller/home_controller.dart';
 class DashboardStatsWidget extends StatelessWidget {
   const DashboardStatsWidget({super.key});
 
-  // Helper to remove underscores and format text cleanly
   String _formatCategory(String raw) {
     if (raw.isEmpty) return 'General';
     return raw.replaceAll('_', ' ').split(' ').map((word) {
@@ -27,14 +26,12 @@ class DashboardStatsWidget extends StatelessWidget {
     return Obx(() {
       final data = homeController.statsData.value;
 
-      // Dynamic Y-axis
       final double maxYValue = data.timelineTrend.isEmpty
           ? 10.0
           : data.timelineTrend.reduce(max);
       final double calculatedMaxY = maxYValue == 0 ? 10.0 : (maxYValue * 1.3).ceilToDouble();
       final double yInterval = (calculatedMaxY / 4).clamp(1.0, double.infinity);
 
-      // FIX: Dynamically space X-axis so numbers NEVER overlap (#1#2#3 eliminated)
       final int totalPoints = data.timelineTrend.length;
       final double xInterval = (totalPoints > 5) ? (totalPoints / 4).ceilToDouble() : 1.0;
 
@@ -161,17 +158,28 @@ class DashboardStatsWidget extends StatelessWidget {
                     titlesData: FlTitlesData(
                       rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                       topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      // FIX: Using SideTitleWidget ensures the text is properly aligned and never invisible
                       leftTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
                           reservedSize: 32.w,
                           interval: yInterval,
                           getTitlesWidget: (value, meta) {
-                            return CustomText(text: value.toInt().toString(),);
+                            return SideTitleWidget(
+                              meta: meta,
+                              child: Text(
+                                value.toInt().toString(),
+                                style: TextStyle(
+                                  color: AllColor.blackColor,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            );
                           },
                         ),
                       ),
-                      // CLEAN X-AXIS: No squished #1#2#3 numbers
+                      // FIX: Using SideTitleWidget for clean X-axis text
                       bottomTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
@@ -180,9 +188,16 @@ class DashboardStatsWidget extends StatelessWidget {
                             if (value < 0 || value >= totalPoints) {
                               return const SizedBox.shrink();
                             }
-                            return Padding(
-                              padding: EdgeInsets.only(top: 6.h),
-                              child: CustomText(text: value.toInt().toString(),),
+                            return SideTitleWidget(
+                              meta: meta,
+                              child: Text(
+                                value.toInt().toString(),
+                                style: TextStyle(
+                                  color: AllColor.blackColor,
+                                  fontSize: 11.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                             );
                           },
                         ),
@@ -223,7 +238,7 @@ class DashboardStatsWidget extends StatelessWidget {
           ),
           const Gap(24),
 
-          // 3. Category Breakdown (Underscores Removed)
+          // 3. Category Breakdown (Clean names without underscores)
           CustomText(
             text: "Categories Breakdown",
             fontSize: 20,
@@ -360,7 +375,7 @@ class DashboardStatsWidget extends StatelessWidget {
     return categories.entries.map((entry) {
       final color = colors[index % colors.length];
       index++;
-      final cleanLabel = _formatCategory(entry.key); // Strips underscores
+      final cleanLabel = _formatCategory(entry.key);
 
       return Padding(
         padding: EdgeInsets.only(bottom: 8.h),

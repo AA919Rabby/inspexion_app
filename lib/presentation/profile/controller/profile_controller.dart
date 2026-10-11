@@ -20,8 +20,10 @@ class ProfileController extends GetxController {
   final ageClt = TextEditingController();
   final profileKey = GlobalKey<FormState>();
 
-  // Single Model state for profile data
+  // Reactive User Profile Model from API
   final Rx<UserProfileModel?> userProfile = Rx<UserProfileModel?>(null);
+
+  // Temporary file preview ONLY while user is on the screen before pressing Save
   final Rx<File?> selectedImage = Rx<File?>(null);
   final RxString networkAvatarUrl = ''.obs;
   final RxBool isLoading = false.obs;
@@ -29,7 +31,7 @@ class ProfileController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _loadSavedFields();
+    _loadSavedFormFields();
     fetchUserProfile();
   }
 
@@ -43,16 +45,14 @@ class ProfileController extends GetxController {
     super.onClose();
   }
 
-  // Pre-fill local fields from storage
-  void _loadSavedFields() {
+  void _loadSavedFormFields() {
     numberClt.text = AuthServices.getString('user_phone') ?? '';
     cityClt.text = AuthServices.getString('user_city') ?? '';
     addressClt.text = AuthServices.getString('user_address') ?? '';
     ageClt.text = AuthServices.getString('user_age') ?? '';
-    networkAvatarUrl.value = AuthServices.getString('user_avatar') ?? '';
   }
 
-  // 1. GET User Profile API using UserProfileModel
+  // 1. GET User Profile from API using UserProfileModel
   Future<void> fetchUserProfile() async {
     final token = AuthServices.getAccessToken();
     if (token == null || token.isEmpty) return;
@@ -69,25 +69,20 @@ class ProfileController extends GetxController {
       );
 
       if (response.statusCode == 200 && response.data != null) {
-        // PARSED WITH MODEL
         final model = UserProfileModel.fromJson(response.data);
         userProfile.value = model;
         nameClt.text = model.fullName;
-
-        if (model.avatarUrl.isNotEmpty) {
-          networkAvatarUrl.value = model.avatarUrl;
-          await AuthServices.setString('user_avatar', model.avatarUrl);
-        }
+        networkAvatarUrl.value = model.avatarUrl;
 
         userProfile.refresh();
         networkAvatarUrl.refresh();
       }
     } catch (e) {
-      log('Error fetching user profile: $e');
+      log('Error fetching user profile from API: $e');
     }
   }
 
-  // 2. Pick Profile Photo
+  // 2. Pick Profile Photo for temporary preview
   Future<void> pickImage(ImageSource source) async {
     try {
       final XFile? image = await _picker.pickImage(
@@ -113,7 +108,7 @@ class ProfileController extends GetxController {
     }
   }
 
-  // 3. Update Profile API using UserProfileModel
+  // 3. Send image and name to backend API
   Future<void> updateProfile() async {
     if (!profileKey.currentState!.validate()) return;
 
@@ -132,7 +127,7 @@ class ProfileController extends GetxController {
 
     isLoading.value = true;
 
-    // Save extra fields locally
+    // Save extra form fields
     await AuthServices.setString('user_phone', numberClt.text.trim());
     await AuthServices.setString('user_city', cityClt.text.trim());
     await AuthServices.setString('user_address', addressClt.text.trim());
@@ -143,6 +138,7 @@ class ProfileController extends GetxController {
         'full_name': nameClt.text.trim(),
       };
 
+      // Attach image file to FormData
       if (selectedImage.value != null) {
         dataMap['avatar'] = await MultipartFile.fromFile(
           selectedImage.value!.path,
@@ -152,8 +148,7 @@ class ProfileController extends GetxController {
 
       final formData = FormData.fromMap(dataMap);
 
-      // FIX: Do NOT manually pass 'Content-Type': 'multipart/form-data'!
-      // Dio sets it automatically with the boundary.
+      // Call PATCH API
       final response = await _dio.patch(
         AppUrl.updateProfile,
         data: formData,
@@ -165,16 +160,15 @@ class ProfileController extends GetxController {
       );
 
       if (response.statusCode == 200 && response.data != null) {
-        // PARSED WITH MODEL
+        log('Server returned updated profile: ${response.data}');
+
+        // Parse updated profile model from API response
         final model = UserProfileModel.fromJson(response.data);
         userProfile.value = model;
+        networkAvatarUrl.value = model.avatarUrl;
 
-        if (model.avatarUrl.isNotEmpty) {
-          networkAvatarUrl.value = model.avatarUrl;
-          await AuthServices.setString('user_avatar', model.avatarUrl);
-        }
-
-        selectedImage.value = null; // Clear local file to show uploaded network image
+        // Clear local file preview so it displays the real network URL from the server
+        selectedImage.value = null;
 
         userProfile.refresh();
         networkAvatarUrl.refresh();
@@ -183,7 +177,7 @@ class ProfileController extends GetxController {
           customSnackbar(
             Get.context!,
             title: 'Profile Updated',
-            message: 'Your profile has been saved successfully.',
+            message: 'Your profile image has been saved to the server.',
             isError: false,
           );
         }
