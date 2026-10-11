@@ -50,7 +50,7 @@ class ProfileScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Avatar Photo Container with Image Picker (Circular Container)
+                      // Perfect Circle Avatar Photo Container with Image Picker
                       Center(
                         child: GestureDetector(
                           onTap: () {
@@ -89,7 +89,7 @@ class ProfileScreen extends StatelessWidget {
                                     errorBuilder: (_, _, _) => Icon(
                                       Icons.add_a_photo,
                                       color: AllColor.blueColor,
-                                      size: 70.r,
+                                      size: 80.r,
                                     ),
                                   );
                                 }
@@ -97,7 +97,7 @@ class ProfileScreen extends StatelessWidget {
                                 return Icon(
                                   Icons.add_a_photo,
                                   color: AllColor.blueColor,
-                                  size: 70.r,
+                                  size: 80.r,
                                 );
                               }),
                             ),

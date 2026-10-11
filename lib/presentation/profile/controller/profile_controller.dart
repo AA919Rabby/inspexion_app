@@ -47,9 +47,10 @@ class ProfileController extends GetxController {
     cityClt.text = AuthServices.getString('user_city') ?? '';
     addressClt.text = AuthServices.getString('user_address') ?? '';
     ageClt.text = AuthServices.getString('user_age') ?? '';
+    networkAvatarUrl.value = AuthServices.getString('user_avatar') ?? '';
   }
 
-  // 1. GET User Profile from Backend using UserProfileModel
+  // 1. GET User Profile
   Future<void> fetchUserProfile() async {
     final token = AuthServices.getAccessToken();
     if (token == null || token.isEmpty) return;
@@ -71,9 +72,8 @@ class ProfileController extends GetxController {
         nameClt.text = model.fullName;
 
         if (model.avatarUrl.isNotEmpty) {
-          networkAvatarUrl.value = '${model.avatarUrl}?t=${DateTime.now().millisecondsSinceEpoch}';
-        } else {
-          networkAvatarUrl.value = '';
+          networkAvatarUrl.value = model.avatarUrl;
+          await AuthServices.setString('user_avatar', model.avatarUrl);
         }
 
         userProfile.refresh();
@@ -84,7 +84,7 @@ class ProfileController extends GetxController {
     }
   }
 
-  // 2. Pick Profile Photo for Preview
+  // 2. Pick Profile Photo
   Future<void> pickImage(ImageSource source) async {
     try {
       final XFile? image = await _picker.pickImage(
@@ -110,7 +110,7 @@ class ProfileController extends GetxController {
     }
   }
 
-  // 3. Update Profile & Fetch fresh Profile Data from Backend
+  // 3. Update Profile
   Future<void> updateProfile() async {
     if (!profileKey.currentState!.validate()) return;
 
@@ -129,7 +129,6 @@ class ProfileController extends GetxController {
 
     isLoading.value = true;
 
-    // Save extra fields
     await AuthServices.setString('user_phone', numberClt.text.trim());
     await AuthServices.setString('user_city', cityClt.text.trim());
     await AuthServices.setString('user_address', addressClt.text.trim());
@@ -155,34 +154,38 @@ class ProfileController extends GetxController {
         options: Options(
           headers: {
             'Authorization': 'Bearer $token',
-            'Accept': 'application/json',
           },
         ),
       );
 
       if (response.statusCode == 200 && response.data != null) {
-        log('Server returned profile update: ${response.data}');
+        final model = UserProfileModel.fromJson(response.data);
+        userProfile.value = model;
 
-        // Clear local temporary file preview
-        selectedImage.value = null;
+        if (model.avatarUrl.isNotEmpty) {
+          networkAvatarUrl.value = model.avatarUrl;
+          await AuthServices.setString('user_avatar', model.avatarUrl);
+        }
 
-        // Fetch fresh profile from backend to ensure networkAvatarUrl is updated correctly
-        await fetchUserProfile();
+        selectedImage.value = null; // Clear temporary file picker
+
+        userProfile.refresh();
+        networkAvatarUrl.refresh();
 
         if (Get.context != null) {
           customSnackbar(
             Get.context!,
             title: 'Profile Updated',
-            message: 'Profile image saved successfully!',
+            message: 'Your profile has been saved successfully.',
             isError: false,
           );
         }
       }
     } on DioException catch (e) {
-      log('Dio Error: ${e.response?.data ?? e.message}');
+      log('Dio Error updating profile: ${e.response?.data ?? e.message}');
       _showErrorSnackbar(e);
     } catch (e) {
-      log('Error: $e');
+      log('Error updating profile: $e');
       if (Get.context != null) {
         customSnackbar(
           Get.context!,

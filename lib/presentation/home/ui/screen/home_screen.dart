@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: AllColor.greyColor300,
       appBar: AppBar(
         backgroundColor: AllColor.blueColor,
-        elevation: 3,
+        elevation: 0,
         scrolledUnderElevation: 0,
         automaticallyImplyLeading: false,
         toolbarHeight: 90.h,
@@ -36,27 +36,27 @@ class HomeScreen extends StatelessWidget {
             children: [
               const Gap(15),
 
-              // Live Avatar fetched from the Backend API (Circular Container)
+              // Perfect Circle Avatar Image Container
               Container(
-                height: 75.h,
-                width: 75.w,
+                height: 70.h,
+                width: 70.w,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: AllColor.whiteColor,
                 ),
                 child: ClipOval(
                   child: Obx(() {
-                    final avatarUrl = profileController.networkAvatarUrl.value.isNotEmpty
+                    final avatar = profileController.networkAvatarUrl.value.isNotEmpty
                         ? profileController.networkAvatarUrl.value
                         : (profileController.userProfile.value?.avatarUrl ?? '');
 
-                    if (avatarUrl.isNotEmpty) {
+                    if (avatar.isNotEmpty) {
                       return Image.network(
-                        avatarUrl,
-                        key: ValueKey(avatarUrl),
+                        avatar,
+                        key: ValueKey(avatar),
                         fit: BoxFit.cover,
-                        width: 75.w,
-                        height: 75.h,
+                        width: 70.w,
+                        height: 70.h,
                         errorBuilder: (_, _, _) => _buildInitialAvatar(profileController),
                       );
                     }
@@ -65,11 +65,11 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
 
-              const Gap(10),
+              const Gap(12),
 
-              // Live User Name from Backend API
+              // Live User Name
               Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
@@ -98,8 +98,7 @@ class HomeScreen extends StatelessWidget {
         child: RefreshIndicator(
           color: AllColor.blueColor,
           onRefresh: () async {
-            await profileController.fetchUserProfile();
-            await Future.delayed(const Duration(seconds: 1));
+            await Future.delayed(const Duration(seconds: 2));
           },
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
@@ -122,22 +121,16 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildInitialAvatar(ProfileController controller) {
     final String name = controller.userProfile.value?.fullName ?? '';
-    final String initial = name.isNotEmpty ? name[0].toUpperCase() : '';
+    final String initial = name.isNotEmpty ? name[0].toUpperCase() : 'U';
 
     return Container(
-      height: 75.h,
-      width: 75.w,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
+      alignment: Alignment.center,
+      color: AllColor.greyColor400,
+      child: CustomText(
+        text: initial,
+        fontSize: 26,
         color: AllColor.whiteColor,
-      ),
-      child: Center(
-        child: CustomText(
-          text: initial,
-          fontSize: 26,
-          color: AllColor.blueColor,
-          fontWeight: FontWeight.bold,
-        ),
+        fontWeight: FontWeight.bold,
       ),
     );
   }
