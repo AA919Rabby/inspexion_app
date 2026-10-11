@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gap/flutter_gap.dart';
+import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:get/get.dart';
 import 'package:inspexion_ai/core/theme/all_color.dart';
 import 'package:inspexion_ai/global/custom_loader.dart';
@@ -32,6 +33,8 @@ class IntroScreen extends StatelessWidget {
         child: Column(
           children: [
             const Spacer(),
+            Image.asset("asset/image/logo.png",height: 100.h,width: 100.w,),
+            const Gap(5),
             Center(
               child: CustomText(text: "InspeXion AI",color: AllColor.whiteColor,fontSize: 40,),
             ),
