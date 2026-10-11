@@ -20,10 +20,7 @@ class ProfileController extends GetxController {
   final ageClt = TextEditingController();
   final profileKey = GlobalKey<FormState>();
 
-  // Reactive User Profile Model from API
   final Rx<UserProfileModel?> userProfile = Rx<UserProfileModel?>(null);
-
-  // Temporary file preview ONLY while user is on the screen before pressing Save
   final Rx<File?> selectedImage = Rx<File?>(null);
   final RxString networkAvatarUrl = ''.obs;
   final RxBool isLoading = false.obs;
@@ -52,7 +49,7 @@ class ProfileController extends GetxController {
     ageClt.text = AuthServices.getString('user_age') ?? '';
   }
 
-  // 1. GET User Profile from API using UserProfileModel
+  // 1. GET User Profile from Backend using UserProfileModel
   Future<void> fetchUserProfile() async {
     final token = AuthServices.getAccessToken();
     if (token == null || token.isEmpty) return;
@@ -78,11 +75,11 @@ class ProfileController extends GetxController {
         networkAvatarUrl.refresh();
       }
     } catch (e) {
-      log('Error fetching user profile from API: $e');
+      log('Error fetching user profile: $e');
     }
   }
 
-  // 2. Pick Profile Photo for temporary preview
+  // 2. Pick Profile Photo for Preview
   Future<void> pickImage(ImageSource source) async {
     try {
       final XFile? image = await _picker.pickImage(
@@ -108,7 +105,7 @@ class ProfileController extends GetxController {
     }
   }
 
-  // 3. Send image and name to backend API
+  // 3. Update Profile & Receive New Avatar URL from Backend
   Future<void> updateProfile() async {
     if (!profileKey.currentState!.validate()) return;
 
@@ -127,7 +124,7 @@ class ProfileController extends GetxController {
 
     isLoading.value = true;
 
-    // Save extra form fields
+    // Save extra fields
     await AuthServices.setString('user_phone', numberClt.text.trim());
     await AuthServices.setString('user_city', cityClt.text.trim());
     await AuthServices.setString('user_address', addressClt.text.trim());
@@ -138,7 +135,6 @@ class ProfileController extends GetxController {
         'full_name': nameClt.text.trim(),
       };
 
-      // Attach image file to FormData
       if (selectedImage.value != null) {
         dataMap['avatar'] = await MultipartFile.fromFile(
           selectedImage.value!.path,
@@ -148,7 +144,6 @@ class ProfileController extends GetxController {
 
       final formData = FormData.fromMap(dataMap);
 
-      // Call PATCH API
       final response = await _dio.patch(
         AppUrl.updateProfile,
         data: formData,
@@ -160,15 +155,16 @@ class ProfileController extends GetxController {
       );
 
       if (response.statusCode == 200 && response.data != null) {
-        log('Server returned updated profile: ${response.data}');
-
-        // Parse updated profile model from API response
+        log('Server returned profile: ${response.data}');
         final model = UserProfileModel.fromJson(response.data);
-        userProfile.value = model;
-        networkAvatarUrl.value = model.avatarUrl;
 
-        // Clear local file preview so it displays the real network URL from the server
-        selectedImage.value = null;
+        // Update with cache-buster timestamp so Flutter immediately dumps Google's old avatar
+        userProfile.value = model;
+        if (model.avatarUrl.isNotEmpty) {
+          networkAvatarUrl.value = '${model.avatarUrl}?t=${DateTime.now().millisecondsSinceEpoch}';
+        }
+
+        selectedImage.value = null; // Clear local preview
 
         userProfile.refresh();
         networkAvatarUrl.refresh();
@@ -177,16 +173,16 @@ class ProfileController extends GetxController {
           customSnackbar(
             Get.context!,
             title: 'Profile Updated',
-            message: 'Your profile image has been saved to the server.',
+            message: 'Profile image saved successfully!',
             isError: false,
           );
         }
       }
     } on DioException catch (e) {
-      log('Dio Error updating profile: ${e.response?.data ?? e.message}');
+      log('Dio Error: ${e.response?.data ?? e.message}');
       _showErrorSnackbar(e);
     } catch (e) {
-      log('Error updating profile: $e');
+      log('Error: $e');
       if (Get.context != null) {
         customSnackbar(
           Get.context!,
