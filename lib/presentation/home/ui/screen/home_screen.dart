@@ -36,7 +36,7 @@ class HomeScreen extends StatelessWidget {
             children: [
               const Gap(15),
 
-              // Live Avatar
+              // Live Avatar Image or Initial Circle
               Container(
                 height: 75.h,
                 width: 75.w,
@@ -58,25 +58,17 @@ class HomeScreen extends StatelessWidget {
                         fit: BoxFit.cover,
                         width: 75.w,
                         height: 75.h,
-                        errorBuilder: (_, _, _) => Icon(
-                          Icons.person,
-                          color: AllColor.blueColor,
-                          size: 40.r,
-                        ),
+                        errorBuilder: (_, _, _) => _buildInitialAvatar(profileController),
                       );
                     }
-                    return Icon(
-                      Icons.person,
-                      color: AllColor.blueColor,
-                      size: 40.r,
-                    );
+                    return _buildInitialAvatar(profileController);
                   }),
                 ),
               ),
 
               const Gap(10),
 
-              // Live Name
+              // Live User Name
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,8 +99,12 @@ class HomeScreen extends StatelessWidget {
         child: RefreshIndicator(
           color: AllColor.blueColor,
           onRefresh: () async {
-            // Refreshes both user profile and dashboard stats simultaneously
             await Future.delayed(const Duration(seconds: 2));
+
+            // await Future.wait([
+            //   profileController.fetchUserProfile(),
+            //   homeController.fetchDashboardStats(),
+            // ]);
           },
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
@@ -118,9 +114,7 @@ class HomeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                 Gap(15),
-
-                  // Real Live Dashboard Stats
+                  Gap(15),
                   DashboardStatsWidget(),
                 ],
               ),
@@ -128,6 +122,17 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildInitialAvatar(ProfileController controller) {
+    final String name = controller.userProfile.value?.fullName ?? 'U';
+    final String initial = name.isNotEmpty ? name[0].toUpperCase() : 'U';
+
+    return Container(
+      color: AllColor.greyColor400,
+      alignment: Alignment.center,
+      child: CustomText(text: initial),
     );
   }
 }

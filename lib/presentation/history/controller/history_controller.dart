@@ -13,6 +13,7 @@ import 'package:inspexion_ai/core/services/auth_services.dart';
 import 'package:inspexion_ai/global/custom_snackbar.dart';
 import 'package:inspexion_ai/presentation/history/data/history_model.dart';
 import 'package:inspexion_ai/presentation/history/data/inspection_result_model.dart';
+import 'package:inspexion_ai/presentation/home/controller/home_controller.dart'; // IMPORT HOME CONTROLLER
 
 class HistoryController extends GetxController {
   final Dio _dio = Dio(BaseOptions(
@@ -23,19 +24,15 @@ class HistoryController extends GetxController {
   final ImagePicker _picker = ImagePicker();
   WebSocketChannel? _wsChannel;
 
-  // States
   final RxBool isLoading = false.obs;
   final RxBool isInspecting = false.obs;
   final RxBool isGeneratingPdf = false.obs;
 
-  // Real-time WebSocket Live Status
   final RxString liveStatusMessage = ''.obs;
 
-  // Data Models
   final RxList<HistoryModel> reports = <HistoryModel>[].obs;
   final Rx<InspectionResultModel?> currentInspection = Rx<InspectionResultModel?>(null);
 
-  // Camera Staging Photos
   final RxList<XFile> stagedImages = <XFile>[].obs;
 
   @override
@@ -55,7 +52,6 @@ class HistoryController extends GetxController {
     _wsChannel = null;
   }
 
-  // 1. GET API call
   Future<void> fetchHistory() async {
     isLoading.value = true;
     try {
@@ -84,7 +80,6 @@ class HistoryController extends GetxController {
     }
   }
 
-  // 2. Initial Picker
   Future<void> pickAndInspectImages(ImageSource source) async {
     try {
       if (source == ImageSource.gallery) {
@@ -117,7 +112,6 @@ class HistoryController extends GetxController {
     }
   }
 
-  // 3. Add more photos from camera
   Future<void> addMoreFromCamera() async {
     try {
       final XFile? photo = await _picker.pickImage(
@@ -134,14 +128,12 @@ class HistoryController extends GetxController {
     }
   }
 
-  // 4. Trigger Analysis from Staging Screen
   Future<void> analyzeStagedImages() async {
     if (stagedImages.isEmpty) return;
     await _runInspectionPipeline(stagedImages.toList());
     stagedImages.clear();
   }
 
-  // 5. The Core Pipeline with Live WebSocket Streaming
   Future<void> _runInspectionPipeline(List<XFile> files) async {
     final token = AuthServices.getAccessToken();
     if (token == null) {
@@ -155,7 +147,6 @@ class HistoryController extends GetxController {
     liveStatusMessage.value = "Starting inspection session...";
 
     try {
-      // Step A: Create Inspection Session
       final sessionResponse = await _dio.post(
         AppUrl.createSession,
         data: {'title': 'Asset Damage Inspection', 'asset_type': 'Physical Machinery'},
@@ -164,7 +155,6 @@ class HistoryController extends GetxController {
 
       final int sessionId = sessionResponse.data['id'];
 
-      // Step B: Connect WebSocket for Live Real-Time Updates
       final wsUrl = AppUrl.liveInspectionWs(sessionId);
       try {
         _wsChannel = WebSocketChannel.connect(Uri.parse(wsUrl));
@@ -176,19 +166,16 @@ class HistoryController extends GetxController {
               final int total = data['total'] ?? files.length;
               final String category = data['category'] ?? 'Component';
               final double conf = ((data['confidence'] ?? 0.0) as num).toDouble() * 100;
-
-              // Updates live message in real time!
               liveStatusMessage.value = "Analyzing $index of $total\n$category (${conf.toStringAsFixed(0)}%)";
             }
           } catch (_) {}
         });
       } catch (wsErr) {
-        log('WebSocket connection error (non-blocking): $wsErr');
+        log('WebSocket connection error: $wsErr');
       }
 
       liveStatusMessage.value = "Uploading ${files.length} photo(s)...";
 
-      // Step C: Upload photos
       final formData = FormData();
       for (var file in files) {
         formData.files.add(MapEntry('photos', await MultipartFile.fromFile(file.path, filename: file.name)));
@@ -200,14 +187,19 @@ class HistoryController extends GetxController {
         options: Options(headers: {'Authorization': 'Bearer $token', 'Content-Type': 'multipart/form-data'}),
       );
 
-      // Step D: Open results screen
       if (uploadResponse.statusCode == 200 && uploadResponse.data != null) {
         currentInspection.value = InspectionResultModel.fromJson(uploadResponse.data);
         isInspecting.value = false;
         Get.toNamed(AllRoute.inspectionResultScreen);
       }
 
+      // 1. Refresh History List
       await fetchHistory();
+
+      // 2. LIVE UPDATE HOME SCREEN STATS AUTOMATICALLY!
+      if (Get.isRegistered<HomeController>()) {
+        Get.find<HomeController>().fetchDashboardStats();
+      }
     } on DioException catch (e) {
       isInspecting.value = false;
       log('Dio Error in Inspection: ${e.response?.data ?? e.message}');
@@ -225,7 +217,6 @@ class HistoryController extends GetxController {
     }
   }
 
-  // 6. Generate & Open PDF
   Future<void> generateAndOpenCurrentReport() async {
     final model = currentInspection.value;
     final token = AuthServices.getAccessToken();
@@ -249,7 +240,6 @@ class HistoryController extends GetxController {
     }
   }
 
-  // 7. Download PDF
   Future<void> downloadAndOpenReport(int reportId, String reportTitle) async {
     try {
       final token = AuthServices.getAccessToken();

@@ -9,7 +9,6 @@ import 'package:inspexion_ai/core/services/auth_services.dart';
 import 'package:inspexion_ai/global/custom_snackbar.dart';
 import 'package:inspexion_ai/presentation/profile/data/user_profile_model.dart';
 
-
 class ProfileController extends GetxController {
   final Dio _dio = Dio();
   final ImagePicker _picker = ImagePicker();
@@ -21,7 +20,6 @@ class ProfileController extends GetxController {
   final ageClt = TextEditingController();
   final profileKey = GlobalKey<FormState>();
 
-  // Reactive State
   final Rx<UserProfileModel?> userProfile = Rx<UserProfileModel?>(null);
   final Rx<File?> selectedImage = Rx<File?>(null);
   final RxString networkAvatarUrl = ''.obs;
@@ -30,6 +28,7 @@ class ProfileController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    _loadSavedFields();
     fetchUserProfile();
   }
 
@@ -43,7 +42,16 @@ class ProfileController extends GetxController {
     super.onClose();
   }
 
-  // 1. Fetch Profile Data
+  // Pre-fill local fields from storage
+  void _loadSavedFields() {
+    numberClt.text = AuthServices.getString('user_phone') ?? '';
+    cityClt.text = AuthServices.getString('user_city') ?? '';
+    addressClt.text = AuthServices.getString('user_address') ?? '';
+    ageClt.text = AuthServices.getString('user_age') ?? '';
+    networkAvatarUrl.value = AuthServices.getString('user_avatar') ?? '';
+  }
+
+  // 1. Fetch Profile Data from Backend
   Future<void> fetchUserProfile() async {
     final token = AuthServices.getAccessToken();
     if (token == null || token.isEmpty) return;
@@ -63,9 +71,10 @@ class ProfileController extends GetxController {
         final model = UserProfileModel.fromJson(response.data);
         userProfile.value = model;
         nameClt.text = model.fullName;
-        networkAvatarUrl.value = model.avatarUrl;
-
-        // Force reactive refresh
+        if (model.avatarUrl.isNotEmpty) {
+          networkAvatarUrl.value = model.avatarUrl;
+          await AuthServices.setString('user_avatar', model.avatarUrl);
+        }
         userProfile.refresh();
         networkAvatarUrl.refresh();
       }
@@ -100,7 +109,7 @@ class ProfileController extends GetxController {
     }
   }
 
-  // 3. Update Profile & Sync across all screens immediately
+  // 3. Update Profile & Persist Locally
   Future<void> updateProfile() async {
     if (!profileKey.currentState!.validate()) return;
 
@@ -119,6 +128,12 @@ class ProfileController extends GetxController {
 
     isLoading.value = true;
 
+    // Save all form fields locally
+    await AuthServices.setString('user_phone', numberClt.text.trim());
+    await AuthServices.setString('user_city', cityClt.text.trim());
+    await AuthServices.setString('user_address', addressClt.text.trim());
+    await AuthServices.setString('user_age', ageClt.text.trim());
+
     try {
       final Map<String, dynamic> dataMap = {
         'full_name': nameClt.text.trim(),
@@ -130,14 +145,15 @@ class ProfileController extends GetxController {
           filename: 'avatar_${DateTime.now().millisecondsSinceEpoch}.jpg',
         );
       }
-      else{
-        customSnackbar(
-          Get.context!,
-          title: "Oop's",
-          message: 'Select profile image.',
-          isError: true,
-        );
-      }
+      else
+        {
+          customSnackbar(
+            Get.context!,
+            title: "Oop's",
+            message: 'No image selected.',
+            isError: true,
+          );
+        }
 
       final formData = FormData.fromMap(dataMap);
 
@@ -154,13 +170,11 @@ class ProfileController extends GetxController {
 
       if (response.statusCode == 200 && response.data != null) {
         final model = UserProfileModel.fromJson(response.data);
-
-        // 1. Update the reactive models
         userProfile.value = model;
         networkAvatarUrl.value = model.avatarUrl;
-        selectedImage.value = null; // Clear local file to show uploaded network image
+        await AuthServices.setString('user_avatar', model.avatarUrl);
+        selectedImage.value = null;
 
-        // 2. Force immediate UI refresh across all observing widgets
         userProfile.refresh();
         networkAvatarUrl.refresh();
 
@@ -199,8 +213,6 @@ class ProfileController extends GetxController {
       errorMessage = serverData['detail']?.toString() ??
           serverData['message']?.toString() ??
           serverData.toString();
-    } else if (dioError.message != null) {
-      errorMessage = serverData.toString();
     } else if (dioError.message != null) {
       errorMessage = dioError.message!;
     }
