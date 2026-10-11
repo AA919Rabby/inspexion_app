@@ -52,7 +52,7 @@ class ProfileScreen extends StatelessWidget {
                     children: [
                       // Avatar Photo Container with Image Picker
                       Center(
-                        child: GestureDetector(
+                        child: InkWell(
                           onTap: () {
                             CustomImagePickerSheet.show(
                               onPick: (ImageSource source) {
@@ -64,14 +64,6 @@ class ProfileScreen extends StatelessWidget {
                             height: 150.h,
                             width: 150.w,
                             decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AllColor.whiteColor,
-                                  offset: const Offset(0, 3),
-                                  blurRadius: 1,
-                                  spreadRadius: 0,
-                                ),
-                              ],
                               border: Border.all(
                                 color: AllColor.yellowColor,
                                 width: 5.w,

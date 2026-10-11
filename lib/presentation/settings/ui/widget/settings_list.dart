@@ -67,7 +67,7 @@ class SettingsList extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(
           horizontal: 16.w,
-          vertical: 12.h,
+          vertical: 11.h,
         ),
         margin: EdgeInsets.only(bottom: 5.h),
         decoration: BoxDecoration(
@@ -82,7 +82,7 @@ class SettingsList extends StatelessWidget {
             Expanded(
               child: CustomText(
                 text: title,
-                fontSize: 18,
+                fontSize: 17,
               ),
             ),
             Icon(

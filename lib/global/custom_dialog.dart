@@ -63,7 +63,7 @@ class CustomDialog extends StatelessWidget {
       child: Icon(
         Icons.logout_rounded,
         color: const Color(0xFFFF3B30),
-        size: 30.r,
+        size: 40.r,
       ),
     );
   }
@@ -94,7 +94,7 @@ class CustomDialog extends StatelessWidget {
   Widget _buildCancelButton(BuildContext context) {
     return Expanded(
       child: SizedBox(
-        height: 52.r,
+        height: 50.r,
         child: OutlinedButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -106,7 +106,7 @@ class CustomDialog extends StatelessWidget {
             elevation: 0,
             padding: EdgeInsets.zero,
             side: BorderSide(
-              color: const Color(0xFF45475A),
+              color: Color(0xFF3169E4),
               width: 1.r,
             ),
             shape: RoundedRectangleBorder(
@@ -128,7 +128,7 @@ class CustomDialog extends StatelessWidget {
   Widget _buildConfirmButton(BuildContext context) {
     return Expanded(
       child: SizedBox(
-        height: 52.r,
+        height: 50.r,
         child: ElevatedButton(
           onPressed: () {
             Navigator.of(context).pop();
