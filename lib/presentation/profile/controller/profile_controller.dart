@@ -20,6 +20,7 @@ class ProfileController extends GetxController {
   final ageClt = TextEditingController();
   final profileKey = GlobalKey<FormState>();
 
+  // Single Model state for profile data
   final Rx<UserProfileModel?> userProfile = Rx<UserProfileModel?>(null);
   final Rx<File?> selectedImage = Rx<File?>(null);
   final RxString networkAvatarUrl = ''.obs;
@@ -51,7 +52,7 @@ class ProfileController extends GetxController {
     networkAvatarUrl.value = AuthServices.getString('user_avatar') ?? '';
   }
 
-  // 1. Fetch Profile Data from Backend
+  // 1. GET User Profile API using UserProfileModel
   Future<void> fetchUserProfile() async {
     final token = AuthServices.getAccessToken();
     if (token == null || token.isEmpty) return;
@@ -68,13 +69,16 @@ class ProfileController extends GetxController {
       );
 
       if (response.statusCode == 200 && response.data != null) {
+        // PARSED WITH MODEL
         final model = UserProfileModel.fromJson(response.data);
         userProfile.value = model;
         nameClt.text = model.fullName;
+
         if (model.avatarUrl.isNotEmpty) {
           networkAvatarUrl.value = model.avatarUrl;
           await AuthServices.setString('user_avatar', model.avatarUrl);
         }
+
         userProfile.refresh();
         networkAvatarUrl.refresh();
       }
@@ -109,7 +113,7 @@ class ProfileController extends GetxController {
     }
   }
 
-  // 3. Update Profile & Persist Locally
+  // 3. Update Profile API using UserProfileModel
   Future<void> updateProfile() async {
     if (!profileKey.currentState!.validate()) return;
 
@@ -128,7 +132,7 @@ class ProfileController extends GetxController {
 
     isLoading.value = true;
 
-    // Save all form fields locally
+    // Save extra fields locally
     await AuthServices.setString('user_phone', numberClt.text.trim());
     await AuthServices.setString('user_city', cityClt.text.trim());
     await AuthServices.setString('user_address', addressClt.text.trim());
@@ -145,35 +149,32 @@ class ProfileController extends GetxController {
           filename: 'avatar_${DateTime.now().millisecondsSinceEpoch}.jpg',
         );
       }
-      else
-        {
-          customSnackbar(
-            Get.context!,
-            title: "Oop's",
-            message: 'No image selected.',
-            isError: true,
-          );
-        }
 
       final formData = FormData.fromMap(dataMap);
 
+      // FIX: Do NOT manually pass 'Content-Type': 'multipart/form-data'!
+      // Dio sets it automatically with the boundary.
       final response = await _dio.patch(
         AppUrl.updateProfile,
         data: formData,
         options: Options(
           headers: {
             'Authorization': 'Bearer $token',
-            'Content-Type': 'multipart/form-data',
           },
         ),
       );
 
       if (response.statusCode == 200 && response.data != null) {
+        // PARSED WITH MODEL
         final model = UserProfileModel.fromJson(response.data);
         userProfile.value = model;
-        networkAvatarUrl.value = model.avatarUrl;
-        await AuthServices.setString('user_avatar', model.avatarUrl);
-        selectedImage.value = null;
+
+        if (model.avatarUrl.isNotEmpty) {
+          networkAvatarUrl.value = model.avatarUrl;
+          await AuthServices.setString('user_avatar', model.avatarUrl);
+        }
+
+        selectedImage.value = null; // Clear local file to show uploaded network image
 
         userProfile.refresh();
         networkAvatarUrl.refresh();

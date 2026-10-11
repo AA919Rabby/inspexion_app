@@ -41,7 +41,6 @@ class HomeScreen extends StatelessWidget {
                 height: 75.h,
                 width: 75.w,
                 decoration: BoxDecoration(
-                  border: Border.all(color: AllColor.yellowColor, width: 5.w),
                   shape: BoxShape.circle,
                   color: AllColor.whiteColor,
                 ),
@@ -99,12 +98,8 @@ class HomeScreen extends StatelessWidget {
         child: RefreshIndicator(
           color: AllColor.blueColor,
           onRefresh: () async {
+            // Only 2-second delay as requested (no fetch profile API calls here)
             await Future.delayed(const Duration(seconds: 2));
-
-            // await Future.wait([
-            //   profileController.fetchUserProfile(),
-            //   homeController.fetchDashboardStats(),
-            // ]);
           },
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
@@ -132,7 +127,12 @@ class HomeScreen extends StatelessWidget {
     return Container(
       color: AllColor.greyColor400,
       alignment: Alignment.center,
-      child: CustomText(text: initial),
+      child: CustomText(
+        text: initial,
+        fontSize: 26,
+        color: AllColor.whiteColor,
+        fontWeight: FontWeight.bold,
+      ),
     );
   }
 }

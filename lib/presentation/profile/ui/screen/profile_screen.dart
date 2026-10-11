@@ -64,15 +64,12 @@ class ProfileScreen extends StatelessWidget {
                             height: 150.h,
                             width: 150.w,
                             decoration: BoxDecoration(
-                              border: Border.all(
-                                color: AllColor.yellowColor,
-                                width: 5.w,
-                              ),
                               shape: BoxShape.circle,
                               color: AllColor.whiteColor,
                             ),
                             child: ClipOval(
                               child: Obx(() {
+                                // 1. Show newly picked image from gallery/camera
                                 if (profileController.selectedImage.value != null) {
                                   return Image.file(
                                     profileController.selectedImage.value!,
@@ -80,9 +77,12 @@ class ProfileScreen extends StatelessWidget {
                                     width: 150.w,
                                     height: 150.h,
                                   );
-                                } else if (profileController.networkAvatarUrl.value.isNotEmpty) {
+                                }
+                                // 2. Show uploaded network avatar
+                                else if (profileController.networkAvatarUrl.value.isNotEmpty) {
                                   return Image.network(
                                     profileController.networkAvatarUrl.value,
+                                    key: ValueKey(profileController.networkAvatarUrl.value),
                                     fit: BoxFit.cover,
                                     width: 150.w,
                                     height: 150.h,
@@ -93,6 +93,7 @@ class ProfileScreen extends StatelessWidget {
                                     ),
                                   );
                                 }
+                                // 3. Fallback placeholder
                                 return Icon(
                                   Icons.add_a_photo,
                                   color: AllColor.blueColor,
@@ -196,7 +197,7 @@ class ProfileScreen extends StatelessWidget {
                         controller: profileController.ageClt,
                         hintText: "Age",
                         prefixIcon: Icon(
-                          Icons.calendar_today_rounded, // Fixed syntax error
+                          Icons.calendar_today_rounded,
                           color: AllColor.blueColor,
                         ),
                         validator: (value) {
@@ -214,13 +215,16 @@ class ProfileScreen extends StatelessWidget {
                       const Gap(50),
 
                       // Save Button
-                      Obx(()=>profileController.isLoading.value?const Center(child: CircularProgressIndicator()):
-                      CustomButton(
-                        text: "Save",
-                        backgroundColor: AllColor.blueColor,
-                        textColor: AllColor.whiteColor,
-                        onPressed: profileController.updateProfile,
-                      ),),
+                      Obx(
+                            () => profileController.isLoading.value
+                            ? const Center(child: CircularProgressIndicator())
+                            : CustomButton(
+                          text: "Save",
+                          backgroundColor: AllColor.blueColor,
+                          textColor: AllColor.whiteColor,
+                          onPressed: profileController.updateProfile,
+                        ),
+                      ),
 
                       const Gap(50),
                     ],
@@ -229,17 +233,6 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
           ),
-
-          // Full-screen CircularProgressIndicator without color
-          // if (profileController.isLoading.value)
-          //   Container(
-          //     width: double.infinity,
-          //     height: double.infinity,
-          //     color: Colors.black.withValues(alpha: 0.6),
-          //     child: const Center(
-          //       child: CircularProgressIndicator(),
-          //     ),
-          //   ),
         ],
       ),
     );

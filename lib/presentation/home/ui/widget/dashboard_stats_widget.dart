@@ -103,7 +103,7 @@ class DashboardStatsWidget extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 18.h),
               child: SizedBox(
-                height: 210.h,
+                height: 220.h,
                 child: LineChart(
                   LineChartData(
                     minY: 0,
