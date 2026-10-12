@@ -13,11 +13,13 @@ class CameraStagingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<HistoryController>();
+    // Guarantees we find the exact existing permanent instance holding the captured photo
+    final controller = Get.isRegistered<HistoryController>()
+        ? Get.find<HistoryController>()
+        : Get.put(HistoryController(), permanent: true);
 
     return Scaffold(
       backgroundColor: AllColor.greyColor300,
-      // FIX: Solid rectangular AppBar eliminates the white corner gap leaks!
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Get.back(),
@@ -170,7 +172,6 @@ class CameraStagingScreen extends StatelessWidget {
               ],
             ),
 
-            // SEAMLESS FULL-SCREEN DARK OVERLAY
             if (controller.isInspecting.value)
               Positioned.fill(
                 child: Container(

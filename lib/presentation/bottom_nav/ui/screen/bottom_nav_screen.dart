@@ -16,7 +16,11 @@ class BottomNavScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bottomNavController = Get.find<BottomNavController>();
-    final historyController = Get.find<HistoryController>();
+
+    // CRITICAL FIX: permanent: true ensures the controller instance is shared everywhere
+    final historyController = Get.isRegistered<HistoryController>()
+        ? Get.find<HistoryController>()
+        : Get.put(HistoryController(), permanent: true);
 
     return Scaffold(
       extendBody: true,
@@ -29,7 +33,6 @@ class BottomNavScreen extends StatelessWidget {
               children: bottomNavController.pages,
             ),
 
-            // Commercial Glassmorphism AI Analysis Overlay
             if (historyController.isInspecting.value)
               Container(
                 width: double.infinity,
@@ -57,7 +60,6 @@ class BottomNavScreen extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // Live AI Badge
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 5.h),
                           decoration: BoxDecoration(
@@ -89,12 +91,8 @@ class BottomNavScreen extends StatelessWidget {
                           ),
                         ),
                         const Gap(22),
-
-                        // Plain CircularProgressIndicator (No color parameter)
                         const CircularProgressIndicator(),
                         const Gap(20),
-
-                        // Real-time WebSocket Text
                         Obx(
                               () => CustomText(
                             text: historyController.liveStatusMessage.value.isNotEmpty
@@ -115,7 +113,6 @@ class BottomNavScreen extends StatelessWidget {
         ),
       ),
 
-      // Optical Shutter Styled Floating Action Button
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 12.h),
         child: Container(
@@ -154,7 +151,6 @@ class BottomNavScreen extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
-      // Commercial Animated Bottom Navigation Bar
       bottomNavigationBar: Obx(
             () => AnimatedBottomNavigationBar.builder(
           itemCount: 2,

@@ -33,6 +33,7 @@ class HistoryController extends GetxController {
   final RxList<HistoryModel> reports = <HistoryModel>[].obs;
   final Rx<InspectionResultModel?> currentInspection = Rx<InspectionResultModel?>(null);
 
+  // Staged Photos for Camera Mode
   final RxList<XFile> stagedImages = <XFile>[].obs;
 
   @override
@@ -81,7 +82,7 @@ class HistoryController extends GetxController {
     }
   }
 
-  // 2. Initial Picker
+  // 2. Initial Picker (FIXED: First camera photo is atomically assigned so it's never 0)
   Future<void> pickAndInspectImages(ImageSource source) async {
     try {
       if (source == ImageSource.gallery) {
@@ -91,8 +92,8 @@ class HistoryController extends GetxController {
           maxHeight: 640,
         );
         if (galleryPhotos.isNotEmpty) {
-          stagedImages.clear();
-          stagedImages.addAll(galleryPhotos);
+          stagedImages.assignAll(galleryPhotos);
+          stagedImages.refresh();
           await _runInspectionPipeline(galleryPhotos);
         }
       } else {
@@ -103,8 +104,11 @@ class HistoryController extends GetxController {
           maxHeight: 640,
         );
         if (photo != null) {
-          stagedImages.clear();
-          stagedImages.add(photo);
+          // ATOMIC ASSIGNMENT & REFRESH: Guarantees photo is in memory before navigating
+          stagedImages.assignAll([photo]);
+          stagedImages.refresh();
+
+          await Future.delayed(const Duration(milliseconds: 60));
           Get.toNamed(AllRoute.cameraStagingScreen);
         }
       }
@@ -127,6 +131,7 @@ class HistoryController extends GetxController {
       );
       if (photo != null) {
         stagedImages.add(photo);
+        stagedImages.refresh();
       }
     } catch (e) {
       log('Error adding camera image: $e');
@@ -221,7 +226,7 @@ class HistoryController extends GetxController {
     }
   }
 
-  // 6. Generate & Open PDF (Auto-Refreshes History)
+  // 6. Generate & Open PDF
   Future<void> generateAndOpenCurrentReport() async {
     final model = currentInspection.value;
     final token = AuthServices.getAccessToken();
@@ -235,10 +240,7 @@ class HistoryController extends GetxController {
       );
 
       final int reportId = response.data['id'];
-
-      // AUTO-UPDATE HISTORY IMMEDIATELY
       await fetchHistory();
-
       await downloadAndOpenReport(reportId, 'Inspection_Report_${model.sessionId}');
     } on DioException catch (e) {
       _showErrorSnackbar(e);
