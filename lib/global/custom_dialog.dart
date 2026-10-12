@@ -261,7 +261,7 @@ class CustomDialog extends StatelessWidget {
           content: content,
           confirmText: confirmText ?? 'Yes',
           cancelText: cancelText ?? 'No',
-          confirmColor: confirmColor ?? const Color(0xFF6200EE),
+          confirmColor: confirmColor ?? AllColor.blueColor,
           cancelColor: cancelColor,
           titleColor: titleColor,
           messageColor: messageColor,

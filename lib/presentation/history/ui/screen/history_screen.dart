@@ -4,6 +4,7 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:get/get.dart';
 import 'package:inspexion_ai/core/theme/all_color.dart';
 import 'package:inspexion_ai/global/custom_button.dart';
+import 'package:inspexion_ai/global/custom_shimmer.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 import 'package:inspexion_ai/presentation/history/controller/history_controller.dart';
 
@@ -40,8 +41,20 @@ class HistoryScreen extends StatelessWidget {
         ),
       ),
       body: Obx(() {
+        // Shimmer placeholder cards while loading
         if (controller.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            child: Column(
+              children: [
+                CustomShimmer(height: 140.h),
+                const Gap(14),
+                CustomShimmer(height: 140.h),
+                const Gap(14),
+                CustomShimmer(height: 140.h),
+              ],
+            ),
+          );
         }
 
         // Commercial Empty State
@@ -92,12 +105,12 @@ class HistoryScreen extends StatelessWidget {
           color: AllColor.blueColor,
           backgroundColor: AllColor.whiteColor,
           onRefresh: () async {
-            await Future.delayed(const Duration(seconds: 2));
+            await controller.fetchHistory();
           },
           child: ListView.separated(
             padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             itemCount: controller.reports.length,
-            separatorBuilder: (_, _) => const Gap(12),
+            separatorBuilder: (_, __) => const Gap(12),
             itemBuilder: (context, index) {
               final report = controller.reports[index];
               final String displayTitle = report.reportTitle.replaceAll('_', ' ');

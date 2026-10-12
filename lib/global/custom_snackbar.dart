@@ -8,53 +8,72 @@ void customSnackbar(
     BuildContext context, {
       required String title,
       required String message,
-      Color backgroundColor = const Color(0xFF10B981), // Emerald green default
+      Color backgroundColor = const Color(0xFF059669), // Modern studio emerald
       bool isError = false,
     }) {
   Get.closeCurrentSnackbar();
 
-  final Color primaryColor = isError ? AllColor.redColor : backgroundColor;
+  // Modernized High-End Studio Palettes
+  final Color activeBgColor = isError
+      ? const Color(0xFFE11D48) // Modern Vibrant Crimson (Error)
+      : backgroundColor;         // Modern Rich Emerald (Success)
 
   Get.snackbar(
     title,
     message,
     snackPosition: SnackPosition.TOP,
-    backgroundColor: const Color(0xFF0F172A), // Luxury dark slate banner
+    backgroundColor: activeBgColor,
     colorText: AllColor.whiteColor,
-    borderRadius: 16.r,
+    borderRadius: 18.r,
     margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
     padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
     duration: const Duration(seconds: 3),
     dismissDirection: DismissDirection.up,
     isDismissible: true,
-    borderColor: primaryColor.withValues(alpha: 0.4),
-    borderWidth: 1.5.w,
+
+    // Glassmorphic Frost Highlight Border
+    borderColor: Colors.white.withValues(alpha: 0.28),
+    borderWidth: 1.2.w,
+
+    // Dual-Layer Ambient Glow Drop Shadows
     boxShadows: [
       BoxShadow(
-        color: Colors.black.withValues(alpha: 0.25),
-        blurRadius: 16,
-        offset: const Offset(0, 6),
+        color: activeBgColor.withValues(alpha: 0.38),
+        blurRadius: 22,
+        spreadRadius: 1,
+        offset: const Offset(0, 8),
+      ),
+      BoxShadow(
+        color: Colors.black.withValues(alpha: 0.15),
+        blurRadius: 10,
+        offset: const Offset(0, 4),
       ),
     ],
+
+    // Frosted Circular Icon Container
     icon: Container(
       padding: EdgeInsets.all(8.r),
       margin: EdgeInsets.only(left: 6.w),
       decoration: BoxDecoration(
-        color: primaryColor.withValues(alpha: 0.15),
+        color: Colors.white.withValues(alpha: 0.22),
         shape: BoxShape.circle,
         border: Border.all(
-          color: primaryColor.withValues(alpha: 0.35),
+          color: Colors.white.withValues(alpha: 0.4),
           width: 1.w,
         ),
       ),
-      child: Icon(
-        isError ? Icons.error_outline_rounded : Icons.check_circle_outline_rounded,
-        color: primaryColor,
-        size: 22.r,
+      child: Center(
+        child: Icon(
+          isError ? Icons.priority_high_rounded : Icons.check_rounded,
+          color: AllColor.whiteColor,
+          size: 20.r,
+        ),
       ),
     ),
+
+    // High-Contrast Pure White Title
     titleText: Padding(
-      padding: EdgeInsets.only(left: 4.w),
+      padding: EdgeInsets.only(left: 6.w),
       child: CustomText(
         text: title,
         fontWeight: FontWeight.bold,
@@ -62,12 +81,14 @@ void customSnackbar(
         color: AllColor.whiteColor,
       ),
     ),
+
+    // Clean Translucent Message Text
     messageText: Padding(
-      padding: EdgeInsets.only(left: 4.w, top: 2.h),
+      padding: EdgeInsets.only(left: 6.w, top: 2.h),
       child: CustomText(
         text: message,
         fontSize: 12,
-        color: Colors.grey.shade400,
+        color: Colors.white.withValues(alpha: 0.92),
         maxLines: 3,
         softWrap: true,
       ),

@@ -5,6 +5,7 @@ import 'package:flutter_gap/flutter_gap.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:get/get.dart';
 import 'package:inspexion_ai/core/theme/all_color.dart';
+import 'package:inspexion_ai/global/custom_shimmer.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 import '../../controller/home_controller.dart';
 
@@ -71,53 +72,79 @@ class DashboardStatsWidget extends StatelessWidget {
           ),
           const Gap(14),
 
-          // 1. Metric Cards Grid (Marketplace Standard Design)
-          Row(
-            children: [
-              Expanded(
-                child: _buildMetricCard(
-                  title: "Total Audits",
-                  value: data.totalInspections.toString(),
-                  icon: Icons.inventory_2_outlined,
-                  accentColor: AllColor.blueColor,
+          // -----------------------------------------------------------------
+          // STEP 2: METRIC CARDS SHIMMER (Disappears at 1.7 seconds)
+          // -----------------------------------------------------------------
+          if (homeController.shimmerMetrics.value)
+            Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(child: CustomShimmer(height: 112.h)),
+                    const Gap(12),
+                    Expanded(child: CustomShimmer(height: 112.h)),
+                  ],
                 ),
-              ),
-              const Gap(12),
-              Expanded(
-                child: _buildMetricCard(
-                  title: "Analyzed Images",
-                  value: data.totalImagesAnalyzed.toString(),
-                  icon: Icons.camera_alt_outlined,
-                  accentColor: const Color(0xFF00B4D8),
+                const Gap(12),
+                Row(
+                  children: [
+                    Expanded(child: CustomShimmer(height: 112.h)),
+                    const Gap(12),
+                    Expanded(child: CustomShimmer(height: 112.h)),
+                  ],
                 ),
-              ),
-            ],
-          ),
-          const Gap(12),
-          Row(
-            children: [
-              Expanded(
-                child: _buildMetricCard(
-                  title: "Critical Hazards",
-                  value: data.criticalDefects.toString(),
-                  icon: Icons.warning_amber_rounded,
-                  accentColor: AllColor.redColor,
+              ],
+            )
+          else ...[
+            Row(
+              children: [
+                Expanded(
+                  child: _buildMetricCard(
+                    title: "Total Audits",
+                    value: data.totalInspections.toString(),
+                    icon: Icons.inventory_2_outlined,
+                    accentColor: AllColor.blueColor,
+                  ),
                 ),
-              ),
-              const Gap(12),
-              Expanded(
-                child: _buildMetricCard(
-                  title: "Minor Issues",
-                  value: data.minorDefects.toString(),
-                  icon: Icons.info_outline_rounded,
-                  accentColor: AllColor.yellowColor,
+                const Gap(12),
+                Expanded(
+                  child: _buildMetricCard(
+                    title: "Analyzed Images",
+                    value: data.totalImagesAnalyzed.toString(),
+                    icon: Icons.camera_alt_outlined,
+                    accentColor: const Color(0xFF00B4D8),
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
+            const Gap(12),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildMetricCard(
+                    title: "Critical Hazards",
+                    value: data.criticalDefects.toString(),
+                    icon: Icons.warning_amber_rounded,
+                    accentColor: AllColor.redColor,
+                  ),
+                ),
+                const Gap(12),
+                Expanded(
+                  child: _buildMetricCard(
+                    title: "Minor Issues",
+                    value: data.minorDefects.toString(),
+                    icon: Icons.info_outline_rounded,
+                    accentColor: AllColor.yellowColor,
+                  ),
+                ),
+              ],
+            ),
+          ],
           const Gap(28),
 
-          // 2. Timeline Trend Section Header
+          // -----------------------------------------------------------------
+          // STEP 3: TIMELINE CHART SHIMMER (Disappears at 2.4 seconds)
+          // -----------------------------------------------------------------
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -127,172 +154,169 @@ class DashboardStatsWidget extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 color: AllColor.blackColor,
               ),
-              Icon(
-                Icons.trending_up_rounded,
-                color: AllColor.blueColor,
-                size: 22.r,
-              ),
+              Icon(Icons.trending_up_rounded, color: AllColor.blueColor, size: 22.r),
             ],
           ),
           const Gap(12),
 
-          // Line Chart Card
-          Card(
-            elevation: 2,
-            shadowColor: Colors.black.withValues(alpha: 0.08),
-            color: AllColor.whiteColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.r),
-              side: BorderSide(color: Colors.white, width: 1.5.w),
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 18.h),
-              child: SizedBox(
-                height: 220.h,
-                child: LineChart(
-                  LineChartData(
-                    minY: 0,
-                    maxY: calculatedMaxY,
-                    lineTouchData: LineTouchData(
-                      touchTooltipData: LineTouchTooltipData(
-                        getTooltipColor: (touchedSpot) => AllColor.blackColor,
-                        tooltipPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                        getTooltipItems: (List<LineBarSpot> touchedSpots) {
-                          return touchedSpots.map((spot) {
-                            return LineTooltipItem(
-                              "${spot.y.toInt()} Defects Found",
-                              TextStyle(
-                                color: AllColor.whiteColor,
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.bold,
+          if (homeController.shimmerChart.value)
+            CustomShimmer(height: 250.h)
+          else
+            Card(
+              elevation: 2,
+              shadowColor: Colors.black.withValues(alpha: 0.08),
+              color: AllColor.whiteColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.r),
+                side: BorderSide(color: Colors.white, width: 1.5.w),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 18.h),
+                child: SizedBox(
+                  height: 220.h,
+                  child: LineChart(
+                    LineChartData(
+                      minY: 0,
+                      maxY: calculatedMaxY,
+                      lineTouchData: LineTouchData(
+                        touchTooltipData: LineTouchTooltipData(
+                          getTooltipColor: (touchedSpot) => AllColor.blackColor,
+                          tooltipPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                          getTooltipItems: (List<LineBarSpot> touchedSpots) {
+                            return touchedSpots.map((spot) {
+                              return LineTooltipItem(
+                                "${spot.y.toInt()} Defects Found",
+                                TextStyle(
+                                  color: AllColor.whiteColor,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              );
+                            }).toList();
+                          },
+                        ),
+                        getTouchedSpotIndicator: (LineChartBarData barData, List<int> spotIndexes) {
+                          return spotIndexes.map((index) {
+                            return TouchedSpotIndicatorData(
+                              FlLine(
+                                color: AllColor.blueColor.withValues(alpha: 0.4),
+                                strokeWidth: 2,
+                                dashArray: [4, 4],
+                              ),
+                              FlDotData(
+                                show: true,
+                                getDotPainter: (spot, percent, barData, index) =>
+                                    FlDotCirclePainter(
+                                      radius: 6,
+                                      color: AllColor.whiteColor,
+                                      strokeWidth: 3,
+                                      strokeColor: AllColor.blueColor,
+                                    ),
                               ),
                             );
                           }).toList();
                         },
                       ),
-                      getTouchedSpotIndicator: (LineChartBarData barData, List<int> spotIndexes) {
-                        return spotIndexes.map((index) {
-                          return TouchedSpotIndicatorData(
-                            FlLine(
-                              color: AllColor.blueColor.withValues(alpha: 0.4),
-                              strokeWidth: 2,
-                              dashArray: [4, 4],
-                            ),
-                            FlDotData(
-                              show: true,
-                              getDotPainter: (spot, percent, barData, index) =>
-                                  FlDotCirclePainter(
-                                    radius: 6,
-                                    color: AllColor.whiteColor,
-                                    strokeWidth: 3,
-                                    strokeColor: AllColor.blueColor,
+                      gridData: FlGridData(
+                        show: true,
+                        drawVerticalLine: false,
+                        horizontalInterval: yInterval,
+                        getDrawingHorizontalLine: (value) => FlLine(
+                          color: Colors.grey.withValues(alpha: 0.12),
+                          strokeWidth: 1,
+                        ),
+                      ),
+                      titlesData: FlTitlesData(
+                        rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                        topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                        leftTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            reservedSize: 32.w,
+                            interval: yInterval,
+                            getTitlesWidget: (value, meta) {
+                              return SideTitleWidget(
+                                meta: meta,
+                                child: Text(
+                                  value.toInt().toString(),
+                                  style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 11.sp,
+                                    fontWeight: FontWeight.w600,
                                   ),
-                            ),
-                          );
-                        }).toList();
-                      },
-                    ),
-
-                    gridData: FlGridData(
-                      show: true,
-                      drawVerticalLine: false,
-                      horizontalInterval: yInterval,
-                      getDrawingHorizontalLine: (value) => FlLine(
-                        color: Colors.grey.withValues(alpha: 0.12),
-                        strokeWidth: 1,
-                      ),
-                    ),
-
-                    titlesData: FlTitlesData(
-                      rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                      topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                      leftTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          reservedSize: 32.w,
-                          interval: yInterval,
-                          getTitlesWidget: (value, meta) {
-                            return SideTitleWidget(
-                              meta: meta,
-                              child: Text(
-                                value.toInt().toString(),
-                                style: TextStyle(
-                                  color: Colors.grey.shade600,
-                                  fontSize: 11.sp,
-                                  fontWeight: FontWeight.w600,
                                 ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      bottomTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          interval: xInterval,
-                          getTitlesWidget: (value, meta) {
-                            if (value < 0 || value >= totalPoints) {
-                              return const SizedBox.shrink();
-                            }
-                            return SideTitleWidget(
-                              meta: meta,
-                              child: Text(
-                                value.toInt().toString(),
-                                style: TextStyle(
-                                  color: Colors.grey.shade600,
-                                  fontSize: 11.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-
-                    borderData: FlBorderData(show: false),
-                    lineBarsData: [
-                      LineChartBarData(
-                        spots: List.generate(
-                          data.timelineTrend.length,
-                              (index) => FlSpot(index.toDouble(), data.timelineTrend[index]),
-                        ),
-                        isCurved: true,
-                        curveSmoothness: 0.35,
-                        color: AllColor.blueColor,
-                        barWidth: 3.5,
-                        isStrokeCapRound: true,
-                        belowBarData: BarAreaData(
-                          show: true,
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              AllColor.blueColor.withValues(alpha: 0.28),
-                              AllColor.blueColor.withValues(alpha: 0.0),
-                            ],
+                              );
+                            },
                           ),
                         ),
-                        dotData: FlDotData(
-                          show: true,
-                          getDotPainter: (spot, percent, barData, index) =>
-                              FlDotCirclePainter(
-                                radius: 4,
-                                color: AllColor.yellowColor,
-                                strokeWidth: 2,
-                                strokeColor: AllColor.blueColor,
-                              ),
+                        bottomTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            interval: xInterval,
+                            getTitlesWidget: (value, meta) {
+                              if (value < 0 || value >= totalPoints) {
+                                return const SizedBox.shrink();
+                              }
+                              return SideTitleWidget(
+                                meta: meta,
+                                child: Text(
+                                  value.toInt().toString(),
+                                  style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 11.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
-                    ],
+                      borderData: FlBorderData(show: false),
+                      lineBarsData: [
+                        LineChartBarData(
+                          spots: List.generate(
+                            data.timelineTrend.length,
+                                (index) => FlSpot(index.toDouble(), data.timelineTrend[index]),
+                          ),
+                          isCurved: true,
+                          curveSmoothness: 0.35,
+                          color: AllColor.blueColor,
+                          barWidth: 3.5,
+                          isStrokeCapRound: true,
+                          belowBarData: BarAreaData(
+                            show: true,
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                AllColor.blueColor.withValues(alpha: 0.28),
+                                AllColor.blueColor.withValues(alpha: 0.0),
+                              ],
+                            ),
+                          ),
+                          dotData: FlDotData(
+                            show: true,
+                            getDotPainter: (spot, percent, barData, index) =>
+                                FlDotCirclePainter(
+                                  radius: 4,
+                                  color: AllColor.yellowColor,
+                                  strokeWidth: 2,
+                                  strokeColor: AllColor.blueColor,
+                                ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
           const Gap(28),
 
-          // 3. Category Breakdown Section
+          // -----------------------------------------------------------------
+          // STEP 4: CATEGORY BREAKDOWN SHIMMER (Disappears at 3.0 seconds)
+          // -----------------------------------------------------------------
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -302,48 +326,48 @@ class DashboardStatsWidget extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 color: AllColor.blackColor,
               ),
-              Icon(
-                Icons.pie_chart_outline_rounded,
-                color: AllColor.blueColor,
-                size: 22.r,
-              ),
+              Icon(Icons.pie_chart_outline_rounded, color: AllColor.blueColor, size: 22.r),
             ],
           ),
           const Gap(12),
-          Card(
-            elevation: 2,
-            shadowColor: Colors.black.withValues(alpha: 0.08),
-            color: AllColor.whiteColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.r),
-              side: BorderSide(color: Colors.white, width: 1.5.w),
-            ),
-            child: Padding(
-              padding: EdgeInsets.all(18.r),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 125.w,
-                    height: 125.h,
-                    child: PieChart(
-                      PieChartData(
-                        sectionsSpace: 3,
-                        centerSpaceRadius: 28.r,
-                        sections: _buildPieSections(data.categoriesBreakdown),
+
+          if (homeController.shimmerBreakdown.value)
+            CustomShimmer(height: 180.h)
+          else
+            Card(
+              elevation: 2,
+              shadowColor: Colors.black.withValues(alpha: 0.08),
+              color: AllColor.whiteColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.r),
+                side: BorderSide(color: Colors.white, width: 1.5.w),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(18.r),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 125.w,
+                      height: 125.h,
+                      child: PieChart(
+                        PieChartData(
+                          sectionsSpace: 3,
+                          centerSpaceRadius: 28.r,
+                          sections: _buildPieSections(data.categoriesBreakdown),
+                        ),
                       ),
                     ),
-                  ),
-                  const Gap(18),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: _buildDynamicLegends(data.categoriesBreakdown),
+                    const Gap(18),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: _buildDynamicLegends(data.categoriesBreakdown),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
         ],
       );
     });
