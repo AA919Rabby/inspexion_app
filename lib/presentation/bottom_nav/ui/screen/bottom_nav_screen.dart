@@ -113,44 +113,50 @@ class BottomNavScreen extends StatelessWidget {
       ),
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 12.h),
-        child: Container(
-          height: 64.r,
-          width: 64.r,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: AllColor.blueColor,
-            border: Border.all(
-              color: AllColor.whiteColor,
-              width: 3.5.w,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: AllColor.blueColor.withValues(alpha: 0.45),
-                blurRadius: 16,
-                offset: const Offset(0, 6),
+        child: Obx(
+              () => Container(
+            height: 64.r,
+            width: 64.r,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: bottomNavController.isCameraLoading.value
+                  ? AllColor.blackColor
+                  : AllColor.blueColor,
+              border: Border.all(
+                color: AllColor.whiteColor,
+                width: 3.5.w,
               ),
-            ],
-          ),
-          child: FloatingActionButton(
-            elevation: 0,
-            highlightElevation: 0,
-            backgroundColor: Colors.transparent,
-            shape: const CircleBorder(),
-            onPressed: () {
-              bottomNavController.onCameraTap(
-                onComplete: () {
-                  CustomImagePickerSheet.show(
-                    onPick: (ImageSource source) {
-                      historyController.pickAndInspectImages(source);
-                    },
-                  );
-                },
-              );
-            },
-            child: Obx(
-                  () => bottomNavController.isCameraLoading.value
+              boxShadow: [
+                BoxShadow(
+                  color: AllColor.blueColor.withValues(alpha: 0.45),
+                  blurRadius: 16,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+            ),
+            child: FloatingActionButton(
+              elevation: 0,
+              highlightElevation: 0,
+              backgroundColor: Colors.transparent,
+              shape: const CircleBorder(),
+              onPressed: () {
+                bottomNavController.onCameraTap(
+                  onComplete: () {
+                    CustomImagePickerSheet.show(
+                      onPick: (ImageSource source) {
+                        historyController.pickAndInspectImages(source);
+                      },
+                    );
+                  },
+                );
+              },
+              child: bottomNavController.isCameraLoading.value
                   ? const CircularProgressIndicator()
-                  : Icon(Icons.camera_alt_rounded, color: AllColor.whiteColor, size: 26.r),
+                  : Icon(
+                Icons.camera_alt_rounded,
+                color: AllColor.whiteColor,
+                size: 26.r,
+              ),
             ),
           ),
         ),
