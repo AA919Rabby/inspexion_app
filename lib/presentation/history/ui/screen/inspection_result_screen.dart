@@ -26,20 +26,18 @@ class InspectionResultScreen extends StatelessWidget {
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: true,
-        toolbarHeight: 70.h,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(24.r),
-            bottomRight: Radius.circular(24.r),
-          ),
-        ),
+        toolbarHeight: 65.h,
         title: Obx(
-              () => CustomText(
-            text: 'Results (#${controller.currentInspection.value?.sessionId ?? 0})',
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: AllColor.whiteColor,
-          ),
+              () {
+            // Displays user's personal inspection count (#1 for first inspection)
+            final int displayNum = controller.currentInspection.value?.sessionNumber ?? 1;
+            return CustomText(
+              text: 'Results (#$displayNum)',
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: AllColor.whiteColor,
+            );
+          },
         ),
       ),
       body: Obx(() {
@@ -62,7 +60,7 @@ class InspectionResultScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Enterprise Status Alert Banner Card
+                    // Status Alert Banner
                     Container(
                       width: double.infinity,
                       padding: EdgeInsets.all(18.r),
@@ -156,7 +154,7 @@ class InspectionResultScreen extends StatelessWidget {
                     ),
                     const Gap(24),
 
-                    // Header
+                    // Side-by-Side Breakdown
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -176,7 +174,6 @@ class InspectionResultScreen extends StatelessWidget {
                     ),
                     const Gap(12),
 
-                    // SIDE-BY-SIDE ITEMS: PHOTO THUMBNAIL ON LEFT, ISSUE ON RIGHT
                     ListView.separated(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -186,8 +183,6 @@ class InspectionResultScreen extends StatelessWidget {
                         final item = data.results[index];
                         final double confPercent = item.confidence * 100;
                         final String displayCategory = item.category.replaceAll('_', ' ').toUpperCase();
-
-                        // Get thumbnail from staged images or fallback
                         final bool hasLocalThumb = index < controller.stagedImages.length;
 
                         return Container(
@@ -206,7 +201,6 @@ class InspectionResultScreen extends StatelessWidget {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Left: Photo Thumbnail with #Index Tag
                               Stack(
                                 children: [
                                   ClipRRect(
@@ -246,7 +240,6 @@ class InspectionResultScreen extends StatelessWidget {
                               ),
                               const Gap(14),
 
-                              // Right: Issue Information & Status
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -287,7 +280,7 @@ class InspectionResultScreen extends StatelessWidget {
                                     const Gap(4),
                                     CustomText(
                                       text: item.isCritical
-                                          ? "Hazard flagged: requires physical verification."
+                                          ? "Critical defect detected: physical damage flagged."
                                           : "Component intact. Verified no defects present.",
                                       fontSize: 11,
                                       color: Colors.grey.shade600,
@@ -303,7 +296,6 @@ class InspectionResultScreen extends StatelessWidget {
                     ),
                     const Gap(28),
 
-                    // Action Button
                     CustomButton(
                       text: 'Generate Official PDF Report',
                       backgroundColor: AllColor.blueColor,
@@ -315,7 +307,6 @@ class InspectionResultScreen extends StatelessWidget {
                 ),
               ),
 
-            // Loading Overlay
             if (controller.isGeneratingPdf.value)
               Container(
                 width: double.infinity,
@@ -358,7 +349,7 @@ class InspectionResultScreen extends StatelessWidget {
             text: value,
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: color,
+            color: color == AllColor.yellowColor ? Colors.amber.shade900 : color,
           ),
           const Gap(2),
           CustomText(

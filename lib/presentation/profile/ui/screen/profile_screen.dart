@@ -137,17 +137,17 @@ class ProfileScreen extends StatelessWidget {
 
                       // Form Container Card
                       Container(
-                        padding: EdgeInsets.all(18.r),
+                        padding: EdgeInsets.all(20.r),
                         decoration: BoxDecoration(
                           color: AllColor.whiteColor,
                           borderRadius: BorderRadius.circular(20.r),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.03),
-                              blurRadius: 7,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
+                          // boxShadow: [
+                          //   BoxShadow(
+                          //     color: Colors.black.withValues(alpha: 0.03),
+                          //     blurRadius: 7,
+                          //     offset: const Offset(0, 3),
+                          //   ),
+                          // ],
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

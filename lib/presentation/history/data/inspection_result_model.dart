@@ -1,5 +1,6 @@
 class InspectionResultModel {
   final int sessionId;
+  final int sessionNumber; // User's personal count (#1, #2)
   final int processedCount;
   final int criticalDefects;
   final int minorDefects;
@@ -8,6 +9,7 @@ class InspectionResultModel {
 
   InspectionResultModel({
     required this.sessionId,
+    required this.sessionNumber,
     required this.processedCount,
     required this.criticalDefects,
     required this.minorDefects,
@@ -18,6 +20,7 @@ class InspectionResultModel {
   factory InspectionResultModel.fromJson(Map<String, dynamic> json) {
     return InspectionResultModel(
       sessionId: json['session_id'] ?? 0,
+      sessionNumber: json['session_number'] ?? (json['session_id'] ?? 1),
       processedCount: json['processed_count'] ?? 0,
       criticalDefects: json['critical_defects'] ?? 0,
       minorDefects: json['minor_defects'] ?? 0,

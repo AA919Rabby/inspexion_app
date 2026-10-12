@@ -17,6 +17,7 @@ class CameraStagingScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AllColor.greyColor300,
+      // FIX: Solid rectangular AppBar eliminates the white corner gap leaks!
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Get.back(),
@@ -26,17 +27,11 @@ class CameraStagingScreen extends StatelessWidget {
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: true,
-        toolbarHeight: 70.h,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(24.r),
-            bottomRight: Radius.circular(24.r),
-          ),
-        ),
+        toolbarHeight: 65.h,
         title: Obx(
               () => CustomText(
             text: 'Selected Photos (${controller.stagedImages.length})',
-            fontSize: 20,
+            fontSize: 19,
             fontWeight: FontWeight.bold,
             color: AllColor.whiteColor,
           ),
@@ -48,9 +43,8 @@ class CameraStagingScreen extends StatelessWidget {
           children: [
             Column(
               children: [
-                // Top Counter Info Bar
                 Padding(
-                  padding: EdgeInsets.fromLTRB(20.w, 16.h, 20.w, 4.h),
+                  padding: EdgeInsets.fromLTRB(20.w, 14.h, 20.w, 4.h),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -77,7 +71,6 @@ class CameraStagingScreen extends StatelessWidget {
                   ),
                 ),
 
-                // Grid of Captured Image Thumbnails
                 Expanded(
                   child: GridView.builder(
                     padding: EdgeInsets.all(16.r),
@@ -138,7 +131,6 @@ class CameraStagingScreen extends StatelessWidget {
                   ),
                 ),
 
-                // Bottom Dock Panel
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
                   decoration: BoxDecoration(
@@ -178,11 +170,11 @@ class CameraStagingScreen extends StatelessWidget {
               ],
             ),
 
-            // FIXED: SEAMLESS FULL-SCREEN OVERLAY (NO WHITE CORNERS!)
+            // SEAMLESS FULL-SCREEN DARK OVERLAY
             if (controller.isInspecting.value)
               Positioned.fill(
                 child: Container(
-                  color: const Color(0xFF0F172A).withValues(alpha: 0.88),
+                  color: const Color(0xFF0F172A).withValues(alpha: 0.92),
                   child: Center(
                     child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 28.w),
