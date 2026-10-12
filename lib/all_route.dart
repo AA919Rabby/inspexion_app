@@ -24,7 +24,7 @@ class AllRoute {
   static const String profile = '/profile';
 
   /// Smooth transition timing
-  static const Duration _transitionDuration = Duration(milliseconds: 100);
+  static const Duration _transitionDuration = Duration(milliseconds: 320);
   static const Curve _transitionCurve = Curves.easeInOutCubic;
 
   static final List<GetPage> routes = [
