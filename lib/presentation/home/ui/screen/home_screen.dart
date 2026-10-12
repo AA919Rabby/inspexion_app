@@ -216,94 +216,97 @@ class HomeScreen extends StatelessWidget {
                 automaticallyImplyLeading: false,
                 toolbarHeight: 96.h,
                 titleSpacing: 0,
-                pinned: true,
+                pinned: false,
                 floating: false,
+                snap: false,
                 title: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                   child: Row(
                     children: [
-                      Row(
-                        children: [
-                          Container(
-                            height: 68.r,
-                            width: 68.r,
-                            padding: EdgeInsets.all(2.5.r),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AllColor.whiteColor,
-                              border: Border.all(
-                                color: AllColor.yellowColor,
-                                width: 3.w,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.15),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 4),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 68.r,
+                              width: 68.r,
+                              padding: EdgeInsets.all(2.5.r),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AllColor.whiteColor,
+                                border: Border.all(
+                                  color: AllColor.yellowColor,
+                                  width: 3.w,
                                 ),
-                              ],
-                            ),
-                            child: ClipOval(
-                              child: Obx(() {
-                                final avatar = profileController.networkAvatarUrl.value.isNotEmpty
-                                    ? profileController.networkAvatarUrl.value
-                                    : (profileController.userProfile.value?.avatarUrl ?? '');
-
-                                if (avatar.isNotEmpty) {
-                                  return Image.network(
-                                    avatar,
-                                    key: ValueKey(avatar),
-                                    fit: BoxFit.cover,
-                                    width: 68.r,
-                                    height: 68.r,
-                                    errorBuilder: (_, _, _) => _buildInitialAvatar(profileController),
-                                  );
-                                }
-                                return _buildInitialAvatar(profileController);
-                              }),
-                            ),
-                          ),
-                          const Gap(14),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    CustomText(
-                                      text: "Welcome back,",
-                                      color: AllColor.whiteColor.withValues(alpha: 0.85),
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                    const Gap(6),
-                                    Container(
-                                      width: 7.r,
-                                      height: 7.r,
-                                      decoration: BoxDecoration(
-                                        color: AllColor.yellowColor,
-                                        shape: BoxShape.circle,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const Gap(2),
-                                Obx(
-                                      () => CustomText(
-                                    text: profileController.userProfile.value?.fullName.isNotEmpty == true
-                                        ? profileController.userProfile.value!.fullName
-                                        : "Unauthorized Inspector",
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    color: AllColor.whiteColor,
-                                    softWrap: true,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.15),
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 4),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
+                              child: ClipOval(
+                                child: Obx(() {
+                                  final avatar = profileController.networkAvatarUrl.value.isNotEmpty
+                                      ? profileController.networkAvatarUrl.value
+                                      : (profileController.userProfile.value?.avatarUrl ?? '');
+
+                                  if (avatar.isNotEmpty) {
+                                    return Image.network(
+                                      avatar,
+                                      key: ValueKey(avatar),
+                                      fit: BoxFit.cover,
+                                      width: 68.r,
+                                      height: 68.r,
+                                      errorBuilder: (_, _, _) => _buildInitialAvatar(profileController),
+                                    );
+                                  }
+                                  return _buildInitialAvatar(profileController);
+                                }),
+                              ),
                             ),
-                          ),
-                        ],
+                            const Gap(14),
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      CustomText(
+                                        text: "Welcome back ",
+                                        color: AllColor.whiteColor.withValues(alpha: 0.85),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      const Gap(6),
+                                      Container(
+                                        width: 7.r,
+                                        height: 7.r,
+                                        decoration: BoxDecoration(
+                                          color: AllColor.yellowColor,
+                                          shape: BoxShape.circle,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const Gap(2),
+                                  Obx(
+                                        () => CustomText(
+                                      text: profileController.userProfile.value?.fullName.isNotEmpty == true
+                                          ? profileController.userProfile.value!.fullName
+                                          : "Unauthorized Inspector",
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: AllColor.whiteColor,
+                                      softWrap: true,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

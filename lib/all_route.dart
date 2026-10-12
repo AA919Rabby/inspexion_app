@@ -1,3 +1,4 @@
+import 'package:flutter/animation.dart';
 import 'package:get/get.dart';
 import 'package:inspexion_ai/presentation/bottom_nav/ui/screen/bottom_nav_screen.dart';
 import 'package:inspexion_ai/presentation/history/ui/screen/camera_staging_screen.dart';
@@ -12,7 +13,6 @@ import 'all_binding.dart';
 
 
 class AllRoute {
-
   static const String intro = '/intro';
   static const String onboardingScreen = '/onboardingScreen';
   static const String bottomNavScreen = '/bottomNavScreen';
@@ -23,53 +23,97 @@ class AllRoute {
   static const String support = '/support';
   static const String profile = '/profile';
 
+  /// Smooth transition timing
+  static const Duration _transitionDuration = Duration(milliseconds: 100);
+  static const Curve _transitionCurve = Curves.easeInOutCubic;
 
   static final List<GetPage> routes = [
+
     GetPage(
       name: intro,
-      page: () => IntroScreen(),
+      page: () => const IntroScreen(),
       binding: AllBinding(),
-    ),
-    GetPage(
-      name: onboardingScreen,
-      page: () => OnboardingScreen(),
-      binding: AllBinding(),
-    ),
-    GetPage(
-      name: bottomNavScreen,
-      page: () => BottomNavScreen(),
-      binding: AllBinding(),
-    ),
-    GetPage(
-      name: historyScreen,
-      page: () => HistoryScreen(),
-      binding: AllBinding(),
-    ),
-    GetPage(
-      name: inspectionResultScreen,
-      page: () => InspectionResultScreen(),
-      binding: AllBinding(),
-    ),
-    GetPage(
-      name: cameraStagingScreen,
-      page: () => CameraStagingScreen(),
-      binding: AllBinding(),
-    ),
-    GetPage(
-      name: aboutUs,
-      page: () => AboutUs(),
-      binding: AllBinding(),
-    ),
-    GetPage(
-      name: support,
-      page: () =>Support(),
-      binding: AllBinding(),
-    ),
-    GetPage(
-      name: profile,
-      page: () =>ProfileScreen(),
-      binding: AllBinding(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 400),
+      curve: Curves.easeIn,
     ),
 
+    GetPage(
+      name: onboardingScreen,
+      page: () => const OnboardingScreen(),
+      binding: AllBinding(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 350),
+      curve: Curves.easeInOut,
+    ),
+
+    GetPage(
+      name: bottomNavScreen,
+      page: () => const BottomNavScreen(),
+      binding: AllBinding(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    ),
+
+    GetPage(
+      name: historyScreen,
+      page: () => const HistoryScreen(),
+      binding: AllBinding(),
+      transition: Transition.rightToLeftWithFade,
+      transitionDuration: _transitionDuration,
+      curve: _transitionCurve,
+      popGesture: true,
+    ),
+
+    GetPage(
+      name: inspectionResultScreen,
+      page: () => const InspectionResultScreen(),
+      binding: AllBinding(),
+      transition: Transition.rightToLeftWithFade,
+      transitionDuration: _transitionDuration,
+      curve: _transitionCurve,
+      popGesture: true,
+    ),
+
+    GetPage(
+      name: cameraStagingScreen,
+      page: () => const CameraStagingScreen(),
+      binding: AllBinding(),
+      transition: Transition.rightToLeftWithFade,
+      transitionDuration: _transitionDuration,
+      curve: _transitionCurve,
+      popGesture: true,
+    ),
+
+    GetPage(
+      name: aboutUs,
+      page: () => const AboutUs(),
+      binding: AllBinding(),
+      transition: Transition.rightToLeftWithFade,
+      transitionDuration: _transitionDuration,
+      curve: _transitionCurve,
+      popGesture: true,
+    ),
+
+    GetPage(
+      name: support,
+      page: () => const Support(),
+      binding: AllBinding(),
+      transition: Transition.rightToLeftWithFade,
+      transitionDuration: _transitionDuration,
+      curve: _transitionCurve,
+      popGesture: true,
+    ),
+
+    GetPage(
+      name: profile,
+      page: () => const ProfileScreen(),
+      binding: AllBinding(),
+      transition: Transition.rightToLeftWithFade,
+      transitionDuration: _transitionDuration,
+      curve: _transitionCurve,
+      popGesture: true,
+    ),
   ];
 }
