@@ -44,6 +44,7 @@ class CameraStagingScreen extends StatelessWidget {
       ),
       body: Obx(
             () => Stack(
+          fit: StackFit.expand,
           children: [
             Column(
               children: [
@@ -112,8 +113,6 @@ class CameraStagingScreen extends StatelessWidget {
                                 File(image.path),
                                 fit: BoxFit.cover,
                               ),
-
-                              // Image Number Badge
                               Positioned(
                                 top: 10.h,
                                 left: 10.w,
@@ -139,7 +138,7 @@ class CameraStagingScreen extends StatelessWidget {
                   ),
                 ),
 
-                // Bottom Commercial Dock Panel
+                // Bottom Dock Panel
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
                   decoration: BoxDecoration(
@@ -179,65 +178,65 @@ class CameraStagingScreen extends StatelessWidget {
               ],
             ),
 
-            // Live WebSocket Progress Glassmorphism Overlay
+            // FIXED: SEAMLESS FULL-SCREEN OVERLAY (NO WHITE CORNERS!)
             if (controller.isInspecting.value)
-              Container(
-                width: double.infinity,
-                height: double.infinity,
-                color: Colors.black.withValues(alpha: 0.78),
-                child: Center(
-                  child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 28.w),
-                    padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 28.h),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF1E293B),
-                      borderRadius: BorderRadius.circular(24.r),
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.12),
-                        width: 1.5.w,
+              Positioned.fill(
+                child: Container(
+                  color: const Color(0xFF0F172A).withValues(alpha: 0.88),
+                  child: Center(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 28.w),
+                      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 28.h),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1E293B),
+                        borderRadius: BorderRadius.circular(24.r),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.15),
+                          width: 1.5.w,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.5),
+                            blurRadius: 24,
+                            offset: const Offset(0, 10),
+                          ),
+                        ],
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.4),
-                          blurRadius: 20,
-                          offset: const Offset(0, 8),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 5.h),
-                          decoration: BoxDecoration(
-                            color: AllColor.blueColor.withValues(alpha: 0.2),
-                            borderRadius: BorderRadius.circular(20.r),
-                            border: Border.all(color: AllColor.blueColor.withValues(alpha: 0.4)),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 5.h),
+                            decoration: BoxDecoration(
+                              color: AllColor.blueColor.withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(20.r),
+                              border: Border.all(color: AllColor.blueColor.withValues(alpha: 0.4)),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(width: 8.r, height: 8.r, decoration: BoxDecoration(color: AllColor.yellowColor, shape: BoxShape.circle)),
+                                const Gap(6),
+                                CustomText(text: "AI CLASSIFIER LIVE", fontSize: 11, fontWeight: FontWeight.bold, color: AllColor.whiteColor),
+                              ],
+                            ),
                           ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(width: 8.r, height: 8.r, decoration: BoxDecoration(color: AllColor.yellowColor, shape: BoxShape.circle)),
-                              const Gap(6),
-                              CustomText(text: "AI CLASSIFIER LIVE", fontSize: 11, fontWeight: FontWeight.bold, color: AllColor.whiteColor),
-                            ],
+                          const Gap(22),
+                          const CircularProgressIndicator(),
+                          const Gap(20),
+                          Obx(
+                                () => CustomText(
+                              text: controller.liveStatusMessage.value.isNotEmpty
+                                  ? controller.liveStatusMessage.value
+                                  : "Analyzing photo stream with AI...",
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: AllColor.whiteColor,
+                              textAlign: TextAlign.center,
+                            ),
                           ),
-                        ),
-                        const Gap(22),
-                        const CircularProgressIndicator(),
-                        const Gap(20),
-                        Obx(
-                              () => CustomText(
-                            text: controller.liveStatusMessage.value.isNotEmpty
-                                ? controller.liveStatusMessage.value
-                                : "Analyzing photo stream with AI...",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: AllColor.whiteColor,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),

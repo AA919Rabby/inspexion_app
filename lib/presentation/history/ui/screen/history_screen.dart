@@ -13,7 +13,14 @@ class HistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(HistoryController());
+    final controller = Get.isRegistered<HistoryController>()
+        ? Get.find<HistoryController>()
+        : Get.put(HistoryController());
+
+    // AUTO-REFRESH ON ENTRY: Ensures latest report always appears without manual pull-to-refresh
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.fetchHistory();
+    });
 
     return Scaffold(
       backgroundColor: AllColor.greyColor300,
@@ -41,7 +48,6 @@ class HistoryScreen extends StatelessWidget {
         ),
       ),
       body: Obx(() {
-        // Shimmer placeholder cards while loading
         if (controller.isLoading.value) {
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
@@ -57,7 +63,6 @@ class HistoryScreen extends StatelessWidget {
           );
         }
 
-        // Commercial Empty State
         if (controller.reports.isEmpty) {
           return Center(
             child: Padding(
@@ -100,7 +105,6 @@ class HistoryScreen extends StatelessWidget {
           );
         }
 
-        // Populated Report History List
         return RefreshIndicator(
           color: AllColor.blueColor,
           backgroundColor: AllColor.whiteColor,

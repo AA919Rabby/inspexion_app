@@ -143,8 +143,8 @@ class ProfileScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20.r),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.04),
-                              blurRadius: 10,
+                              color: Colors.black.withValues(alpha: 0.03),
+                              blurRadius: 7,
                               offset: const Offset(0, 3),
                             ),
                           ],

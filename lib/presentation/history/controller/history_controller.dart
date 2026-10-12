@@ -13,7 +13,7 @@ import 'package:inspexion_ai/core/services/auth_services.dart';
 import 'package:inspexion_ai/global/custom_snackbar.dart';
 import 'package:inspexion_ai/presentation/history/data/history_model.dart';
 import 'package:inspexion_ai/presentation/history/data/inspection_result_model.dart';
-import 'package:inspexion_ai/presentation/home/controller/home_controller.dart'; // IMPORT HOME CONTROLLER
+import 'package:inspexion_ai/presentation/home/controller/home_controller.dart';
 
 class HistoryController extends GetxController {
   final Dio _dio = Dio(BaseOptions(
@@ -52,6 +52,7 @@ class HistoryController extends GetxController {
     _wsChannel = null;
   }
 
+  // 1. Fetch History
   Future<void> fetchHistory() async {
     isLoading.value = true;
     try {
@@ -80,6 +81,7 @@ class HistoryController extends GetxController {
     }
   }
 
+  // 2. Initial Picker
   Future<void> pickAndInspectImages(ImageSource source) async {
     try {
       if (source == ImageSource.gallery) {
@@ -89,6 +91,8 @@ class HistoryController extends GetxController {
           maxHeight: 640,
         );
         if (galleryPhotos.isNotEmpty) {
+          stagedImages.clear();
+          stagedImages.addAll(galleryPhotos);
           await _runInspectionPipeline(galleryPhotos);
         }
       } else {
@@ -112,6 +116,7 @@ class HistoryController extends GetxController {
     }
   }
 
+  // 3. Add more photos from camera
   Future<void> addMoreFromCamera() async {
     try {
       final XFile? photo = await _picker.pickImage(
@@ -128,12 +133,13 @@ class HistoryController extends GetxController {
     }
   }
 
+  // 4. Trigger Analysis from Staging Screen
   Future<void> analyzeStagedImages() async {
     if (stagedImages.isEmpty) return;
     await _runInspectionPipeline(stagedImages.toList());
-    stagedImages.clear();
   }
 
+  // 5. The Core Pipeline
   Future<void> _runInspectionPipeline(List<XFile> files) async {
     final token = AuthServices.getAccessToken();
     if (token == null) {
@@ -193,10 +199,8 @@ class HistoryController extends GetxController {
         Get.toNamed(AllRoute.inspectionResultScreen);
       }
 
-      // 1. Refresh History List
+      // Auto-refresh history and dashboard immediately
       await fetchHistory();
-
-      // 2. LIVE UPDATE HOME SCREEN STATS AUTOMATICALLY!
       if (Get.isRegistered<HomeController>()) {
         Get.find<HomeController>().fetchDashboardStats();
       }
@@ -217,6 +221,7 @@ class HistoryController extends GetxController {
     }
   }
 
+  // 6. Generate & Open PDF (Auto-Refreshes History)
   Future<void> generateAndOpenCurrentReport() async {
     final model = currentInspection.value;
     final token = AuthServices.getAccessToken();
@@ -230,6 +235,10 @@ class HistoryController extends GetxController {
       );
 
       final int reportId = response.data['id'];
+
+      // AUTO-UPDATE HISTORY IMMEDIATELY
+      await fetchHistory();
+
       await downloadAndOpenReport(reportId, 'Inspection_Report_${model.sessionId}');
     } on DioException catch (e) {
       _showErrorSnackbar(e);
@@ -240,6 +249,7 @@ class HistoryController extends GetxController {
     }
   }
 
+  // 7. Download PDF
   Future<void> downloadAndOpenReport(int reportId, String reportTitle) async {
     try {
       final token = AuthServices.getAccessToken();

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_gap/flutter_gap.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
@@ -145,22 +146,22 @@ class InspectionResultScreen extends StatelessWidget {
                         const Gap(8),
                         Expanded(
                           child: _buildMetricBox(
-                            label: 'Minor',
+                            label: 'Safe / Intact',
                             value: '${data.minorDefects}',
-                            color: AllColor.yellowColor,
-                            icon: Icons.info_outline_rounded,
+                            color: Colors.green.shade600,
+                            icon: Icons.check_circle_outline_rounded,
                           ),
                         ),
                       ],
                     ),
                     const Gap(24),
 
-                    // Defect List Header
+                    // Header
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CustomText(
-                          text: 'AI Identification Log',
+                          text: 'Side-by-Side Image Breakdown',
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: AllColor.blackColor,
@@ -175,19 +176,22 @@ class InspectionResultScreen extends StatelessWidget {
                     ),
                     const Gap(12),
 
-                    // Defect List Items
+                    // SIDE-BY-SIDE ITEMS: PHOTO THUMBNAIL ON LEFT, ISSUE ON RIGHT
                     ListView.separated(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: data.results.length,
-                      separatorBuilder: (_, _) => const Gap(10),
+                      separatorBuilder: (_, _) => const Gap(12),
                       itemBuilder: (context, index) {
                         final item = data.results[index];
                         final double confPercent = item.confidence * 100;
                         final String displayCategory = item.category.replaceAll('_', ' ').toUpperCase();
 
+                        // Get thumbnail from staged images or fallback
+                        final bool hasLocalThumb = index < controller.stagedImages.length;
+
                         return Container(
-                          padding: EdgeInsets.all(14.r),
+                          padding: EdgeInsets.all(12.r),
                           decoration: BoxDecoration(
                             color: AllColor.whiteColor,
                             borderRadius: BorderRadius.circular(16.r),
@@ -200,52 +204,96 @@ class InspectionResultScreen extends StatelessWidget {
                             ],
                           ),
                           child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                padding: EdgeInsets.all(10.r),
-                                decoration: BoxDecoration(
-                                  color: (item.isCritical ? AllColor.redColor : AllColor.blueColor).withValues(alpha: 0.12),
-                                  borderRadius: BorderRadius.circular(12.r),
-                                ),
-                                child: Icon(
-                                  item.isCritical ? Icons.error_rounded : Icons.check_circle_rounded,
-                                  color: item.isCritical ? AllColor.redColor : AllColor.blueColor,
-                                  size: 22.r,
-                                ),
+                              // Left: Photo Thumbnail with #Index Tag
+                              Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(12.r),
+                                    child: SizedBox(
+                                      width: 90.w,
+                                      height: 90.h,
+                                      child: hasLocalThumb
+                                          ? Image.file(
+                                        File(controller.stagedImages[index].path),
+                                        fit: BoxFit.cover,
+                                      )
+                                          : Container(
+                                        color: Colors.grey.shade200,
+                                        child: Icon(Icons.image, color: Colors.grey.shade400),
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 4.h,
+                                    left: 4.w,
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                                      decoration: BoxDecoration(
+                                        color: Colors.black.withValues(alpha: 0.65),
+                                        borderRadius: BorderRadius.circular(6.r),
+                                      ),
+                                      child: CustomText(
+                                        text: "#${index + 1}",
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold,
+                                        color: AllColor.whiteColor,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                               const Gap(14),
+
+                              // Right: Issue Information & Status
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    CustomText(
-                                      text: displayCategory,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: AllColor.blackColor,
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: CustomText(
+                                            text: displayCategory,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                            color: AllColor.blackColor,
+                                          ),
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
+                                          decoration: BoxDecoration(
+                                            color: (item.isCritical ? AllColor.redColor : Colors.green).withValues(alpha: 0.1),
+                                            borderRadius: BorderRadius.circular(8.r),
+                                          ),
+                                          child: CustomText(
+                                            text: item.isCritical ? "CRITICAL" : "SAFE",
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold,
+                                            color: item.isCritical ? AllColor.redColor : Colors.green.shade700,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    const Gap(2),
+                                    const Gap(4),
                                     CustomText(
-                                      text: item.filename,
+                                      text: "Confidence: ${confPercent.toStringAsFixed(0)}%",
                                       fontSize: 11,
-                                      color: Colors.grey.shade500,
+                                      fontWeight: FontWeight.w500,
+                                      color: AllColor.blueColor,
+                                    ),
+                                    const Gap(4),
+                                    CustomText(
+                                      text: item.isCritical
+                                          ? "Hazard flagged: requires physical verification."
+                                          : "Component intact. Verified no defects present.",
+                                      fontSize: 11,
+                                      color: Colors.grey.shade600,
+                                      maxLines: 2,
                                     ),
                                   ],
-                                ),
-                              ),
-
-                              // Confidence Pill Badge
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
-                                decoration: BoxDecoration(
-                                  color: AllColor.blueColor.withValues(alpha: 0.1),
-                                  borderRadius: BorderRadius.circular(10.r),
-                                ),
-                                child: CustomText(
-                                  text: "${confPercent.toStringAsFixed(0)}% Conf.",
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold,
-                                  color: AllColor.blueColor,
                                 ),
                               ),
                             ],
@@ -255,7 +303,7 @@ class InspectionResultScreen extends StatelessWidget {
                     ),
                     const Gap(28),
 
-                    // Primary Action Button
+                    // Action Button
                     CustomButton(
                       text: 'Generate Official PDF Report',
                       backgroundColor: AllColor.blueColor,
@@ -267,7 +315,7 @@ class InspectionResultScreen extends StatelessWidget {
                 ),
               ),
 
-            // Loading Overlay with Plain CircularProgressIndicator
+            // Loading Overlay
             if (controller.isGeneratingPdf.value)
               Container(
                 width: double.infinity,
@@ -310,7 +358,7 @@ class InspectionResultScreen extends StatelessWidget {
             text: value,
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: color == AllColor.yellowColor ? Colors.amber.shade900 : color,
+            color: color,
           ),
           const Gap(2),
           CustomText(
