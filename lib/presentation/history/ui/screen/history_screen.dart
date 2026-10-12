@@ -110,7 +110,7 @@ class HistoryScreen extends StatelessWidget {
           child: ListView.separated(
             padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             itemCount: controller.reports.length,
-            separatorBuilder: (_, __) => const Gap(12),
+            separatorBuilder: (_, _) => const Gap(12),
             itemBuilder: (context, index) {
               final report = controller.reports[index];
               final String displayTitle = report.reportTitle.replaceAll('_', ' ');
