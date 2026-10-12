@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gap/flutter_gap.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:get/get.dart';
+import 'package:inspexion_ai/all_route.dart';
 import 'package:inspexion_ai/core/theme/all_color.dart';
 import 'package:inspexion_ai/global/custom_button.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
@@ -18,10 +19,7 @@ class InspectionResultScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AllColor.greyColor300,
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Get.back(),
-          icon: Icon(Icons.arrow_back_ios_new, color: AllColor.whiteColor, size: 20.r),
-        ),
+        automaticallyImplyLeading: false,
         backgroundColor: AllColor.blueColor,
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -301,6 +299,16 @@ class InspectionResultScreen extends StatelessWidget {
                       backgroundColor: AllColor.blueColor,
                       textColor: AllColor.whiteColor,
                       onPressed: controller.generateAndOpenCurrentReport,
+                    ),
+                    const Gap(20),
+                    CustomButton(
+                      text: 'Back to Home',
+                      backgroundColor: AllColor.whiteColor,
+                      textColor: AllColor.blackColor,
+                      isOutlined: true,
+                      onPressed: (){
+                        Get.offAllNamed(AllRoute.bottomNavScreen);
+                      },
                     ),
                     const Gap(20),
                   ],
