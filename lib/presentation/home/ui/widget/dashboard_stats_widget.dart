@@ -38,14 +38,47 @@ class DashboardStatsWidget extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 1. Metric Cards Grid
+          // Section Title
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              CustomText(
+                text: "Overview Analytics",
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: AllColor.blackColor,
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+                decoration: BoxDecoration(
+                  color: AllColor.blueColor.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.bolt_rounded, size: 14.r, color: AllColor.blueColor),
+                    const Gap(3),
+                    CustomText(
+                      text: "Live Sync",
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: AllColor.blueColor,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const Gap(14),
+
+          // 1. Metric Cards Grid (Marketplace Standard Design)
           Row(
             children: [
               Expanded(
                 child: _buildMetricCard(
-                  title: "Total Inspections",
+                  title: "Total Audits",
                   value: data.totalInspections.toString(),
-                  icon: Icons.assignment_outlined,
+                  icon: Icons.inventory_2_outlined,
                   accentColor: AllColor.blueColor,
                 ),
               ),
@@ -54,7 +87,7 @@ class DashboardStatsWidget extends StatelessWidget {
                 child: _buildMetricCard(
                   title: "Analyzed Images",
                   value: data.totalImagesAnalyzed.toString(),
-                  icon: Icons.image_search_outlined,
+                  icon: Icons.camera_alt_outlined,
                   accentColor: const Color(0xFF00B4D8),
                 ),
               ),
@@ -65,16 +98,16 @@ class DashboardStatsWidget extends StatelessWidget {
             children: [
               Expanded(
                 child: _buildMetricCard(
-                  title: "Critical Defects",
+                  title: "Critical Hazards",
                   value: data.criticalDefects.toString(),
                   icon: Icons.warning_amber_rounded,
-                  accentColor: Colors.redAccent,
+                  accentColor: AllColor.redColor,
                 ),
               ),
               const Gap(12),
               Expanded(
                 child: _buildMetricCard(
-                  title: "Minor Defects",
+                  title: "Minor Issues",
                   value: data.minorDefects.toString(),
                   icon: Icons.info_outline_rounded,
                   accentColor: AllColor.yellowColor,
@@ -82,20 +115,35 @@ class DashboardStatsWidget extends StatelessWidget {
               ),
             ],
           ),
-          const Gap(24),
+          const Gap(28),
 
-          // 2. Timeline Trend Chart
-          CustomText(
-            text: "Inspection Timeline Trend",
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
+          // 2. Timeline Trend Section Header
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              CustomText(
+                text: "Inspection Timeline Trend",
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: AllColor.blackColor,
+              ),
+              Icon(
+                Icons.trending_up_rounded,
+                color: AllColor.blueColor,
+                size: 22.r,
+              ),
+            ],
           ),
           const Gap(12),
+
+          // Line Chart Card
           Card(
-            elevation: 3,
+            elevation: 2,
+            shadowColor: Colors.black.withValues(alpha: 0.08),
             color: AllColor.whiteColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.r),
+              side: BorderSide(color: Colors.white, width: 1.5.w),
             ),
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 18.h),
@@ -108,14 +156,14 @@ class DashboardStatsWidget extends StatelessWidget {
                     lineTouchData: LineTouchData(
                       touchTooltipData: LineTouchTooltipData(
                         getTooltipColor: (touchedSpot) => AllColor.blackColor,
-                        tooltipPadding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                        tooltipPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                         getTooltipItems: (List<LineBarSpot> touchedSpots) {
                           return touchedSpots.map((spot) {
                             return LineTooltipItem(
-                              "${spot.y.toInt()} Defects",
+                              "${spot.y.toInt()} Defects Found",
                               TextStyle(
                                 color: AllColor.whiteColor,
-                                fontSize: 13.sp,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.bold,
                               ),
                             );
@@ -126,7 +174,7 @@ class DashboardStatsWidget extends StatelessWidget {
                         return spotIndexes.map((index) {
                           return TouchedSpotIndicatorData(
                             FlLine(
-                              color: AllColor.blackColor.withValues(alpha: 0.3),
+                              color: AllColor.blueColor.withValues(alpha: 0.4),
                               strokeWidth: 2,
                               dashArray: [4, 4],
                             ),
@@ -137,7 +185,7 @@ class DashboardStatsWidget extends StatelessWidget {
                                     radius: 6,
                                     color: AllColor.whiteColor,
                                     strokeWidth: 3,
-                                    strokeColor: AllColor.blackColor,
+                                    strokeColor: AllColor.blueColor,
                                   ),
                             ),
                           );
@@ -150,7 +198,7 @@ class DashboardStatsWidget extends StatelessWidget {
                       drawVerticalLine: false,
                       horizontalInterval: yInterval,
                       getDrawingHorizontalLine: (value) => FlLine(
-                        color: Colors.grey.withValues(alpha: 0.15),
+                        color: Colors.grey.withValues(alpha: 0.12),
                         strokeWidth: 1,
                       ),
                     ),
@@ -158,7 +206,6 @@ class DashboardStatsWidget extends StatelessWidget {
                     titlesData: FlTitlesData(
                       rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                       topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                      // FIX: Using SideTitleWidget ensures the text is properly aligned and never invisible
                       leftTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
@@ -170,8 +217,8 @@ class DashboardStatsWidget extends StatelessWidget {
                               child: Text(
                                 value.toInt().toString(),
                                 style: TextStyle(
-                                  color: AllColor.blackColor,
-                                  fontSize: 12.sp,
+                                  color: Colors.grey.shade600,
+                                  fontSize: 11.sp,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -179,7 +226,6 @@ class DashboardStatsWidget extends StatelessWidget {
                           },
                         ),
                       ),
-                      // FIX: Using SideTitleWidget for clean X-axis text
                       bottomTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
@@ -193,7 +239,7 @@ class DashboardStatsWidget extends StatelessWidget {
                               child: Text(
                                 value.toInt().toString(),
                                 style: TextStyle(
-                                  color: AllColor.blackColor,
+                                  color: Colors.grey.shade600,
                                   fontSize: 11.sp,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -212,12 +258,20 @@ class DashboardStatsWidget extends StatelessWidget {
                               (index) => FlSpot(index.toDouble(), data.timelineTrend[index]),
                         ),
                         isCurved: true,
+                        curveSmoothness: 0.35,
                         color: AllColor.blueColor,
                         barWidth: 3.5,
                         isStrokeCapRound: true,
                         belowBarData: BarAreaData(
                           show: true,
-                          color: AllColor.blueColor.withValues(alpha: 0.12),
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              AllColor.blueColor.withValues(alpha: 0.28),
+                              AllColor.blueColor.withValues(alpha: 0.0),
+                            ],
+                          ),
                         ),
                         dotData: FlDotData(
                           show: true,
@@ -236,37 +290,50 @@ class DashboardStatsWidget extends StatelessWidget {
               ),
             ),
           ),
-          const Gap(24),
+          const Gap(28),
 
-          // 3. Category Breakdown (Clean names without underscores)
-          CustomText(
-            text: "Categories Breakdown",
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
+          // 3. Category Breakdown Section
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              CustomText(
+                text: "Categories Breakdown",
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: AllColor.blackColor,
+              ),
+              Icon(
+                Icons.pie_chart_outline_rounded,
+                color: AllColor.blueColor,
+                size: 22.r,
+              ),
+            ],
           ),
           const Gap(12),
           Card(
-            elevation: 3,
+            elevation: 2,
+            shadowColor: Colors.black.withValues(alpha: 0.08),
             color: AllColor.whiteColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.r),
+              side: BorderSide(color: Colors.white, width: 1.5.w),
             ),
             child: Padding(
-              padding: EdgeInsets.all(16.r),
+              padding: EdgeInsets.all(18.r),
               child: Row(
                 children: [
                   SizedBox(
-                    width: 130.w,
-                    height: 130.h,
+                    width: 125.w,
+                    height: 125.h,
                     child: PieChart(
                       PieChartData(
-                        sectionsSpace: 4,
+                        sectionsSpace: 3,
                         centerSpaceRadius: 28.r,
                         sections: _buildPieSections(data.categoriesBreakdown),
                       ),
                     ),
                   ),
-                  const Gap(20),
+                  const Gap(18),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -277,7 +344,6 @@ class DashboardStatsWidget extends StatelessWidget {
               ),
             ),
           ),
-          const Gap(20),
         ],
       );
     });
@@ -290,13 +356,15 @@ class DashboardStatsWidget extends StatelessWidget {
     required Color accentColor,
   }) {
     return Card(
-      elevation: 3,
+      elevation: 2,
+      shadowColor: Colors.black.withValues(alpha: 0.06),
       color: AllColor.whiteColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.r),
+        side: BorderSide(color: Colors.white, width: 1.5.w),
       ),
       child: Padding(
-        padding: EdgeInsets.all(14.r),
+        padding: EdgeInsets.all(16.r),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -304,12 +372,12 @@ class DashboardStatsWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: EdgeInsets.all(8.r),
+                  padding: EdgeInsets.all(9.r),
                   decoration: BoxDecoration(
                     color: accentColor.withValues(alpha: 0.12),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(icon, color: accentColor, size: 22.r),
+                  child: Icon(icon, color: accentColor, size: 20.r),
                 ),
                 Container(
                   width: 8.r,
@@ -321,14 +389,14 @@ class DashboardStatsWidget extends StatelessWidget {
                 ),
               ],
             ),
-            const Gap(12),
+            const Gap(14),
             CustomText(
               text: value,
               color: AllColor.blackColor,
-              fontSize: 22,
+              fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
-            const Gap(4),
+            const Gap(3),
             CustomText(
               text: title,
               color: Colors.grey.shade600,
@@ -345,7 +413,7 @@ class DashboardStatsWidget extends StatelessWidget {
     final colors = [
       AllColor.blueColor,
       AllColor.yellowColor,
-      Colors.redAccent,
+      AllColor.redColor,
       const Color(0xFF00B4D8),
       Colors.teal,
     ];
@@ -366,7 +434,7 @@ class DashboardStatsWidget extends StatelessWidget {
     final colors = [
       AllColor.blueColor,
       AllColor.yellowColor,
-      Colors.redAccent,
+      AllColor.redColor,
       const Color(0xFF00B4D8),
       Colors.teal,
     ];
@@ -378,32 +446,39 @@ class DashboardStatsWidget extends StatelessWidget {
       final cleanLabel = _formatCategory(entry.key);
 
       return Padding(
-        padding: EdgeInsets.only(bottom: 8.h),
+        padding: EdgeInsets.only(bottom: 10.h),
         child: Row(
           children: [
             Container(
-              width: 12.r,
-              height: 12.r,
+              width: 10.r,
+              height: 10.r,
               decoration: BoxDecoration(
                 color: color,
-                borderRadius: BorderRadius.circular(3.r),
+                shape: BoxShape.circle,
               ),
             ),
             const Gap(8),
             Expanded(
               child: CustomText(
                 text: cleanLabel,
-                color: AllColor.blackColor,
+                color: Colors.grey.shade800,
                 fontSize: 13,
                 fontWeight: FontWeight.w500,
                 softWrap: true,
               ),
             ),
-            CustomText(
-              text: entry.value.toInt().toString(),
-              color: AllColor.blackColor,
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: CustomText(
+                text: entry.value.toInt().toString(),
+                color: color == AllColor.yellowColor ? Colors.amber.shade900 : color,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),

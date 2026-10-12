@@ -14,228 +14,214 @@ class AboutUs extends StatelessWidget {
       backgroundColor: AllColor.greyColor300,
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: Icon(
-            Icons.arrow_back_ios_new,
-            color: AllColor.whiteColor,
-          ),
+          onPressed: () => Get.back(),
+          icon: Icon(Icons.arrow_back_ios_new, color: AllColor.whiteColor, size: 20.r),
         ),
         backgroundColor: AllColor.blueColor,
         elevation: 0,
         scrolledUnderElevation: 0,
+        centerTitle: true,
+        toolbarHeight: 70.h,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(24.r),
+            bottomRight: Radius.circular(24.r),
+          ),
+        ),
         title: CustomText(
-          text: 'About Us',
-          fontSize: 23,
+          text: 'About InspeXion AI',
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
           color: AllColor.whiteColor,
         ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Padding(
-            padding: EdgeInsets.all(20.r),
+            padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 20.h),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // App Logo and Header
+                // App Logo and Header Badge
                 Center(
                   child: Column(
                     children: [
-                      Image.asset("asset/image/logo.png",height: 100.h,width: 100.w,),
-                      const Gap(5),
+                      Container(
+                        padding: EdgeInsets.all(12.r),
+                        decoration: BoxDecoration(
+                          color: AllColor.whiteColor,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.06),
+                              blurRadius: 12,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Image.asset("asset/image/logo.png", height: 80.h, width: 80.w),
+                      ),
+                      const Gap(14),
                       CustomText(
-                        text: 'Inspexion AI',
-                        fontSize: 28,
+                        text: 'InspeXion AI',
+                        fontSize: 26,
                         fontWeight: FontWeight.bold,
                         color: AllColor.blackColor,
                       ),
                       const Gap(4),
-                      CustomText(
-                        text: 'Version 1.0.0',
-                        fontSize: 14,
-                        color: AllColor.greyColor400,
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+                        decoration: BoxDecoration(
+                          color: AllColor.blueColor.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        child: CustomText(
+                          text: 'Version 1.0.0 • Enterprise Edition',
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: AllColor.blueColor,
+                        ),
                       ),
                     ],
                   ),
                 ),
-                const Gap(32),
+                const Gap(28),
 
-                // About Description
-                Card(
-                  color: AllColor.whiteColor,
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.r),
+                // About Description Card
+                Container(
+                  padding: EdgeInsets.all(18.r),
+                  decoration: BoxDecoration(
+                    color: AllColor.whiteColor,
+                    borderRadius: BorderRadius.circular(18.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.04),
+                        blurRadius: 10,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.all(16.r),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomText(
-                          text: 'About Inspexion AI',
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: AllColor.blackColor,
-                        ),
-                        const Gap(12),
-                        CustomText(
-                          text:
-                              'Inspexion AI is an intelligent inspection and analysis platform powered by artificial intelligence. Our mission is to make inspection processes faster, smarter, and more accurate.',
-                          fontSize: 14,
-                          color: AllColor.blackColor,
-                          maxLines: 10,
-                        ),
-                      ],
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                        text: 'Our Mission',
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: AllColor.blackColor,
+                      ),
+                      const Gap(8),
+                      CustomText(
+                        text:
+                        'InspeXion AI is an intelligent visual inspection and physical asset analysis platform powered by next-generation computer vision. We empower field engineers and adjusters to identify defects faster, smarter, and with verified precision.',
+                        fontSize: 13,
+                        color: Colors.grey.shade700,
+                        maxLines: 10,
+                      ),
+                    ],
                   ),
                 ),
-                const Gap(20),
+                const Gap(24),
 
-                // Key Features
+                // Key Features Header
                 CustomText(
-                  text: 'Key Features',
-                  fontSize: 18,
+                  text: 'Key Platform Capabilities',
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: AllColor.blackColor,
                 ),
                 const Gap(12),
                 _buildFeatureItem(
-                  icon: Icons.camera_alt,
-                  title: 'AI-Powered Analysis',
-                  description: 'Advanced computer vision for accurate inspections',
+                  icon: Icons.camera_enhance_rounded,
+                  title: 'AI Computer Vision',
+                  description: 'Automated defect detection and severity risk classification',
                 ),
-                const Gap(12),
+                const Gap(10),
                 _buildFeatureItem(
-                  icon: Icons.assessment,
-                  title: 'Instant Reports',
-                  description:
-                      'Generate comprehensive PDF reports in seconds',
+                  icon: Icons.picture_as_pdf_rounded,
+                  title: 'Instant PDF Generation',
+                  description: 'Generate comprehensive audit reports and download in seconds',
                 ),
-                const Gap(12),
+                const Gap(10),
                 _buildFeatureItem(
-                  icon: Icons.history,
-                  title: 'Inspection History',
-                  description:
-                      'Keep track of all your inspections in one place',
+                  icon: Icons.history_rounded,
+                  title: 'Cloud Audit Logs',
+                  description: 'Persistent inspection history with real-time analytics',
                 ),
-                const Gap(12),
+                const Gap(10),
                 _buildFeatureItem(
-                  icon: Icons.security,
-                  title: 'Secure & Private',
-                  description:
-                      'Your data is encrypted and protected with industry standards',
+                  icon: Icons.shield_rounded,
+                  title: 'Enterprise Security',
+                  description: 'Biometric authorization with SSL/TLS encrypted cloud storage',
                 ),
-                Gap(32.h),
+                const Gap(28),
 
-                // Company Info
-                Card(
-                  color: AllColor.whiteColor,
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.r),
+                // Company Info Card
+                Container(
+                  padding: EdgeInsets.all(18.r),
+                  decoration: BoxDecoration(
+                    color: AllColor.whiteColor,
+                    borderRadius: BorderRadius.circular(18.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.04),
+                        blurRadius: 10,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.all(16.r),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomText(
-                          text: 'Company',
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: AllColor.blackColor,
-                        ),
-                        const Gap(12),
-                        _buildInfoRow(
-                          icon: Icons.business,
-                          label: 'Company Name',
-                          value: 'Inspexion Technologies',
-                        ),
-                        const Gap(12),
-                        _buildInfoRow(
-                          icon: Icons.email,
-                          label: 'Email',
-                          value: 'support@inspexion.ai',
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const Gap(20),
-
-                // Follow Us
-                // Card(
-                //   color: AllColor.whiteColor,
-                //   elevation: 2,
-                //   shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(12.r),
-                //   ),
-                //   child: Padding(
-                //     padding: EdgeInsets.all(16.r),
-                //     child: Column(
-                //       crossAxisAlignment: CrossAxisAlignment.start,
-                //       children: [
-                //         CustomText(
-                //           text: 'Follow Us',
-                //           fontSize: 16,
-                //           fontWeight: FontWeight.bold,
-                //           color: AllColor.blackColor,
-                //         ),
-                //         const Gap(12),
-                //         Row(
-                //           mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //           children: [
-                //             _buildSocialButton(
-                //               icon: Icons.facebook,
-                //               label: 'Facebook',
-                //             ),
-                //             _buildSocialButton(
-                //               icon: Icons.language,
-                //               label: 'Twitter',
-                //             ),
-                //             _buildSocialButton(
-                //               icon: Icons.photo_camera,
-                //               label: 'Instagram',
-                //             ),
-                //             _buildSocialButton(
-                //               icon: Icons.linked_camera,
-                //               label: 'LinkedIn',
-                //             ),
-                //           ],
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
-                // Gap(20.h),
-
-                // Terms and Privacy
-                Center(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                        text: 'Corporate Details',
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: AllColor.blackColor,
+                      ),
+                      const Gap(14),
+                      _buildInfoRow(
+                        icon: Icons.business_rounded,
+                        label: 'Organization',
+                        value: 'InspeXion Technologies Inc.',
+                      ),
+                      const Gap(12),
+                      _buildInfoRow(
+                        icon: Icons.email_rounded,
+                        label: 'Inquiries Desk',
+                        value: 'support@inspexion.ai',
+                      ),
+                    ],
+                  ),
+                ),
+                const Gap(28),
+
+                // Terms and Privacy Buttons
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
-                        onTap: () {
-                          // Navigate to terms
-                        },
+                        onTap: () {},
                         child: CustomText(
                           text: 'Terms of Service',
-                          fontSize: 13,
+                          fontSize: 12,
                           color: AllColor.blueColor,
-                          decoration: TextDecoration.underline,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                      const Gap(8),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.w),
+                        child: Container(width: 4.r, height: 4.r, decoration: BoxDecoration(color: AllColor.greyColor400, shape: BoxShape.circle)),
+                      ),
                       GestureDetector(
-                        onTap: () {
-                          // Navigate to privacy
-                        },
+                        onTap: () {},
                         child: CustomText(
                           text: 'Privacy Policy',
-                          fontSize: 13,
+                          fontSize: 12,
                           color: AllColor.blueColor,
-                          decoration: TextDecoration.underline,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
@@ -255,46 +241,51 @@ class AboutUs extends StatelessWidget {
     required String title,
     required String description,
   }) {
-    return Card(
-      color: AllColor.whiteColor,
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.r),
+    return Container(
+      padding: EdgeInsets.all(14.r),
+      decoration: BoxDecoration(
+        color: AllColor.whiteColor,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
-      child: Padding(
-        padding: EdgeInsets.all(12.r),
-        child: Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(8.r),
-              decoration: BoxDecoration(
-                color: AllColor.blueColor.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-              child: Icon(icon, color: AllColor.blueColor, size: 24.r),
+      child: Row(
+        children: [
+          Container(
+            padding: EdgeInsets.all(10.r),
+            decoration: BoxDecoration(
+              color: AllColor.blueColor.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(12.r),
             ),
-            const Gap(12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(
-                    text: title,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: AllColor.blackColor,
-                  ),
-                  const Gap(4),
-                  CustomText(
-                    text: description,
-                    fontSize: 12,
-                    maxLines: 2,
-                  ),
-                ],
-              ),
+            child: Icon(icon, color: AllColor.blueColor, size: 22.r),
+          ),
+          const Gap(14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomText(
+                  text: title,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: AllColor.blackColor,
+                ),
+                const Gap(2),
+                CustomText(
+                  text: description,
+                  fontSize: 12,
+                  color: Colors.grey.shade600,
+                  maxLines: 2,
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -306,56 +297,28 @@ class AboutUs extends StatelessWidget {
   }) {
     return Row(
       children: [
-        Icon(icon, color: AllColor.blueColor, size: 20.r),
-        const Gap(12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomText(
-                text: label,
-                fontSize: 12,
-              ),
-              const Gap(4),
-              CustomText(
-                text: value,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: AllColor.blackColor,
-              ),
-            ],
+        Container(
+          padding: EdgeInsets.all(7.r),
+          decoration: BoxDecoration(
+            color: AllColor.blueColor.withValues(alpha: 0.1),
+            shape: BoxShape.circle,
           ),
+          child: Icon(icon, color: AllColor.blueColor, size: 16.r),
+        ),
+        const Gap(12),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomText(text: label, fontSize: 11, color: Colors.grey.shade500),
+            CustomText(
+              text: value,
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: AllColor.blackColor,
+            ),
+          ],
         ),
       ],
     );
   }
-
-  // Widget _buildSocialButton({
-  //   required IconData icon,
-  //   required String label,
-  // }) {
-  //   return GestureDetector(
-  //     onTap: () {
-  //       // Handle social media tap
-  //     },
-  //     child: Column(
-  //       children: [
-  //         Container(
-  //           padding: EdgeInsets.all(10.r),
-  //           decoration: BoxDecoration(
-  //             color: AllColor.blueColor.withValues(alpha: 0.1),
-  //             borderRadius: BorderRadius.circular(8.r),
-  //           ),
-  //           child: Icon(icon, color: AllColor.blueColor, size: 24.r),
-  //         ),
-  //         const Gap(4),
-  //         CustomText(
-  //           text: label,
-  //           fontSize: 11,
-  //           color: AllColor.blackColor,
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 }

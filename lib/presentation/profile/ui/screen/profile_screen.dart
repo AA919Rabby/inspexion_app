@@ -21,20 +21,24 @@ class ProfileScreen extends StatelessWidget {
       backgroundColor: AllColor.greyColor300,
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: Icon(
-            Icons.arrow_back_ios_new,
-            color: AllColor.whiteColor,
-          ),
+          onPressed: () => Get.back(),
+          icon: Icon(Icons.arrow_back_ios_new, color: AllColor.whiteColor, size: 20.r),
         ),
         backgroundColor: AllColor.blueColor,
         elevation: 0,
         scrolledUnderElevation: 0,
+        centerTitle: true,
+        toolbarHeight: 70.h,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(24.r),
+            bottomRight: Radius.circular(24.r),
+          ),
+        ),
         title: CustomText(
           text: 'Edit Profile',
-          fontSize: 23,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
           color: AllColor.whiteColor,
         ),
       ),
@@ -42,15 +46,15 @@ class ProfileScreen extends StatelessWidget {
         children: [
           SafeArea(
             child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               child: Padding(
-                padding: EdgeInsets.all(20.r),
+                padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 20.h),
                 child: Form(
                   key: profileController.profileKey,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // PERFECT CIRCLE AVATAR WITH YELLOW BORDER (3.w)
+                      // Circular Avatar with Yellow Border & Edit Camera Badge
                       Center(
                         child: GestureDetector(
                           onTap: () {
@@ -60,177 +64,159 @@ class ProfileScreen extends StatelessWidget {
                               },
                             );
                           },
-                          child: Container(
-                            height: 150.r,
-                            width: 150.r,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AllColor.whiteColor,
-                              border: Border.all(
-                                color: AllColor.yellowColor,
-                                width: 3.w,
-                              ),
-                            ),
-                            child: ClipOval(
-                              child: Obx(() {
-                                // 1. Temporary local preview while choosing photo
-                                if (profileController.selectedImage.value != null) {
-                                  return Image.file(
-                                    profileController.selectedImage.value!,
-                                    fit: BoxFit.cover,
-                                    width: 150.r,
-                                    height: 150.r,
-                                  );
-                                }
-                                // 2. Real network image loaded from backend server URL
-                                if (profileController.networkAvatarUrl.value.isNotEmpty) {
-                                  return Image.network(
-                                    profileController.networkAvatarUrl.value,
-                                    key: ValueKey(profileController.networkAvatarUrl.value),
-                                    fit: BoxFit.cover,
-                                    width: 150.r,
-                                    height: 150.r,
-                                    errorBuilder: (_, _, _) => Icon(
-                                      Icons.add_a_photo,
-                                      color: AllColor.blueColor,
-                                      size: 80.r,
+                          child: Stack(
+                            alignment: Alignment.bottomRight,
+                            children: [
+                              Container(
+                                height: 140.r,
+                                width: 140.r,
+                                padding: EdgeInsets.all(3.r),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AllColor.whiteColor,
+                                  border: Border.all(
+                                    color: AllColor.yellowColor,
+                                    width: 3.w,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withValues(alpha: 0.12),
+                                      blurRadius: 14,
+                                      offset: const Offset(0, 4),
                                     ),
-                                  );
-                                }
-                                // 3. Fallback placeholder
-                                return Icon(
-                                  Icons.add_a_photo,
+                                  ],
+                                ),
+                                child: ClipOval(
+                                  child: Obx(() {
+                                    if (profileController.selectedImage.value != null) {
+                                      return Image.file(
+                                        profileController.selectedImage.value!,
+                                        fit: BoxFit.cover,
+                                        width: 140.r,
+                                        height: 140.r,
+                                      );
+                                    }
+                                    if (profileController.networkAvatarUrl.value.isNotEmpty) {
+                                      return Image.network(
+                                        profileController.networkAvatarUrl.value,
+                                        key: ValueKey(profileController.networkAvatarUrl.value),
+                                        fit: BoxFit.cover,
+                                        width: 140.r,
+                                        height: 140.r,
+                                        errorBuilder: (_, _,_) => Icon(
+                                          Icons.add_a_photo_rounded,
+                                          color: AllColor.blueColor,
+                                          size: 55.r,
+                                        ),
+                                      );
+                                    }
+                                    return Icon(
+                                      Icons.add_a_photo_rounded,
+                                      color: AllColor.blueColor,
+                                      size: 55.r,
+                                    );
+                                  }),
+                                ),
+                              ),
+
+                              // Floating Camera Badge
+                              Container(
+                                padding: EdgeInsets.all(8.r),
+                                decoration: BoxDecoration(
                                   color: AllColor.blueColor,
-                                  size: 80.r,
-                                );
-                              }),
-                            ),
+                                  shape: BoxShape.circle,
+                                  border: Border.all(color: AllColor.whiteColor, width: 2.5.w),
+                                ),
+                                child: Icon(Icons.camera_alt_rounded, color: AllColor.whiteColor, size: 16.r),
+                              ),
+                            ],
                           ),
                         ),
                       ),
+                      const Gap(30),
 
-                      const Gap(40),
-                      CustomText(text: "Enter your username"),
-                      const Gap(5),
-                      CustomTextField(
-                        controller: profileController.nameClt,
-                        hintText: "Username",
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Required';
-                          }
-                          if (value.length < 3) {
-                            return 'Too short';
-                          }
-                          return null;
-                        },
-                        prefixIcon: Icon(
-                          Icons.person,
-                          color: AllColor.blueColor,
+                      // Form Container Card
+                      Container(
+                        padding: EdgeInsets.all(18.r),
+                        decoration: BoxDecoration(
+                          color: AllColor.whiteColor,
+                          borderRadius: BorderRadius.circular(20.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.04),
+                              blurRadius: 10,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomText(text: "Username", fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey.shade700),
+                            const Gap(6),
+                            CustomTextField(
+                              controller: profileController.nameClt,
+                              hintText: "Enter full username",
+                              validator: (value) => (value == null || value.isEmpty) ? 'Required' : null,
+                              prefixIcon: Icon(Icons.person_outline_rounded, color: AllColor.blueColor),
+                            ),
+                            const Gap(16),
+
+                            CustomText(text: "Phone Number", fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey.shade700),
+                            const Gap(6),
+                            CustomTextField(
+                              controller: profileController.numberClt,
+                              hintText: "Enter contact number",
+                              prefixIcon: Icon(Icons.phone_outlined, color: AllColor.blueColor),
+                              validator: (value) => (value == null || value.isEmpty) ? 'Required' : null,
+                            ),
+                            const Gap(16),
+
+                            CustomText(text: "City", fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey.shade700),
+                            const Gap(6),
+                            CustomTextField(
+                              controller: profileController.cityClt,
+                              hintText: "Enter your city",
+                              validator: (value) => (value == null || value.isEmpty) ? 'Required' : null,
+                              prefixIcon: Icon(Icons.location_city_rounded, color: AllColor.blueColor),
+                            ),
+                            const Gap(16),
+
+                            CustomText(text: "Address", fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey.shade700),
+                            const Gap(6),
+                            CustomTextField(
+                              controller: profileController.addressClt,
+                              hintText: "Enter physical address",
+                              validator: (value) => (value == null || value.isEmpty) ? 'Required' : null,
+                              prefixIcon: Icon(Icons.location_on_outlined, color: AllColor.blueColor),
+                            ),
+                            const Gap(16),
+
+                            CustomText(text: "Age", fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey.shade700),
+                            const Gap(6),
+                            CustomTextField(
+                              controller: profileController.ageClt,
+                              hintText: "Enter your age",
+                              prefixIcon: Icon(Icons.calendar_today_rounded, color: AllColor.blueColor),
+                              validator: (value) => (value == null || value.isEmpty) ? 'Required' : null,
+                            ),
+                          ],
                         ),
                       ),
+                      const Gap(32),
 
-                      const Gap(5),
-                      CustomText(text: "Enter your phone number"),
-                      const Gap(5),
-                      CustomTextField(
-                        controller: profileController.numberClt,
-                        hintText: "Phone Number",
-                        prefixIcon: Icon(
-                          Icons.phone,
-                          color: AllColor.blueColor,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'Required';
-                          }
-                          final phoneRegex = RegExp(r'^[0-9]+$');
-                          if (!phoneRegex.hasMatch(value.trim()) || value.trim().length < 11) {
-                            return 'Minimum 11 digits';
-                          }
-                          return null;
-                        },
-                      ),
-
-                      const Gap(5),
-                      CustomText(text: "Enter your city"),
-                      const Gap(5),
-                      CustomTextField(
-                        controller: profileController.cityClt,
-                        hintText: "City",
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Required';
-                          }
-                          if (value.length < 3) {
-                            return 'Too short';
-                          }
-                          return null;
-                        },
-                        prefixIcon: Icon(
-                          Icons.location_city,
-                          color: AllColor.blueColor,
-                        ),
-                      ),
-
-                      const Gap(5),
-                      CustomText(text: "Enter your address"),
-                      const Gap(5),
-                      CustomTextField(
-                        controller: profileController.addressClt,
-                        hintText: "Address",
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Required';
-                          }
-                          if (value.length < 3) {
-                            return 'Too short';
-                          }
-                          return null;
-                        },
-                        prefixIcon: Icon(
-                          Icons.location_on,
-                          color: AllColor.blueColor,
-                        ),
-                      ),
-
-                      const Gap(5),
-                      CustomText(text: "Enter your age"),
-                      const Gap(5),
-                      CustomTextField(
-                        controller: profileController.ageClt,
-                        hintText: "Age",
-                        prefixIcon: Icon(
-                          Icons.calendar_today_rounded,
-                          color: AllColor.blueColor,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'Required';
-                          }
-                          final age = RegExp(r'^[0-9]+$');
-                          if (!age.hasMatch(value.trim()) || value.trim().length < 2) {
-                            return 'Minimum 2 digits';
-                          }
-                          return null;
-                        },
-                      ),
-
-                      const Gap(50),
-
-                      // Save Button
+                      // Save Button with Loading State
                       Obx(
                             () => profileController.isLoading.value
                             ? const Center(child: CircularProgressIndicator())
                             : CustomButton(
-                          text: "Save",
+                          text: "Save Changes",
                           backgroundColor: AllColor.blueColor,
                           textColor: AllColor.whiteColor,
                           onPressed: profileController.updateProfile,
                         ),
                       ),
-
-                      const Gap(50),
+                      const Gap(20),
                     ],
                   ),
                 ),

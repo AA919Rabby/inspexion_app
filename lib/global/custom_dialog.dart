@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gap/flutter_gap.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
+import 'package:inspexion_ai/core/theme/all_color.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
-
-// Make sure to import your CustomText file if it's in another file:
-// import 'path_to_custom_text.dart';
 
 class CustomDialog extends StatelessWidget {
   final String? image;
@@ -37,11 +35,11 @@ class CustomDialog extends StatelessWidget {
     this.content,
     this.confirmText = 'Yes',
     this.cancelText = 'No',
-    this.confirmColor = const Color(0xFF4285F4),
-    this.cancelColor = Colors.white,
-    this.titleColor = Colors.white,
-    this.messageColor = Colors.white70,
-    this.backgroundColor = const Color(0xFF2A2B3D),
+    this.confirmColor,
+    this.cancelColor,
+    this.titleColor,
+    this.messageColor,
+    this.backgroundColor,
     this.onConfirm,
     this.onCancel,
     this.showConfirmButton = true,
@@ -54,31 +52,29 @@ class CustomDialog extends StatelessWidget {
 
   Widget _buildDefaultIcon() {
     return Container(
-      width: 64.r,
-      height: 64.r,
+      width: 62.r,
+      height: 62.r,
       decoration: BoxDecoration(
-        color: const Color(0xFFFF3B30).withValues(alpha: 0.15),
+        color: AllColor.redColor.withValues(alpha: 0.12),
         shape: BoxShape.circle,
       ),
       child: Icon(
         Icons.logout_rounded,
-        color: const Color(0xFFFF3B30),
-        size: 40.r,
+        color: AllColor.redColor,
+        size: 30.r,
       ),
     );
   }
 
   Widget? _buildImage() {
-    if (imageWidget != null) {
-      return imageWidget;
-    }
+    if (imageWidget != null) return imageWidget;
 
     if (image != null && image!.isNotEmpty) {
       return Container(
-        width: imageSize ?? 64.r,
-        height: imageSize ?? 64.r,
+        width: imageSize ?? 62.r,
+        height: imageSize ?? 62.r,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(18.r),
+          borderRadius: BorderRadius.circular(16.r),
         ),
         clipBehavior: Clip.antiAlias,
         child: Image.network(
@@ -94,31 +90,30 @@ class CustomDialog extends StatelessWidget {
   Widget _buildCancelButton(BuildContext context) {
     return Expanded(
       child: SizedBox(
-        height: 50.r,
+        height: 48.h,
         child: OutlinedButton(
           onPressed: () {
             Navigator.of(context).pop();
             if (onCancel != null) onCancel!();
           },
           style: OutlinedButton.styleFrom(
-            foregroundColor: cancelColor,
+            foregroundColor: cancelColor ?? AllColor.blueColor,
             backgroundColor: Colors.transparent,
             elevation: 0,
             padding: EdgeInsets.zero,
             side: BorderSide(
-              color: Color(0xFF3169E4),
-              width: 1.r,
+              color: cancelColor ?? AllColor.blueColor,
+              width: 1.5.w,
             ),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16.r),
+              borderRadius: BorderRadius.circular(14.r),
             ),
           ),
           child: CustomText(
             text: cancelText ?? 'No',
-            color: cancelColor,
-            fontSize: 16.sp,
+            color: cancelColor ?? AllColor.blueColor,
+            fontSize: 15,
             fontWeight: FontWeight.w600,
-            letterSpacing: -0.2,
           ),
         ),
       ),
@@ -128,28 +123,27 @@ class CustomDialog extends StatelessWidget {
   Widget _buildConfirmButton(BuildContext context) {
     return Expanded(
       child: SizedBox(
-        height: 50.r,
+        height: 48.h,
         child: ElevatedButton(
           onPressed: () {
             Navigator.of(context).pop();
             if (onConfirm != null) onConfirm!();
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: confirmColor,
-            foregroundColor: Colors.white,
+            backgroundColor: confirmColor ?? AllColor.blueColor,
+            foregroundColor: AllColor.whiteColor,
             elevation: 0,
             padding: EdgeInsets.zero,
             shadowColor: Colors.transparent,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16.r),
+              borderRadius: BorderRadius.circular(14.r),
             ),
           ),
           child: CustomText(
             text: confirmText ?? 'Yes',
-            color: Colors.white,
-            fontSize: 16.sp,
+            color: AllColor.whiteColor,
+            fontSize: 15,
             fontWeight: FontWeight.w600,
-            letterSpacing: -0.2,
           ),
         ),
       ),
@@ -163,78 +157,64 @@ class CustomDialog extends StatelessWidget {
     return Dialog(
       backgroundColor: Colors.transparent,
       elevation: 0,
-      insetPadding: EdgeInsets.symmetric(
-        horizontal: 24.w,
-        vertical: 24.h,
-      ),
+      insetPadding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
       child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: 520.w,
-        ),
+        constraints: BoxConstraints(maxWidth: 480.w),
         child: Container(
           decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: BorderRadius.circular(
-              borderRadius ?? 24.r,
+            color: backgroundColor ?? AllColor.whiteColor,
+            borderRadius: BorderRadius.circular(borderRadius ?? 24.r),
+            border: Border.all(
+              color: Colors.white,
+              width: 1.5.w,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.5),
-                blurRadius: 40.r,
-                offset: Offset(0, 16.r),
+                color: Colors.black.withValues(alpha: 0.18),
+                blurRadius: 30,
+                offset: const Offset(0, 10),
               ),
             ],
           ),
           child: Padding(
-            padding: padding ??
-                EdgeInsets.symmetric(
-                  horizontal: 24.w,
-                  vertical: 26.h,
-                ),
+            padding: padding ?? EdgeInsets.symmetric(horizontal: 22.w, vertical: 26.h),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 if (topImage != null) ...[
                   topImage,
-                  const Gap(18),
+                  const Gap(16),
                 ],
                 if (title != null) ...[
                   CustomText(
                     text: title!,
                     textAlign: TextAlign.center,
-                    color: titleColor,
-                    fontSize: 22.sp,
-                    fontWeight: FontWeight.w700,
-                    height: 1.15,
-                    letterSpacing: -0.5,
+                    color: titleColor ?? AllColor.blackColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
                   ),
-                  const Gap(10),
+                  const Gap(8),
                 ],
                 if (message != null) ...[
                   CustomText(
                     text: message!,
                     textAlign: TextAlign.center,
-                    color: messageColor,
-                    fontSize: 16.sp,
+                    color: messageColor ?? Colors.grey.shade600,
+                    fontSize: 14,
                     fontWeight: FontWeight.w400,
-                    height: 1.4,
-                    letterSpacing: -0.1,
                   ),
-                  const Gap(24),
+                  const Gap(22),
                 ],
                 if (content != null) ...[
                   content!,
-                  const Gap(24),
+                  const Gap(20),
                 ],
                 if (showConfirmButton || showCancelButton)
                   Row(
                     children: [
-                      if (showCancelButton)
-                        _buildCancelButton(context),
-                      if (showCancelButton && showConfirmButton)
-                        const Gap(10),
-                      if (showConfirmButton)
-                        _buildConfirmButton(context),
+                      if (showCancelButton) _buildCancelButton(context),
+                      if (showCancelButton && showConfirmButton) const Gap(10),
+                      if (showConfirmButton) _buildConfirmButton(context),
                     ],
                   ),
               ],
@@ -281,11 +261,11 @@ class CustomDialog extends StatelessWidget {
           content: content,
           confirmText: confirmText ?? 'Yes',
           cancelText: cancelText ?? 'No',
-          confirmColor: confirmColor ?? const Color(0xFF4285F4),
-          cancelColor: cancelColor ?? Colors.white,
-          titleColor: titleColor ?? Colors.white,
-          messageColor: messageColor ?? Colors.white70,
-          backgroundColor: backgroundColor ?? const Color(0xFF2A2B3D),
+          confirmColor: confirmColor ?? const Color(0xFF6200EE),
+          cancelColor: cancelColor,
+          titleColor: titleColor,
+          messageColor: messageColor,
+          backgroundColor: backgroundColor ?? AllColor.whiteColor,
           onConfirm: onConfirm,
           onCancel: onCancel,
           showConfirmButton: showConfirmButton ?? true,

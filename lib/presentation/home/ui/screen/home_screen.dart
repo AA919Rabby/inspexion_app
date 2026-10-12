@@ -3,7 +3,6 @@ import 'package:flutter_gap/flutter_gap.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:get/get.dart';
 import 'package:inspexion_ai/core/theme/all_color.dart';
-import 'package:inspexion_ai/global/custom_divider.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 import 'package:inspexion_ai/presentation/home/controller/home_controller.dart';
 import 'package:inspexion_ai/presentation/home/ui/widget/dashboard_stats_widget.dart';
@@ -18,7 +17,7 @@ class HomeScreen extends StatelessWidget {
         ? Get.find<ProfileController>()
         : Get.put(ProfileController(), permanent: true);
 
-    final homeController = Get.isRegistered<HomeController>()
+    Get.isRegistered<HomeController>()
         ? Get.find<HomeController>()
         : Get.put(HomeController(), permanent: true);
 
@@ -26,21 +25,26 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: AllColor.greyColor300,
       appBar: AppBar(
         backgroundColor: AllColor.blueColor,
-        elevation: 3,
+        elevation: 0,
         scrolledUnderElevation: 0,
         automaticallyImplyLeading: false,
-        toolbarHeight: 90.h,
+        toolbarHeight: 96.h,
         titleSpacing: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(24.r),
+            bottomRight: Radius.circular(24.r),
+          ),
+        ),
         title: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
           child: Row(
             children: [
-              const Gap(15),
-
-              // PERFECT CIRCLE AVATAR WITH YELLOW BORDER (3.w)
+              // Premium Dual-Ring Circular Avatar
               Container(
-                height: 70.r,
-                width: 70.r,
+                height: 68.r,
+                width: 68.r,
+                padding: EdgeInsets.all(2.5.r),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: AllColor.whiteColor,
@@ -48,6 +52,13 @@ class HomeScreen extends StatelessWidget {
                     color: AllColor.yellowColor,
                     width: 3.w,
                   ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.15),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
                 ),
                 child: ClipOval(
                   child: Obx(() {
@@ -60,8 +71,8 @@ class HomeScreen extends StatelessWidget {
                         avatar,
                         key: ValueKey(avatar),
                         fit: BoxFit.cover,
-                        width: 70.r,
-                        height: 70.r,
+                        width: 68.r,
+                        height: 68.r,
                         errorBuilder: (_, _, _) => _buildInitialAvatar(profileController),
                       );
                     }
@@ -70,30 +81,47 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
 
-              const Gap(12),
+              const Gap(14),
 
-              // Live User Name
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(
-                    text: "Welcome,",
-                    color: AllColor.whiteColor,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  Obx(
-                        () => CustomText(
-                      text: profileController.userProfile.value?.fullName.isNotEmpty == true
-                          ? profileController.userProfile.value!.fullName
-                          : "User",
-                      fontWeight: FontWeight.w600,
-                      fontSize: 22,
-                      color: AllColor.whiteColor,
+              // Commercial Header Typography & Status Badge
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        CustomText(
+                          text: "Welcome back,",
+                          color: AllColor.whiteColor.withValues(alpha: 0.85),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        const Gap(6),
+                        Container(
+                          width: 7.r,
+                          height: 7.r,
+                          decoration: BoxDecoration(
+                            color: AllColor.yellowColor,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                    const Gap(2),
+                    Obx(
+                          () => CustomText(
+                        text: profileController.userProfile.value?.fullName.isNotEmpty == true
+                            ? profileController.userProfile.value!.fullName
+                            : "Authorized Inspector",
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: AllColor.whiteColor,
+                        softWrap: true,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -102,19 +130,20 @@ class HomeScreen extends StatelessWidget {
       body: SafeArea(
         child: RefreshIndicator(
           color: AllColor.blueColor,
+          backgroundColor: AllColor.whiteColor,
           onRefresh: () async {
             await Future.delayed(const Duration(seconds: 2));
           },
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             child: Padding(
-              padding: EdgeInsets.all(20.r),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 18.h),
               child: const Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Gap(15),
                   DashboardStatsWidget(),
+                  Gap(20),
                 ],
               ),
             ),
@@ -129,13 +158,13 @@ class HomeScreen extends StatelessWidget {
     final String initial = name.isNotEmpty ? name[0].toUpperCase() : 'U';
 
     return Container(
-      height: 70.r,
-      width: 70.r,
+      height: 68.r,
+      width: 68.r,
       alignment: Alignment.center,
       color: AllColor.greyColor400,
       child: CustomText(
         text: initial,
-        fontSize: 26,
+        fontSize: 24,
         color: AllColor.whiteColor,
         fontWeight: FontWeight.bold,
       ),

@@ -7,8 +7,6 @@ import 'package:inspexion_ai/global/custom_button.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 import 'package:inspexion_ai/presentation/history/controller/history_controller.dart';
 
-
-
 class HistoryScreen extends StatelessWidget {
   const HistoryScreen({super.key});
 
@@ -17,18 +15,27 @@ class HistoryScreen extends StatelessWidget {
     final controller = Get.put(HistoryController());
 
     return Scaffold(
-      backgroundColor:AllColor.greyColor300,
+      backgroundColor: AllColor.greyColor300,
       appBar: AppBar(
-        leading: IconButton(onPressed: (){
-          Get.back();
-        }, icon: Icon(Icons.arrow_back_ios_new,color: AllColor.whiteColor,)),
-        scrolledUnderElevation: 0,
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: Icon(Icons.arrow_back_ios_new, color: AllColor.whiteColor, size: 20.r),
+        ),
         backgroundColor: AllColor.blueColor,
         elevation: 0,
-        // centerTitle: true,
+        scrolledUnderElevation: 0,
+        centerTitle: true,
+        toolbarHeight: 70.h,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(24.r),
+            bottomRight: Radius.circular(24.r),
+          ),
+        ),
         title: CustomText(
-          text: 'History',
-          fontSize: 23,
+          text: 'Inspection History',
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
           color: AllColor.whiteColor,
         ),
       ),
@@ -37,6 +44,7 @@ class HistoryScreen extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
 
+        // Commercial Empty State
         if (controller.reports.isEmpty) {
           return Center(
             child: Padding(
@@ -44,11 +52,34 @@ class HistoryScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.inventory_2_outlined, size: 80.r),
-                  const Gap(8),
+                  Container(
+                    padding: EdgeInsets.all(22.r),
+                    decoration: BoxDecoration(
+                      color: AllColor.whiteColor,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.05),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Icon(Icons.inventory_2_outlined, size: 54.r, color: AllColor.greyColor400),
+                  ),
+                  const Gap(18),
                   CustomText(
-                    text: 'Your inspection history is empty.',
-                    fontSize: 15, textAlign: TextAlign.center,
+                    text: 'No History Found',
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: AllColor.blackColor,
+                  ),
+                  const Gap(6),
+                  CustomText(
+                    text: 'Your generated inspection reports will automatically appear here.',
+                    fontSize: 13,
+                    color: Colors.grey.shade500,
+                    textAlign: TextAlign.center,
                   ),
                 ],
               ),
@@ -56,27 +87,33 @@ class HistoryScreen extends StatelessWidget {
           );
         }
 
+        // Populated Report History List
         return RefreshIndicator(
           color: AllColor.blueColor,
-          //onRefresh: controller.fetchHistory,
-          onRefresh: ()async{
+          backgroundColor: AllColor.whiteColor,
+          onRefresh: () async {
             await Future.delayed(const Duration(seconds: 2));
           },
           child: ListView.separated(
-            padding: EdgeInsets.all(16.r),
+            padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             itemCount: controller.reports.length,
-            separatorBuilder: (_,_) => const Gap(12),
+            separatorBuilder: (_, _) => const Gap(12),
             itemBuilder: (context, index) {
               final report = controller.reports[index];
               final String displayTitle = report.reportTitle.replaceAll('_', ' ');
               final String date = report.createdAt.isNotEmpty ? report.createdAt.split('T').first : 'Recent';
 
-              return Card(
-                elevation: 3,
-                color: AllColor.whiteColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14.r),
-                  // side: BorderSide(color: AllColor.greyColor300, width: 1.5),
+              return Container(
+                decoration: BoxDecoration(
+                  color: AllColor.whiteColor,
+                  borderRadius: BorderRadius.circular(18.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.04),
+                      blurRadius: 10,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
                 ),
                 child: Padding(
                   padding: EdgeInsets.all(16.r),
@@ -88,24 +125,49 @@ class HistoryScreen extends StatelessWidget {
                         children: [
                           Container(
                             padding: EdgeInsets.all(10.r),
-                            decoration: BoxDecoration(color: AllColor.blueColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10.r)),
+                            decoration: BoxDecoration(
+                              color: AllColor.redColor.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
                             child: Icon(Icons.picture_as_pdf_rounded, color: AllColor.redColor, size: 24.r),
                           ),
-                          const Gap(12),
+                          const Gap(14),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                CustomText(text: displayTitle, fontSize: 15.sp, fontWeight: FontWeight.bold, color: AllColor.blackColor),
+                                CustomText(
+                                  text: displayTitle,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: AllColor.blackColor,
+                                ),
                                 const Gap(4),
                                 Row(
                                   children: [
-                                    Icon(Icons.calendar_month_outlined, size: 13.r, color: AllColor.greyColor400),
-                                    const Gap(4),
-                                    CustomText(text: date, fontSize: 12.sp, color: AllColor.greyColor400),
+                                    Icon(Icons.calendar_today_rounded, size: 12.r, color: Colors.grey.shade500),
+                                    const Gap(5),
+                                    CustomText(
+                                      text: date,
+                                      fontSize: 12,
+                                      color: Colors.grey.shade500,
+                                    ),
                                   ],
                                 ),
                               ],
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                            decoration: BoxDecoration(
+                              color: AllColor.blueColor.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                            child: CustomText(
+                              text: '#${report.sessionId}',
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                              color: AllColor.blueColor,
                             ),
                           ),
                         ],
