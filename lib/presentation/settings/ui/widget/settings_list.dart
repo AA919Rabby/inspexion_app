@@ -7,6 +7,7 @@ import 'package:inspexion_ai/global/custom_dialog.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 import 'package:get/get.dart';
 import 'package:inspexion_ai/presentation/auth/controller/auth_controller.dart';
+import 'package:inspexion_ai/presentation/settings/controller/settings_controller.dart';
 
 
 
@@ -65,37 +66,45 @@ class SettingsList extends StatelessWidget {
     required Color color,
     required VoidCallback onTap,
   }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: 16.w,
-          vertical: 12.h,
-        ),
-        margin: EdgeInsets.only(bottom: 5.h),
-        decoration: BoxDecoration(
-          color: AllColor.whiteColor,
-         borderRadius: BorderRadius.circular(12.r),
-         // border: Border.all(color: AllColor.)
-        ),
-        child: Row(
-          children: [
-            Icon(icon, color: color),
-            const Gap(16),
-            Expanded(
-              child: CustomText(
-                text: title,
-                fontSize: 17,
+    return Obx((){
+      final settingsController=Get.find<SettingsController>();
+      final isSelected=settingsController.selectedItem.value == title;
+      return GestureDetector(
+        onTap: (){
+          settingsController.selectedItem.value=title;
+          onTap();
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: 16.w,
+            vertical: 12.h,
+          ),
+          margin: EdgeInsets.only(bottom: 5.h),
+          decoration: BoxDecoration(
+              color: AllColor.whiteColor,
+              borderRadius: BorderRadius.circular(12.r),
+              border: Border.all(color: isSelected?AllColor.blueColor:Colors.transparent,
+                  width: isSelected?2.w:0)
+          ),
+          child: Row(
+            children: [
+              Icon(icon, color: color),
+              const Gap(16),
+              Expanded(
+                child: CustomText(
+                  text: title,
+                  fontSize: 17,
+                ),
               ),
-            ),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: AllColor.blueColor,
-              size: 15.r,
-            ),
-          ],
+              Icon(
+                Icons.arrow_forward_ios,
+                color: isSelected?AllColor.blueColor:AllColor.greyColor400,
+                size: 15.r,
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

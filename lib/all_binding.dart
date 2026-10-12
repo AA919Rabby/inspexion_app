@@ -6,6 +6,7 @@ import 'package:inspexion_ai/presentation/home/controller/home_controller.dart';
 import 'package:inspexion_ai/presentation/intro/controller/intro_controller.dart';
 import 'package:inspexion_ai/presentation/onboarding/controller/onboarding_controller.dart';
 import 'package:inspexion_ai/presentation/profile/controller/profile_controller.dart';
+import 'package:inspexion_ai/presentation/settings/controller/settings_controller.dart';
 
 
 class AllBinding extends Bindings {
@@ -19,6 +20,7 @@ class AllBinding extends Bindings {
     Get.lazyPut(() => HomeController(), fenix: true);
     Get.lazyPut(() => HistoryController(), fenix: true);
     Get.lazyPut(() => ProfileController(), fenix: true);
+    Get.lazyPut(() => SettingsController(), fenix: true);
 
 
   }
