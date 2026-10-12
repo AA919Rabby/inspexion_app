@@ -36,8 +36,8 @@ class AuthController extends GetxController {
         if (Get.context != null) {
           customSnackbar(
             Get.context!,
-            title: 'Google Sign-In Not Configured',
-            message: 'Missing Google ID token. Add the correct Web Client ID and SHA-1 to Firebase for this build.',
+            title: 'Google Sign-In Error',
+            message: 'Unable to Connect, Try again.',
             isError: true,
           );
         }
@@ -80,8 +80,8 @@ class AuthController extends GetxController {
       if (Get.context != null) {
         customSnackbar(
           Get.context!,
-          title: 'Backend Error (${dioError.response?.statusCode ?? 'Failed'})',
-          message: errorMessage,
+          title: "Oop's",
+          message: "An unaccepted error occurred.",
           isError: true,
         );
       }
@@ -90,10 +90,8 @@ class AuthController extends GetxController {
       if (Get.context != null) {
         customSnackbar(
           Get.context!,
-          title: 'Google Sign-In Error',
-          message: e.message?.contains('SHA') == true || e.message?.contains('client') == true
-              ? 'Google Sign-In is not configured for this APK. Add the correct SHA-1 and Web Client ID to Firebase.'
-              : 'Google Sign-In failed: ${e.message ?? e.code}',
+          title: "Error",
+          message: "Cannot process at the moment.",
           isError: true,
         );
       }
@@ -157,7 +155,7 @@ class AuthController extends GetxController {
         customSnackbar(
           Get.context!,
           title: 'Sign In Failed',
-          message: dioError.response?.data?['detail']?.toString() ?? 'Server error',
+          message: "An unaccepted error occurred",
           isError: true,
         );
       }
@@ -167,7 +165,7 @@ class AuthController extends GetxController {
         customSnackbar(
           Get.context!,
           title: 'Apple Sign-In Error',
-          message: e.toString(),
+          message: "Unable to Connect, Try again.",
           isError: true,
         );
       }
@@ -195,7 +193,7 @@ class AuthController extends GetxController {
         customSnackbar(
           Get.context!,
           title: 'Logout Error',
-          message: e.toString(),
+          message: "Something went wrong.",
           isError: true,
         );
       }

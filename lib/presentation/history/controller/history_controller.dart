@@ -15,6 +15,8 @@ import 'package:inspexion_ai/presentation/history/data/history_model.dart';
 import 'package:inspexion_ai/presentation/history/data/inspection_result_model.dart';
 import 'package:inspexion_ai/presentation/home/controller/home_controller.dart';
 
+
+
 class HistoryController extends GetxController {
   final Dio _dio = Dio(BaseOptions(
     connectTimeout: const Duration(seconds: 45),
@@ -111,7 +113,7 @@ class HistoryController extends GetxController {
     } catch (e) {
       log('Error picking images: $e');
       if (Get.context != null) {
-        customSnackbar(Get.context!, title: 'Picker Error', message: e.toString(), isError: true);
+        customSnackbar(Get.context!, title: 'Error', message: "Unable to upload photo.", isError: true);
       }
     }
   }
@@ -209,7 +211,7 @@ class HistoryController extends GetxController {
       isInspecting.value = false;
       log('Unexpected Error: $e');
       if (Get.context != null) {
-        customSnackbar(Get.context!, title: 'Inspection Failed', message: e.toString(), isError: true);
+        customSnackbar(Get.context!, title: 'Inspection Failed', message: "Something went wrong", isError: true);
       }
     } finally {
       isInspecting.value = false;
@@ -279,7 +281,7 @@ class HistoryController extends GetxController {
     }
 
     if (Get.context != null) {
-      customSnackbar(Get.context!, title: 'Backend Error', message: errorMessage, isError: true);
+      customSnackbar(Get.context!, title: 'Server Error', message: "Unable to connect.", isError: true);
     }
   }
 }

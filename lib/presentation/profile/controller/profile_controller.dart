@@ -101,8 +101,8 @@ class ProfileController extends GetxController {
       if (Get.context != null) {
         customSnackbar(
           Get.context!,
-          title: 'Picker Error',
-          message: e.toString(),
+          title: 'Error',
+          message: "Something went wrong",
           isError: true,
         );
       }
