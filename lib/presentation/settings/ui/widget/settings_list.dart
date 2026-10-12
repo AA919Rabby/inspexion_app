@@ -71,6 +71,7 @@ class SettingsList extends StatelessWidget {
           color: AllColor.redColor,
           onTap: () async {
             await Future.delayed(const Duration(milliseconds: 200));
+            if (!context.mounted) return;
             await CustomDialog.show(
               context: context,
               backgroundColor: AllColor.whiteColor,
