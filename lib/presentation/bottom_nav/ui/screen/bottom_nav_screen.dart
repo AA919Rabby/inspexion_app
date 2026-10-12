@@ -32,7 +32,6 @@ class BottomNavScreen extends StatelessWidget {
               index: bottomNavController.selectedIndex.value,
               children: bottomNavController.pages,
             ),
-
             if (historyController.isInspecting.value)
               Container(
                 width: double.infinity,
@@ -112,7 +111,6 @@ class BottomNavScreen extends StatelessWidget {
           ],
         ),
       ),
-
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 12.h),
         child: Container(
@@ -139,18 +137,25 @@ class BottomNavScreen extends StatelessWidget {
             backgroundColor: Colors.transparent,
             shape: const CircleBorder(),
             onPressed: () {
-              CustomImagePickerSheet.show(
-                onPick: (ImageSource source) {
-                  historyController.pickAndInspectImages(source);
+              bottomNavController.onCameraTap(
+                onComplete: () {
+                  CustomImagePickerSheet.show(
+                    onPick: (ImageSource source) {
+                      historyController.pickAndInspectImages(source);
+                    },
+                  );
                 },
               );
             },
-            child: Icon(Icons.camera_alt_rounded, color: AllColor.whiteColor, size: 26.r),
+            child: Obx(
+                  () => bottomNavController.isCameraLoading.value
+                  ? const CircularProgressIndicator()
+                  : Icon(Icons.camera_alt_rounded, color: AllColor.whiteColor, size: 26.r),
+            ),
           ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
       bottomNavigationBar: Obx(
             () => AnimatedBottomNavigationBar.builder(
           itemCount: 2,
