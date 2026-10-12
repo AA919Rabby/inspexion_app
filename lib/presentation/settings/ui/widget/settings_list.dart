@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:inspexion_ai/presentation/auth/controller/auth_controller.dart';
 import 'package:inspexion_ai/presentation/settings/controller/settings_controller.dart';
 
+
 class SettingsList extends StatelessWidget {
   const SettingsList({super.key});
 

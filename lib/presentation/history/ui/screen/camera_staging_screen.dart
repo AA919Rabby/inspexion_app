@@ -8,12 +8,12 @@ import 'package:inspexion_ai/global/custom_button.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 import 'package:inspexion_ai/presentation/history/controller/history_controller.dart';
 
+
 class CameraStagingScreen extends StatelessWidget {
   const CameraStagingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Guarantees we find the exact existing permanent instance holding the captured photo
     final controller = Get.isRegistered<HistoryController>()
         ? Get.find<HistoryController>()
         : Get.put(HistoryController(), permanent: true);

@@ -12,6 +12,7 @@ import 'all_binding.dart';
 
 
 class AllRoute {
+
   static const String intro = '/intro';
   static const String onboardingScreen = '/onboardingScreen';
   static const String bottomNavScreen = '/bottomNavScreen';

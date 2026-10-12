@@ -9,6 +9,7 @@ import 'package:inspexion_ai/core/services/auth_services.dart';
 import 'package:inspexion_ai/global/custom_snackbar.dart';
 import 'package:inspexion_ai/presentation/profile/data/user_profile_model.dart';
 
+
 class ProfileController extends GetxController {
   final Dio _dio = Dio();
   final ImagePicker _picker = ImagePicker();
@@ -50,7 +51,6 @@ class ProfileController extends GetxController {
     networkAvatarUrl.value = AuthServices.getString('user_avatar') ?? '';
   }
 
-  // 1. GET User Profile
   Future<void> fetchUserProfile() async {
     final token = AuthServices.getAccessToken();
     if (token == null || token.isEmpty) return;
@@ -84,7 +84,6 @@ class ProfileController extends GetxController {
     }
   }
 
-  // 2. Pick Profile Photo
   Future<void> pickImage(ImageSource source) async {
     try {
       final XFile? image = await _picker.pickImage(
@@ -110,7 +109,6 @@ class ProfileController extends GetxController {
     }
   }
 
-  // 3. Update Profile
   Future<void> updateProfile() async {
     if (!profileKey.currentState!.validate()) return;
 
@@ -167,7 +165,7 @@ class ProfileController extends GetxController {
           await AuthServices.setString('user_avatar', model.avatarUrl);
         }
 
-        selectedImage.value = null; // Clear temporary file picker
+        selectedImage.value = null;
 
         userProfile.refresh();
         networkAvatarUrl.refresh();

@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:inspexion_ai/core/theme/all_color.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 
+
+
 class Support extends StatefulWidget {
   const Support({super.key});
 

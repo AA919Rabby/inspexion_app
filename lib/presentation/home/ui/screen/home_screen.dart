@@ -8,6 +8,8 @@ import 'package:inspexion_ai/presentation/home/controller/home_controller.dart';
 import 'package:inspexion_ai/presentation/home/ui/widget/dashboard_stats_widget.dart';
 import 'package:inspexion_ai/presentation/profile/controller/profile_controller.dart';
 
+
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -30,20 +32,12 @@ class HomeScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         toolbarHeight: 96.h,
         titleSpacing: 0,
-        // shape: RoundedRectangleBorder(
-        //   borderRadius: BorderRadius.only(
-        //     bottomLeft: Radius.circular(24.r),
-        //     bottomRight: Radius.circular(24.r),
-        //   ),
-        // ),
         title: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
           child: Row(
             children: [
-              // Real Header Content
               Row(
                 children: [
-                  // Premium Dual-Ring Circular Avatar
                   Container(
                     height: 68.r,
                     width: 68.r,
@@ -86,7 +80,6 @@ class HomeScreen extends StatelessWidget {
 
                   const Gap(14),
 
-                  // Commercial Header Typography & Status Badge
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,

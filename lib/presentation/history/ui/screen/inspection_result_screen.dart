@@ -9,6 +9,7 @@ import 'package:inspexion_ai/global/custom_button.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 import 'package:inspexion_ai/presentation/history/controller/history_controller.dart';
 
+
 class InspectionResultScreen extends StatelessWidget {
   const InspectionResultScreen({super.key});
 
@@ -27,7 +28,6 @@ class InspectionResultScreen extends StatelessWidget {
         toolbarHeight: 65.h,
         title: Obx(
               () {
-            // Displays user's personal inspection count (#1 for first inspection)
             final int displayNum = controller.currentInspection.value?.sessionNumber ?? 1;
             return CustomText(
               text: 'Results (#$displayNum)',
@@ -152,7 +152,6 @@ class InspectionResultScreen extends StatelessWidget {
                     ),
                     const Gap(24),
 
-                    // Side-by-Side Breakdown
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

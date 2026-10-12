@@ -19,7 +19,6 @@ class AuthController extends GetxController {
     serverClientId: '1018837083142-djl6au9ver94edknnou7gb981ftj5qgs.apps.googleusercontent.com',
   );
 
-  // 1. Google Login
   Future<void> googleLogin() async {
     isLoading.value = true;
     try {
@@ -56,7 +55,6 @@ class AuthController extends GetxController {
       if (response.statusCode == 200 && response.data != null) {
         final String accessToken = response.data['access_token'] ?? '';
 
-        // Save token to AuthServices so the user never has to see onboarding again
         await AuthServices.setAccessToken(accessToken);
         await AuthServices.setIsLoggedIn(true);
 
@@ -115,7 +113,6 @@ class AuthController extends GetxController {
   }
 
   Future<void> appleLogin() async {
-    // Only available on iOS devices
     if (!Platform.isIOS) return;
 
     isLoading.value = true;
@@ -132,13 +129,11 @@ class AuthController extends GetxController {
         throw Exception("Apple authorization failed: Identity token is null.");
       }
 
-      // Build name if provided by Apple on initial sign in
       String? fullName;
       if (credential.givenName != null || credential.familyName != null) {
         fullName = '${credential.givenName ?? ''} ${credential.familyName ?? ''}'.trim();
       }
 
-      // Call FastAPI Apple endpoint
       final response = await _dio.post(
         AppUrl.appleAuth,
         data: {
@@ -182,46 +177,17 @@ class AuthController extends GetxController {
   }
 
 
-  // 2. Logout (Clears tokens & returns to Onboarding Screen)
-  // Future<void> logout() async {
-  //   isLoading.value = true;
-  //   try {
-  //     await _googleSignIn.signOut();
-  //     await AuthServices.clearAll();
-  //
-  //
-  //     // Send logged-out user to OnboardingScreen
-  //     Get.offAllNamed(AllRoute.onboardingScreen);
-  //   } catch (e) {
-  //     log('Error during logout: $e');
-  //     if (Get.context != null) {
-  //       customSnackbar(
-  //         Get.context!,
-  //         title: 'Logout Error',
-  //         message: e.toString(),
-  //         isError: true,
-  //       );
-  //     }
-  //   } finally {
-  //     isLoading.value = false;
-  //   }
-  // }
 
-// 2. Logout (Safe for BOTH Google and Apple)
   Future<void> logout() async {
     isLoading.value = true;
     try {
-      // Step A: Safely disconnect Google if used (won't crash Apple users)
       try {
         await _googleSignIn.signOut();
       } catch (_) {
         // Ignored if user signed in with Apple
       }
 
-      // Step B: Clear all local tokens & user preferences (Logs out BOTH Google and Apple!)
       await AuthServices.clearAll();
-
-      // Step C: Route back to Onboarding Screen
       Get.offAllNamed(AllRoute.onboardingScreen);
     } catch (e) {
       log('Error during logout: $e');

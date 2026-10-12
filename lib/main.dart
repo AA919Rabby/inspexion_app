@@ -11,6 +11,7 @@ import 'package:inspexion_ai/firebase_options.dart';
 import 'package:inspexion_ai/presentation/intro/ui/screen/intro_screen.dart';
 import 'app.dart';
 
+
 // Fire-and-forget function using Dio
 void wakeUpServerBackground() {
   try {

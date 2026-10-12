@@ -9,6 +9,8 @@ import 'package:inspexion_ai/global/custom_shimmer.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 import '../../controller/home_controller.dart';
 
+
+
 class DashboardStatsWidget extends StatelessWidget {
   const DashboardStatsWidget({super.key});
 
@@ -71,10 +73,6 @@ class DashboardStatsWidget extends StatelessWidget {
             ],
           ),
           const Gap(14),
-
-          // -----------------------------------------------------------------
-          // STEP 2: METRIC CARDS SHIMMER (Disappears at 1.7 seconds)
-          // -----------------------------------------------------------------
           if (homeController.shimmerMetrics.value)
             Column(
               children: [
@@ -142,9 +140,6 @@ class DashboardStatsWidget extends StatelessWidget {
           ],
           const Gap(28),
 
-          // -----------------------------------------------------------------
-          // STEP 3: TIMELINE CHART SHIMMER (Disappears at 2.4 seconds)
-          // -----------------------------------------------------------------
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -313,10 +308,6 @@ class DashboardStatsWidget extends StatelessWidget {
               ),
             ),
           const Gap(28),
-
-          // -----------------------------------------------------------------
-          // STEP 4: CATEGORY BREAKDOWN SHIMMER (Disappears at 3.0 seconds)
-          // -----------------------------------------------------------------
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

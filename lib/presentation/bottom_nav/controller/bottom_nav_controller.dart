@@ -14,8 +14,6 @@ class BottomNavController extends GetxController {
   void onCameraTap() {
 
   }
-
-  // The 2 screens: Home and Settings using your CustomText
   final List<Widget> pages = [
     HomeScreen(),
     SettingsScreen(),

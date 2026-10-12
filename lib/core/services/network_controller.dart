@@ -15,14 +15,12 @@ class NetworkController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Listen for live internet connectivity changes
     _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
   }
 
   void _updateConnectionStatus(dynamic result) {
     bool hasNoInternet = false;
 
-    // Handles both connectivity_plus v5 and v6+
     if (result is List<ConnectivityResult>) {
       hasNoInternet = result.contains(ConnectivityResult.none) || result.isEmpty;
     } else if (result is ConnectivityResult) {
@@ -34,14 +32,12 @@ class NetworkController extends GetxController {
       _showNoInternetDialog();
     } else {
       isConnected.value = true;
-      // Close dialog if reconnected
       if (Get.isDialogOpen ?? false) {
         Get.back();
       }
     }
   }
 
-  // Non-dismissible Dialog forcing the user to close the app
   void _showNoInternetDialog() {
     if (Get.isDialogOpen ?? false) return;
 
@@ -84,7 +80,6 @@ class NetworkController extends GetxController {
                   backgroundColor: AllColor.redColor,
                   textColor: AllColor.whiteColor,
                   onPressed: () {
-                    // Instantly closes the app on Android and iOS
                     SystemNavigator.pop();
                   },
                 ),
@@ -93,7 +88,7 @@ class NetworkController extends GetxController {
           ),
         ),
       ),
-      barrierDismissible: false, // User cannot tap outside to dismiss
+      barrierDismissible: false,
     );
   }
 }

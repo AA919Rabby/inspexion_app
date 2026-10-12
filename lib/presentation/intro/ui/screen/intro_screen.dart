@@ -83,7 +83,6 @@ class IntroScreen extends StatelessWidget {
 
               const Spacer(flex: 3),
 
-              // Custom Animated Loader
               const CustomLoader(),
               const Gap(24),
 

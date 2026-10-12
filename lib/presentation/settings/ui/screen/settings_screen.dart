@@ -5,6 +5,7 @@ import 'package:inspexion_ai/core/theme/all_color.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 import 'package:inspexion_ai/presentation/settings/ui/widget/settings_list.dart';
 
+
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
@@ -18,12 +19,6 @@ class SettingsScreen extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         toolbarHeight: 70.h,
-        // shape: RoundedRectangleBorder(
-        //   borderRadius: BorderRadius.only(
-        //     bottomLeft: Radius.circular(24.r),
-        //     bottomRight: Radius.circular(24.r),
-        //   ),
-        // ),
         title: CustomText(
           text: "Settings & Preferences",
           fontSize: 20,
@@ -55,7 +50,6 @@ class SettingsScreen extends StatelessWidget {
 
                 const Gap(30),
 
-                // Envato-Standard Commercial Version Footer
                 Center(
                   child: Column(
                     children: [

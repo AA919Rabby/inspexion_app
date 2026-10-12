@@ -10,6 +10,7 @@ import 'package:inspexion_ai/global/custom_text.dart';
 import 'package:inspexion_ai/presentation/bottom_nav/controller/bottom_nav_controller.dart';
 import 'package:inspexion_ai/presentation/history/controller/history_controller.dart';
 
+
 class BottomNavScreen extends StatelessWidget {
   const BottomNavScreen({super.key});
 
@@ -17,7 +18,6 @@ class BottomNavScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final bottomNavController = Get.find<BottomNavController>();
 
-    // CRITICAL FIX: permanent: true ensures the controller instance is shared everywhere
     final historyController = Get.isRegistered<HistoryController>()
         ? Get.find<HistoryController>()
         : Get.put(HistoryController(), permanent: true);

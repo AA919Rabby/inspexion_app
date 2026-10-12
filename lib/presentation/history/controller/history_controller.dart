@@ -33,7 +33,6 @@ class HistoryController extends GetxController {
   final RxList<HistoryModel> reports = <HistoryModel>[].obs;
   final Rx<InspectionResultModel?> currentInspection = Rx<InspectionResultModel?>(null);
 
-  // Staged Photos for Camera Mode
   final RxList<XFile> stagedImages = <XFile>[].obs;
 
   @override
@@ -53,7 +52,6 @@ class HistoryController extends GetxController {
     _wsChannel = null;
   }
 
-  // 1. Fetch History
   Future<void> fetchHistory() async {
     isLoading.value = true;
     try {
@@ -82,7 +80,6 @@ class HistoryController extends GetxController {
     }
   }
 
-  // 2. Initial Picker (FIXED: First camera photo is atomically assigned so it's never 0)
   Future<void> pickAndInspectImages(ImageSource source) async {
     try {
       if (source == ImageSource.gallery) {
@@ -104,7 +101,6 @@ class HistoryController extends GetxController {
           maxHeight: 640,
         );
         if (photo != null) {
-          // ATOMIC ASSIGNMENT & REFRESH: Guarantees photo is in memory before navigating
           stagedImages.assignAll([photo]);
           stagedImages.refresh();
 
@@ -120,7 +116,6 @@ class HistoryController extends GetxController {
     }
   }
 
-  // 3. Add more photos from camera
   Future<void> addMoreFromCamera() async {
     try {
       final XFile? photo = await _picker.pickImage(
@@ -138,13 +133,11 @@ class HistoryController extends GetxController {
     }
   }
 
-  // 4. Trigger Analysis from Staging Screen
   Future<void> analyzeStagedImages() async {
     if (stagedImages.isEmpty) return;
     await _runInspectionPipeline(stagedImages.toList());
   }
 
-  // 5. The Core Pipeline
   Future<void> _runInspectionPipeline(List<XFile> files) async {
     final token = AuthServices.getAccessToken();
     if (token == null) {
@@ -204,7 +197,6 @@ class HistoryController extends GetxController {
         Get.toNamed(AllRoute.inspectionResultScreen);
       }
 
-      // Auto-refresh history and dashboard immediately
       await fetchHistory();
       if (Get.isRegistered<HomeController>()) {
         Get.find<HomeController>().fetchDashboardStats();
@@ -226,7 +218,6 @@ class HistoryController extends GetxController {
     }
   }
 
-  // 6. Generate & Open PDF
   Future<void> generateAndOpenCurrentReport() async {
     final model = currentInspection.value;
     final token = AuthServices.getAccessToken();
@@ -251,7 +242,6 @@ class HistoryController extends GetxController {
     }
   }
 
-  // 7. Download PDF
   Future<void> downloadAndOpenReport(int reportId, String reportTitle) async {
     try {
       final token = AuthServices.getAccessToken();

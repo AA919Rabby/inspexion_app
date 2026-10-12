@@ -8,6 +8,7 @@ import 'package:inspexion_ai/global/custom_shimmer.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 import 'package:inspexion_ai/presentation/history/controller/history_controller.dart';
 
+
 class HistoryScreen extends StatelessWidget {
   const HistoryScreen({super.key});
 
@@ -17,7 +18,6 @@ class HistoryScreen extends StatelessWidget {
         ? Get.find<HistoryController>()
         : Get.put(HistoryController());
 
-    // Auto-fetch on entry
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.fetchHistory();
     });
@@ -34,12 +34,6 @@ class HistoryScreen extends StatelessWidget {
         scrolledUnderElevation: 0,
         centerTitle: true,
         toolbarHeight: 70.h,
-        // shape: RoundedRectangleBorder(
-        //   borderRadius: BorderRadius.only(
-        //     bottomLeft: Radius.circular(24.r),
-        //     bottomRight: Radius.circular(24.r),
-        //   ),
-        // ),
         title: CustomText(
           text: 'Inspection History',
           fontSize: 20,
@@ -119,8 +113,6 @@ class HistoryScreen extends StatelessWidget {
               final report = controller.reports[index];
               final String displayTitle = report.reportTitle.replaceAll('_', ' ');
               final String date = report.createdAt.isNotEmpty ? report.createdAt.split('T').first : 'Recent';
-
-              // Clean User Sequence Number (#1 for 1st scan, #2 for 2nd scan)
               final int scanSequence = controller.reports.length - index;
 
               return Container(
@@ -177,7 +169,6 @@ class HistoryScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          // CLEAN USER BADGE: Shows #1 instead of database #40!
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                             decoration: BoxDecoration(

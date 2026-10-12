@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:inspexion_ai/all_route.dart';
 import 'package:inspexion_ai/presentation/auth/controller/auth_controller.dart';
 
+
 class OnboardingController extends GetxController {
   final PageController pageController = PageController();
   final RxInt currentPage = 0.obs;

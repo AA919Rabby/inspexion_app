@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:inspexion_ai/core/theme/all_color.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 
+
 class AboutUs extends StatelessWidget {
   const AboutUs({super.key});
 

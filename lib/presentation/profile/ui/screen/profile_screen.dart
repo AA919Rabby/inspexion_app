@@ -10,6 +10,7 @@ import 'package:inspexion_ai/global/custom_text.dart';
 import 'package:inspexion_ai/global/custom_text_field.dart';
 import 'package:inspexion_ai/presentation/profile/controller/profile_controller.dart';
 
+
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
@@ -29,12 +30,6 @@ class ProfileScreen extends StatelessWidget {
         scrolledUnderElevation: 0,
         centerTitle: true,
         toolbarHeight: 70.h,
-        // shape: RoundedRectangleBorder(
-        //   borderRadius: BorderRadius.only(
-        //     bottomLeft: Radius.circular(24.r),
-        //     bottomRight: Radius.circular(24.r),
-        //   ),
-        // ),
         title: CustomText(
           text: 'Edit Profile',
           fontSize: 20,
@@ -54,7 +49,6 @@ class ProfileScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Circular Avatar with Yellow Border & Edit Camera Badge
                       Center(
                         child: GestureDetector(
                           onTap: () {
@@ -141,13 +135,6 @@ class ProfileScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: AllColor.whiteColor,
                           borderRadius: BorderRadius.circular(20.r),
-                          // boxShadow: [
-                          //   BoxShadow(
-                          //     color: Colors.black.withValues(alpha: 0.03),
-                          //     blurRadius: 7,
-                          //     offset: const Offset(0, 3),
-                          //   ),
-                          // ],
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
