@@ -29,12 +29,12 @@ class ProfileScreen extends StatelessWidget {
         scrolledUnderElevation: 0,
         centerTitle: true,
         toolbarHeight: 70.h,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(24.r),
-            bottomRight: Radius.circular(24.r),
-          ),
-        ),
+        // shape: RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.only(
+        //     bottomLeft: Radius.circular(24.r),
+        //     bottomRight: Radius.circular(24.r),
+        //   ),
+        // ),
         title: CustomText(
           text: 'Edit Profile',
           fontSize: 20,

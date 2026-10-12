@@ -3,7 +3,6 @@ import 'package:flutter_gap/flutter_gap.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:get/get.dart';
 import 'package:inspexion_ai/core/theme/all_color.dart';
-import 'package:inspexion_ai/global/custom_shimmer.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 import 'package:inspexion_ai/presentation/home/controller/home_controller.dart';
 import 'package:inspexion_ai/presentation/home/ui/widget/dashboard_stats_widget.dart';
@@ -26,37 +25,21 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: AllColor.greyColor300,
       appBar: AppBar(
         backgroundColor: AllColor.blueColor,
-        elevation: 0,
-        scrolledUnderElevation: 0,
+        elevation: 3,
+        scrolledUnderElevation: 2,
         automaticallyImplyLeading: false,
         toolbarHeight: 96.h,
         titleSpacing: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(24.r),
-            bottomRight: Radius.circular(24.r),
-          ),
-        ),
+        // shape: RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.only(
+        //     bottomLeft: Radius.circular(24.r),
+        //     bottomRight: Radius.circular(24.r),
+        //   ),
+        // ),
         title: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
           child: Row(
             children: [
-              Row(
-                children: [
-                  CustomShimmer.circle(size: 68.r),
-                  const Gap(14),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CustomShimmer(width: 90.w, height: 14.h),
-                      const Gap(6),
-                      CustomShimmer(width: 150.w, height: 20.h),
-                    ],
-                  ),
-                ],
-              ),
-
               // Real Header Content
               Row(
                 children: [

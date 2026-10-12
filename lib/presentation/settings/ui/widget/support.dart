@@ -72,12 +72,6 @@ class _SupportState extends State<Support> {
         scrolledUnderElevation: 0,
         centerTitle: true,
         toolbarHeight: 70.h,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(24.r),
-            bottomRight: Radius.circular(24.r),
-          ),
-        ),
         title: CustomText(
           text: 'Help & Support',
           fontSize: 20,

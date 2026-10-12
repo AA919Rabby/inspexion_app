@@ -17,7 +17,7 @@ class HistoryScreen extends StatelessWidget {
         ? Get.find<HistoryController>()
         : Get.put(HistoryController());
 
-    // AUTO-REFRESH ON ENTRY: Ensures latest report always appears without manual pull-to-refresh
+    // Auto-fetch on entry
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.fetchHistory();
     });
@@ -30,16 +30,16 @@ class HistoryScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back_ios_new, color: AllColor.whiteColor, size: 20.r),
         ),
         backgroundColor: AllColor.blueColor,
-        elevation: 0,
+        elevation: 3,
         scrolledUnderElevation: 0,
         centerTitle: true,
         toolbarHeight: 70.h,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(24.r),
-            bottomRight: Radius.circular(24.r),
-          ),
-        ),
+        // shape: RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.only(
+        //     bottomLeft: Radius.circular(24.r),
+        //     bottomRight: Radius.circular(24.r),
+        //   ),
+        // ),
         title: CustomText(
           text: 'Inspection History',
           fontSize: 20,
@@ -120,6 +120,9 @@ class HistoryScreen extends StatelessWidget {
               final String displayTitle = report.reportTitle.replaceAll('_', ' ');
               final String date = report.createdAt.isNotEmpty ? report.createdAt.split('T').first : 'Recent';
 
+              // Clean User Sequence Number (#1 for 1st scan, #2 for 2nd scan)
+              final int scanSequence = controller.reports.length - index;
+
               return Container(
                 decoration: BoxDecoration(
                   color: AllColor.whiteColor,
@@ -174,6 +177,7 @@ class HistoryScreen extends StatelessWidget {
                               ],
                             ),
                           ),
+                          // CLEAN USER BADGE: Shows #1 instead of database #40!
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                             decoration: BoxDecoration(
@@ -181,7 +185,7 @@ class HistoryScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8.r),
                             ),
                             child: CustomText(
-                              text: '#${report.sessionId}',
+                              text: '#$scanSequence',
                               fontSize: 11,
                               fontWeight: FontWeight.bold,
                               color: AllColor.blueColor,
