@@ -10,7 +10,6 @@ import 'package:inspexion_ai/presentation/auth/controller/auth_controller.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../controller/onboarding_controller.dart';
 
-
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
 
@@ -28,7 +27,6 @@ class OnboardingScreen extends StatelessWidget {
           children: [
             Column(
               children: [
-                // Carousel Page View
                 Expanded(
                   child: PageView.builder(
                     controller: onboardingController.pageController,
@@ -38,7 +36,6 @@ class OnboardingScreen extends StatelessWidget {
                       final item = onboardingController.onboardingData[index];
                       return Column(
                         children: [
-                          // Top Image Container with Frosted Skip Pill
                           Expanded(
                             flex: 7,
                             child: Stack(
@@ -71,8 +68,6 @@ class OnboardingScreen extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-
-                                // Frosted Glass Skip Pill (Only on 1st Screen)
                                 Positioned(
                                   top: MediaQuery.of(context).padding.top + 12.h,
                                   right: 18.w,
@@ -105,8 +100,6 @@ class OnboardingScreen extends StatelessWidget {
                             ),
                           ),
                           const Gap(18),
-
-                          // Typography (Title & Body)
                           Expanded(
                             flex: 3,
                             child: Padding(
@@ -140,8 +133,6 @@ class OnboardingScreen extends StatelessWidget {
                     },
                   ),
                 ),
-
-                // Smooth Worm Indicator
                 SmoothPageIndicator(
                   controller: onboardingController.pageController,
                   count: onboardingController.onboardingData.length,
@@ -154,15 +145,12 @@ class OnboardingScreen extends StatelessWidget {
                   ),
                 ),
                 const Gap(26),
-
-                // Bottom Action Buttons
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 22.w),
                   child: Obx(() {
                     final bool isLastPage = onboardingController.currentPage.value ==
                         onboardingController.onboardingData.length - 1;
 
-                    // Pages 1 & 2: Show simple 'Next' Button
                     if (!isLastPage) {
                       return CustomButton(
                         text: 'Next',
@@ -172,19 +160,15 @@ class OnboardingScreen extends StatelessWidget {
                       );
                     }
 
-                    // Last Page: Sign-In Action Stack
                     return Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // Primary Google Login Button
                         CustomButton(
                           text: Platform.isIOS ? 'Continue with Google' : 'Get Started',
                           onPressed: onboardingController.loginWithGoogle,
                           textColor: AllColor.whiteColor,
                           backgroundColor: AllColor.blueColor,
                         ),
-
-                        // Official Apple Outlined Button (iOS ONLY)
                         if (Platform.isIOS) ...[
                           const Gap(10),
                           CustomButton(
@@ -202,8 +186,6 @@ class OnboardingScreen extends StatelessWidget {
                 const Gap(22),
               ],
             ),
-
-            // Loading Overlay with Plain CircularProgressIndicator
             Obx(
                   () => authController.isLoading.value
                   ? Container(

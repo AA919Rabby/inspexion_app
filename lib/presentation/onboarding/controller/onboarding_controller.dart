@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inspexion_ai/all_route.dart';
 import 'package:inspexion_ai/presentation/auth/controller/auth_controller.dart';
-
 
 class OnboardingController extends GetxController {
   final PageController pageController = PageController();
@@ -45,7 +43,11 @@ class OnboardingController extends GetxController {
   }
 
   void skip() {
-    Get.offAllNamed(AllRoute.bottomNavScreen);
+    pageController.animateToPage(
+      onboardingData.length - 1,
+      duration: const Duration(milliseconds: 350),
+      curve: Curves.easeInOut,
+    );
   }
 
   void loginWithGoogle() {
