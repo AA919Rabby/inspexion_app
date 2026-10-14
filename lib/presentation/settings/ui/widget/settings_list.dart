@@ -24,11 +24,10 @@ class SettingsList extends StatelessWidget {
           subtitle: "Manage personal details & avatar",
           icon: Icons.person_outline_rounded,
           color: AllColor.blueColor,
-          onTap: () async {
-            await Future.delayed(const Duration(milliseconds: 180));
-            settingsController.clearSelection();
-            await Get.toNamed(AllRoute.profile);
-            settingsController.clearSelection();
+          onTap: () {
+            Get.toNamed(AllRoute.profile)?.then((_) {
+              settingsController.clearSelection();
+            });
           },
         ),
         _buildSettingsList(
@@ -36,11 +35,10 @@ class SettingsList extends StatelessWidget {
           subtitle: "Past audit records & downloaded PDFs",
           icon: Icons.history_edu_outlined,
           color: AllColor.blueColor,
-          onTap: () async {
-            await Future.delayed(const Duration(milliseconds: 180));
-            settingsController.clearSelection();
-            await Get.toNamed(AllRoute.historyScreen);
-            settingsController.clearSelection();
+          onTap: () {
+            Get.toNamed(AllRoute.historyScreen)?.then((_) {
+              settingsController.clearSelection();
+            });
           },
         ),
         _buildSettingsList(
@@ -48,11 +46,10 @@ class SettingsList extends StatelessWidget {
           subtitle: "Company info, terms & licenses",
           icon: Icons.info_outline_rounded,
           color: AllColor.blueColor,
-          onTap: () async {
-            await Future.delayed(const Duration(milliseconds: 180));
-            settingsController.clearSelection();
-            await Get.toNamed(AllRoute.aboutUs);
-            settingsController.clearSelection();
+          onTap: () {
+            Get.toNamed(AllRoute.aboutUs)?.then((_) {
+              settingsController.clearSelection();
+            });
           },
         ),
         _buildSettingsList(
@@ -60,11 +57,10 @@ class SettingsList extends StatelessWidget {
           subtitle: "Customer service & contact desk",
           icon: Icons.support_agent_rounded,
           color: AllColor.blueColor,
-          onTap: () async {
-            await Future.delayed(const Duration(milliseconds: 180));
-            settingsController.clearSelection();
-            await Get.toNamed(AllRoute.support);
-            settingsController.clearSelection();
+          onTap: () {
+            Get.toNamed(AllRoute.support)?.then((_) {
+              settingsController.clearSelection();
+            });
           },
         ),
         const Gap(6),
@@ -74,8 +70,6 @@ class SettingsList extends StatelessWidget {
           icon: Icons.logout_rounded,
           color: AllColor.redColor,
           onTap: () async {
-            await Future.delayed(const Duration(milliseconds: 180));
-            settingsController.clearSelection();
             if (!context.mounted) return;
             await CustomDialog.show(
               context: context,
@@ -89,10 +83,12 @@ class SettingsList extends StatelessWidget {
               cancelColor: AllColor.blueColor,
               onConfirm: () {
                 Get.back();
+                settingsController.clearSelection();
                 authController.logout();
               },
               onCancel: () {
                 Get.back();
+                settingsController.clearSelection();
               },
             );
             settingsController.clearSelection();
@@ -114,8 +110,10 @@ class SettingsList extends StatelessWidget {
       final isSelected = settingsController.selectedItem.value == title;
 
       return GestureDetector(
-        onTap: () {
+        onTap: () async {
           settingsController.selectedItem.value = title;
+          await Future.delayed(const Duration(milliseconds: 150));
+          settingsController.clearSelection();
           onTap();
         },
         child: Container(

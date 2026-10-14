@@ -14,9 +14,13 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final settingsController = Get.isRegistered<SettingsController>()
         ? Get.find<SettingsController>()
-        : Get.put(SettingsController());
+        : Get.put(SettingsController(), permanent: true);
 
     settingsController.clearSelection();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      settingsController.clearSelection();
+    });
 
     return Scaffold(
       backgroundColor: AllColor.greyColor300,
