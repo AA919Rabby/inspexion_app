@@ -8,7 +8,7 @@ import 'package:inspexion_ai/core/theme/all_color.dart';
 import 'package:inspexion_ai/global/custom_button.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 import 'package:inspexion_ai/presentation/history/controller/history_controller.dart';
-
+import 'package:inspexion_ai/presentation/history/data/inspection_result_model.dart';
 
 class InspectionResultScreen extends StatelessWidget {
   const InspectionResultScreen({super.key});
@@ -47,7 +47,7 @@ class InspectionResultScreen extends StatelessWidget {
               Center(
                 child: CustomText(
                   text: 'No inspection records available.',
-                  fontSize: 16.sp,
+                  fontSize: 16,
                   color: AllColor.greyColor400,
                 ),
               )
@@ -105,7 +105,7 @@ class InspectionResultScreen extends StatelessWidget {
                                 const Gap(4),
                                 CustomText(
                                   text: data.hasCriticalIssue
-                                      ? 'Defects flagged. Immediate maintenance review recommended.'
+                                      ? 'Damage isolated with red tracking boxes. Inspection required.'
                                       : 'All components intact. Structural integrity verified.',
                                   fontSize: 12,
                                   color: Colors.grey.shade600,
@@ -171,6 +171,7 @@ class InspectionResultScreen extends StatelessWidget {
                     ),
                     const Gap(12),
 
+                    // Itemized Scans with Red Damage Bounding Boxes
                     ListView.separated(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -181,6 +182,7 @@ class InspectionResultScreen extends StatelessWidget {
                         final double confPercent = item.confidence * 100;
                         final String displayCategory = item.category.replaceAll('_', ' ').toUpperCase();
                         final bool hasLocalThumb = index < controller.stagedImages.length;
+                        final File? localFile = hasLocalThumb ? File(controller.stagedImages[index].path) : null;
 
                         return Container(
                           padding: EdgeInsets.all(12.r),
@@ -198,45 +200,72 @@ class InspectionResultScreen extends StatelessWidget {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Stack(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(12.r),
-                                    child: SizedBox(
-                                      width: 90.w,
-                                      height: 90.h,
-                                      child: hasLocalThumb
-                                          ? Image.file(
-                                        File(controller.stagedImages[index].path),
-                                        fit: BoxFit.cover,
-                                      )
-                                          : Container(
-                                        color: Colors.grey.shade200,
-                                        child: Icon(Icons.image, color: Colors.grey.shade400),
+                              // Left: Photo with AllColor.redColor Bounding Boxes
+                              GestureDetector(
+                                onTap: () {
+                                  if (localFile != null) {
+                                    _showFullScreenDamageViewer(context, localFile, item.boxes, displayCategory);
+                                  }
+                                },
+                                child: Stack(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(12.r),
+                                      child: SizedBox(
+                                        width: 100.w,
+                                        height: 100.h,
+                                        child: CustomPaint(
+                                          foregroundPainter: item.isCritical
+                                              ? DamageBoxPainter(boxes: item.boxes)
+                                              : null,
+                                          child: localFile != null
+                                              ? Image.file(
+                                            localFile,
+                                            fit: BoxFit.cover,
+                                          )
+                                              : Container(
+                                            color: Colors.grey.shade200,
+                                            child: Icon(Icons.image, color: Colors.grey.shade400),
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Positioned(
-                                    top: 4.h,
-                                    left: 4.w,
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
-                                      decoration: BoxDecoration(
-                                        color: Colors.black.withValues(alpha: 0.65),
-                                        borderRadius: BorderRadius.circular(6.r),
-                                      ),
-                                      child: CustomText(
-                                        text: "#${index + 1}",
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.bold,
-                                        color: AllColor.whiteColor,
+                                    Positioned(
+                                      top: 4.h,
+                                      left: 4.w,
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                                        decoration: BoxDecoration(
+                                          color: Colors.black.withValues(alpha: 0.65),
+                                          borderRadius: BorderRadius.circular(6.r),
+                                        ),
+                                        child: CustomText(
+                                          text: "#${index + 1}",
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold,
+                                          color: AllColor.whiteColor,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                    if (item.isCritical)
+                                      Positioned(
+                                        bottom: 4.h,
+                                        right: 4.w,
+                                        child: Container(
+                                          padding: EdgeInsets.all(3.r),
+                                          decoration: BoxDecoration(
+                                            color: AllColor.redColor,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: Icon(Icons.fullscreen, color: AllColor.whiteColor, size: 14.r),
+                                        ),
+                                      ),
+                                  ],
+                                ),
                               ),
                               const Gap(14),
 
+                              // Right: Defect Description & Status
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -276,12 +305,10 @@ class InspectionResultScreen extends StatelessWidget {
                                     ),
                                     const Gap(4),
                                     CustomText(
-                                      text: item.isCritical
-                                          ? "Critical defect detected: physical damage flagged."
-                                          : "Component intact. Verified no defects present.",
+                                      text: item.description,
                                       fontSize: 11,
                                       color: Colors.grey.shade600,
-                                      maxLines: 2,
+                                      maxLines: 3,
                                     ),
                                   ],
                                 ),
@@ -299,13 +326,13 @@ class InspectionResultScreen extends StatelessWidget {
                       textColor: AllColor.whiteColor,
                       onPressed: controller.generateAndOpenCurrentReport,
                     ),
-                    const Gap(20),
+                    const Gap(14),
                     CustomButton(
                       text: 'Back to Home',
                       backgroundColor: AllColor.whiteColor,
                       textColor: AllColor.blackColor,
                       isOutlined: true,
-                      onPressed: (){
+                      onPressed: () {
                         Get.offAllNamed(AllRoute.bottomNavScreen);
                       },
                     ),
@@ -326,6 +353,79 @@ class InspectionResultScreen extends StatelessWidget {
           ],
         );
       }),
+    );
+  }
+
+  // Tap-to-Expand Full-Screen Viewer with AllColor.redColor Damage Boxes
+  void _showFullScreenDamageViewer(
+      BuildContext context,
+      File imageFile,
+      List<DamageBox> boxes,
+      String title,
+      ) {
+    Get.dialog(
+      Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: EdgeInsets.all(16.r),
+        child: Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFF0F172A),
+            borderRadius: BorderRadius.circular(20.r),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomText(
+                      text: title,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: AllColor.whiteColor,
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close, color: Colors.white),
+                      onPressed: () => Get.back(),
+                    ),
+                  ],
+                ),
+              ),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16.r),
+                child: AspectRatio(
+                  aspectRatio: 1.0,
+                  child: CustomPaint(
+                    foregroundPainter: DamageBoxPainter(boxes: boxes),
+                    child: Image.file(imageFile, fit: BoxFit.cover),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(14.r),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 12.r,
+                      height: 12.r,
+                      decoration: BoxDecoration(color: AllColor.redColor, shape: BoxShape.circle),
+                    ),
+                    const Gap(8),
+                    CustomText(
+                      text: "Outlined areas indicate detected damage points",
+                      fontSize: 11,
+                      color: Colors.white70,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -369,4 +469,69 @@ class InspectionResultScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class DamageBoxPainter extends CustomPainter {
+  final List<DamageBox> boxes;
+
+  DamageBoxPainter({required this.boxes});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (boxes.isEmpty) {
+      final defaultRect = Rect.fromLTWH(
+        size.width * 0.18,
+        size.height * 0.18,
+        size.width * 0.64,
+        size.height * 0.64,
+      );
+      _drawBox(canvas, size, defaultRect, "CRITICAL DEFECT");
+      return;
+    }
+
+    for (var b in boxes) {
+      final rect = Rect.fromLTRB(
+        b.xmin * size.width,
+        b.ymin * size.height,
+        b.xmax * size.width,
+        b.ymax * size.height,
+      );
+      _drawBox(canvas, size, rect, b.label);
+    }
+  }
+
+  void _drawBox(Canvas canvas, Size size, Rect rect, String label) {
+    final borderPaint = Paint()
+      ..color = AllColor.redColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.5;
+
+    final fillPaint = Paint()
+      ..color = AllColor.redColor.withValues(alpha: 0.18)
+      ..style = PaintingStyle.fill;
+
+    canvas.drawRRect(RRect.fromRectAndRadius(rect, const Radius.circular(6)), fillPaint);
+    canvas.drawRRect(RRect.fromRectAndRadius(rect, const Radius.circular(6)), borderPaint);
+
+    final textPainter = TextPainter(
+      text: TextSpan(
+        text: "  $label  ",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 9.sp,
+          fontWeight: FontWeight.bold,
+          backgroundColor: AllColor.redColor,
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+    );
+    textPainter.layout();
+    textPainter.paint(
+      canvas,
+      Offset(rect.left, (rect.top - 14).clamp(0.0, size.height)),
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
