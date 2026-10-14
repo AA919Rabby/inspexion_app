@@ -9,8 +9,6 @@ import 'package:inspexion_ai/global/custom_shimmer.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
 import '../../controller/home_controller.dart';
 
-
-
 class DashboardStatsWidget extends StatelessWidget {
   const DashboardStatsWidget({super.key});
 
@@ -41,7 +39,6 @@ class DashboardStatsWidget extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Section Title
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -78,17 +75,17 @@ class DashboardStatsWidget extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Expanded(child: CustomShimmer(height: 112.h)),
+                    Expanded(child: CustomShimmer(height: 116.h)),
                     const Gap(12),
-                    Expanded(child: CustomShimmer(height: 112.h)),
+                    Expanded(child: CustomShimmer(height: 116.h)),
                   ],
                 ),
                 const Gap(12),
                 Row(
                   children: [
-                    Expanded(child: CustomShimmer(height: 112.h)),
+                    Expanded(child: CustomShimmer(height: 116.h)),
                     const Gap(12),
-                    Expanded(child: CustomShimmer(height: 112.h)),
+                    Expanded(child: CustomShimmer(height: 116.h)),
                   ],
                 ),
               ],
@@ -139,7 +136,6 @@ class DashboardStatsWidget extends StatelessWidget {
             ),
           ],
           const Gap(28),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -153,13 +149,12 @@ class DashboardStatsWidget extends StatelessWidget {
             ],
           ),
           const Gap(12),
-
           if (homeController.shimmerChart.value)
-            CustomShimmer(height: 250.h)
+            CustomShimmer(height: 230.h)
           else
             Card(
               elevation: 2,
-              shadowColor: Colors.black.withValues(alpha: 0.08),
+              shadowColor: Colors.black.withValues(alpha: 0.06),
               color: AllColor.whiteColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.r),
@@ -321,13 +316,12 @@ class DashboardStatsWidget extends StatelessWidget {
             ],
           ),
           const Gap(12),
-
           if (homeController.shimmerBreakdown.value)
             CustomShimmer(height: 180.h)
           else
             Card(
               elevation: 2,
-              shadowColor: Colors.black.withValues(alpha: 0.08),
+              shadowColor: Colors.black.withValues(alpha: 0.06),
               color: AllColor.whiteColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.r),
@@ -372,7 +366,7 @@ class DashboardStatsWidget extends StatelessWidget {
   }) {
     return Card(
       elevation: 2,
-      shadowColor: Colors.black.withValues(alpha: 0.06),
+      shadowColor: Colors.black.withValues(alpha: 0.05),
       color: AllColor.whiteColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.r),
