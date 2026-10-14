@@ -10,6 +10,7 @@ import 'package:inspexion_ai/presentation/auth/controller/auth_controller.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../controller/onboarding_controller.dart';
 
+
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
 
