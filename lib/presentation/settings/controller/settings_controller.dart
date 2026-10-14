@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 
+class SettingsController extends GetxController {
+  final RxString selectedItem = "".obs;
 
-class SettingsController extends GetxController{
-
-final RxString selectedItem="".obs;
-
-
+  void clearSelection() {
+    selectedItem.value = "";
+  }
 }

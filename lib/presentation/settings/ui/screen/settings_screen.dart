@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gap/flutter_gap.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
+import 'package:get/get.dart';
 import 'package:inspexion_ai/core/theme/all_color.dart';
 import 'package:inspexion_ai/global/custom_text.dart';
+import 'package:inspexion_ai/presentation/settings/controller/settings_controller.dart';
 import 'package:inspexion_ai/presentation/settings/ui/widget/settings_list.dart';
-
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final settingsController = Get.isRegistered<SettingsController>()
+        ? Get.find<SettingsController>()
+        : Get.put(SettingsController());
+
+    settingsController.clearSelection();
+
     return Scaffold(
       backgroundColor: AllColor.greyColor300,
       appBar: AppBar(
@@ -34,7 +41,6 @@ class SettingsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Section Sub-header
                 Padding(
                   padding: EdgeInsets.only(left: 4.w, bottom: 12.h),
                   child: CustomText(
@@ -44,12 +50,8 @@ class SettingsScreen extends StatelessWidget {
                     color: Colors.grey.shade600,
                   ),
                 ),
-
-                // Settings List
                 const SettingsList(),
-
                 const Gap(30),
-
                 Center(
                   child: Column(
                     children: [

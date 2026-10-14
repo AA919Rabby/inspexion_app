@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:inspexion_ai/presentation/auth/controller/auth_controller.dart';
 import 'package:inspexion_ai/presentation/settings/controller/settings_controller.dart';
 
-
 class SettingsList extends StatelessWidget {
   const SettingsList({super.key});
 
@@ -26,9 +25,10 @@ class SettingsList extends StatelessWidget {
           icon: Icons.person_outline_rounded,
           color: AllColor.blueColor,
           onTap: () async {
-            await Future.delayed(const Duration(milliseconds: 200));
+            await Future.delayed(const Duration(milliseconds: 180));
+            settingsController.clearSelection();
             await Get.toNamed(AllRoute.profile);
-            settingsController.selectedItem.value = "";
+            settingsController.clearSelection();
           },
         ),
         _buildSettingsList(
@@ -37,9 +37,10 @@ class SettingsList extends StatelessWidget {
           icon: Icons.history_edu_outlined,
           color: AllColor.blueColor,
           onTap: () async {
-            await Future.delayed(const Duration(milliseconds: 200));
+            await Future.delayed(const Duration(milliseconds: 180));
+            settingsController.clearSelection();
             await Get.toNamed(AllRoute.historyScreen);
-            settingsController.selectedItem.value = "";
+            settingsController.clearSelection();
           },
         ),
         _buildSettingsList(
@@ -48,9 +49,10 @@ class SettingsList extends StatelessWidget {
           icon: Icons.info_outline_rounded,
           color: AllColor.blueColor,
           onTap: () async {
-            await Future.delayed(const Duration(milliseconds: 200));
+            await Future.delayed(const Duration(milliseconds: 180));
+            settingsController.clearSelection();
             await Get.toNamed(AllRoute.aboutUs);
-            settingsController.selectedItem.value = "";
+            settingsController.clearSelection();
           },
         ),
         _buildSettingsList(
@@ -59,9 +61,10 @@ class SettingsList extends StatelessWidget {
           icon: Icons.support_agent_rounded,
           color: AllColor.blueColor,
           onTap: () async {
-            await Future.delayed(const Duration(milliseconds: 200));
+            await Future.delayed(const Duration(milliseconds: 180));
+            settingsController.clearSelection();
             await Get.toNamed(AllRoute.support);
-            settingsController.selectedItem.value = "";
+            settingsController.clearSelection();
           },
         ),
         const Gap(6),
@@ -71,7 +74,8 @@ class SettingsList extends StatelessWidget {
           icon: Icons.logout_rounded,
           color: AllColor.redColor,
           onTap: () async {
-            await Future.delayed(const Duration(milliseconds: 200));
+            await Future.delayed(const Duration(milliseconds: 180));
+            settingsController.clearSelection();
             if (!context.mounted) return;
             await CustomDialog.show(
               context: context,
@@ -91,7 +95,7 @@ class SettingsList extends StatelessWidget {
                 Get.back();
               },
             );
-            settingsController.selectedItem.value = "";
+            settingsController.clearSelection();
           },
         ),
       ],
@@ -134,7 +138,6 @@ class SettingsList extends StatelessWidget {
           ),
           child: Row(
             children: [
-              // Tinted Pill Icon Container
               Container(
                 padding: EdgeInsets.all(10.r),
                 decoration: BoxDecoration(
@@ -144,8 +147,6 @@ class SettingsList extends StatelessWidget {
                 child: Icon(icon, color: color, size: 22.r),
               ),
               const Gap(14),
-
-              // Title and Subtitle Column
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,8 +167,6 @@ class SettingsList extends StatelessWidget {
                   ],
                 ),
               ),
-
-              // Right Arrow Chevron Badge
               Container(
                 padding: EdgeInsets.all(6.r),
                 decoration: BoxDecoration(
