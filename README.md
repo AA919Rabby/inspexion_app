@@ -32,6 +32,7 @@ Inspexion AI is built for professionals who need to:
 - Apple Sign-In
 - Shared Preferences
 - Dio
+- WebSockets
 - Image Picker
 - Flutter ScreenUtil
 - GetX
