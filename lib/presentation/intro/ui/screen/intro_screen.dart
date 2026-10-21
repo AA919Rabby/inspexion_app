@@ -12,9 +12,9 @@ class IntroScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!Get.isRegistered<IntroController>()) {
-      Get.put(IntroController());
-    }
+    // ensures the timer starts fresh every time this screen opens
+    final controller = Get.put(IntroController());
+    controller.startTimer();
 
     return Scaffold(
       body: Container(
