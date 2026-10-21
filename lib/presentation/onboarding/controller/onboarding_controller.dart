@@ -44,12 +44,12 @@ class OnboardingController extends GetxController {
   }
 
   void skip() {
-    Get.offAllNamed(AllRoute.bottomNavScreen); // Testing the application
-    // pageController.animateToPage(
-    //   onboardingData.length - 1,
-    //   duration: const Duration(milliseconds: 350),
-    //   curve: Curves.easeInOut,
-    // );
+    //Get.offAllNamed(AllRoute.bottomNavScreen); // Testing the application
+    pageController.animateToPage(
+      onboardingData.length - 1,
+      duration: const Duration(milliseconds: 350),
+      curve: Curves.easeInOut,
+    );
   }
 
   void loginWithGoogle() {
