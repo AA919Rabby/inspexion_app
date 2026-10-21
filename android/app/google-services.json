@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1018837083142-hv88fh1i67vp3uanve4tnl7surqcseud.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.inspexion.ai",
+            "certificate_hash": "5d22060902e9683b8f240092654e565ef36f0702"
+          }
+        },
+        {
           "client_id": "1018837083142-djl6au9ver94edknnou7gb981ftj5qgs.apps.googleusercontent.com",
           "client_type": 3
         }
