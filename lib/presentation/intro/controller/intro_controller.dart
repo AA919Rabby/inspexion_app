@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:inspexion_ai/all_route.dart';
 import 'package:inspexion_ai/core/services/auth_services.dart';
 
-
 class IntroController extends GetxController {
   @override
   void onInit() {
@@ -15,10 +14,10 @@ class IntroController extends GetxController {
     Timer(const Duration(seconds: 3), () {
       final String? token = AuthServices.getAccessToken();
 
+      // check if user already logged in
       if (token != null && token.isNotEmpty) {
         Get.offAllNamed(AllRoute.bottomNavScreen);
-      }
-      else {
+      } else {
         Get.offAllNamed(AllRoute.onboardingScreen);
       }
     });

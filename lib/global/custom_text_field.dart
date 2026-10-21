@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:inspexion_ai/core/theme/all_color.dart';
-import 'package:inspexion_ai/global/custom_text.dart'; // Adjust path if needed
+import 'package:inspexion_ai/global/custom_text.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController? controller;
@@ -79,17 +79,21 @@ class CustomTextField extends StatelessWidget {
     }
 
     if (icon is Widget) {
-      return icon;
+      return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 12.w),
+        child: icon,
+      );
     }
 
     if (icon is String) {
       return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.w),
+        padding: EdgeInsets.symmetric(horizontal: 14.w),
         child: Center(
+          widthFactor: 1.0,
           child: CustomText(
             text: icon,
-            fontSize: 14.sp,
-            color: hintColor ?? Colors.grey,
+            fontSize: 14,
+            color: hintColor ?? Colors.grey.shade500,
           ),
         ),
       );
@@ -100,6 +104,8 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double radius = borderRadius ?? 14.r;
+
     return TextFormField(
       controller: controller,
       initialValue: controller == null ? initialValue : null,
@@ -119,72 +125,81 @@ class CustomTextField extends StatelessWidget {
       autocorrect: autocorrect,
       enableSuggestions: enableSuggestions,
       style: TextStyle(
-        fontSize: fontSize ?? 16.sp,
-        fontWeight: fontWeight ?? FontWeight.w400,
-        color: textColor ?? Colors.black,
+        fontSize: fontSize ?? 15,
+        fontWeight: fontWeight ?? FontWeight.w500,
+        color: textColor ?? AllColor.blackColor,
+        letterSpacing: -0.1,
       ),
       decoration: InputDecoration(
         hintText: hintText,
         labelText: labelText,
         errorText: errorText,
         filled: filled,
-        fillColor: fillColor ?? Colors.grey.shade100,
+        fillColor: fillColor ?? AllColor.whiteColor,
         hintStyle: TextStyle(
-          fontSize: fontSize ?? 14.sp,
-          color: hintColor ?? Colors.grey,
+          fontSize: fontSize ?? 14,
+          color: hintColor ?? Colors.grey.shade400,
+          fontWeight: FontWeight.w400,
         ),
         labelStyle: TextStyle(
-          fontSize: fontSize ?? 14.sp,
-          color: hintColor ?? Colors.grey,
+          fontSize: fontSize ?? 14,
+          color: hintColor ?? Colors.grey.shade500,
+          fontWeight: FontWeight.w500,
         ),
         prefixIcon: _buildIcon(prefixIcon),
+        prefixIconConstraints: BoxConstraints(
+          minWidth: 46.w,
+          minHeight: 24.h,
+        ),
         suffixIcon: _buildIcon(suffixIcon),
+        suffixIconConstraints: BoxConstraints(
+          minWidth: 46.w,
+          minHeight: 24.h,
+        ),
         contentPadding: contentPadding ??
             EdgeInsets.symmetric(
               horizontal: 16.w,
-              vertical: 9.h,
+              vertical: 14.h,
             ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(
-            borderRadius ?? 12.r,
-          ),
+          borderRadius: BorderRadius.circular(radius),
           borderSide: BorderSide(
             color: borderColor ?? Colors.grey.shade300,
+            width: 1.w,
           ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(
-            borderRadius ?? 12.r,
-          ),
+          borderRadius: BorderRadius.circular(radius),
           borderSide: BorderSide(
             color: borderColor ?? Colors.grey.shade300,
+            width: 1.w,
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(
-            borderRadius ?? 12.r,
-          ),
+          borderRadius: BorderRadius.circular(radius),
           borderSide: BorderSide(
             color: focusedBorderColor ?? AllColor.blackColor,
-            width: 1.5,
+            width: 1.6.w,
           ),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(
-            borderRadius ?? 12.r,
-          ),
-          borderSide: const BorderSide(
-            color: Colors.red,
+          borderRadius: BorderRadius.circular(radius),
+          borderSide: BorderSide(
+            color: AllColor.redColor,
+            width: 1.2.w,
           ),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(
-            borderRadius ?? 12.r,
+          borderRadius: BorderRadius.circular(radius),
+          borderSide: BorderSide(
+            color: AllColor.redColor,
+            width: 1.6.w,
           ),
-          borderSide: const BorderSide(
-            color: Colors.red,
-            width: 1.5,
-          ),
+        ),
+        errorStyle: TextStyle(
+          color: AllColor.redColor,
+          fontSize: 11,
+          fontWeight: FontWeight.w500,
         ),
       ),
     );

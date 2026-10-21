@@ -10,7 +10,6 @@ import 'package:inspexion_ai/global/custom_text.dart';
 import 'package:inspexion_ai/presentation/bottom_nav/controller/bottom_nav_controller.dart';
 import 'package:inspexion_ai/presentation/history/controller/history_controller.dart';
 
-
 class BottomNavScreen extends StatelessWidget {
   const BottomNavScreen({super.key});
 
@@ -32,11 +31,12 @@ class BottomNavScreen extends StatelessWidget {
               index: bottomNavController.selectedIndex.value,
               children: bottomNavController.pages,
             ),
+            // live socket progress modal
             if (historyController.isInspecting.value)
               Container(
                 width: double.infinity,
                 height: double.infinity,
-                color: Colors.black.withValues(alpha: 0.78),
+                color: const Color(0xC7000000),
                 child: Center(
                   child: Container(
                     margin: EdgeInsets.symmetric(horizontal: 28.w),
@@ -45,14 +45,14 @@ class BottomNavScreen extends StatelessWidget {
                       color: const Color(0xFF1E293B),
                       borderRadius: BorderRadius.circular(24.r),
                       border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.12),
+                        color: const Color(0x1FFFFFFF),
                         width: 1.5.w,
                       ),
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.4),
+                          color: Color(0x66000000),
                           blurRadius: 20,
-                          offset: const Offset(0, 8),
+                          offset: Offset(0, 8),
                         ),
                       ],
                     ),
@@ -62,10 +62,10 @@ class BottomNavScreen extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 5.h),
                           decoration: BoxDecoration(
-                            color: AllColor.blueColor.withValues(alpha: 0.2),
+                            color: const Color(0x336200EE),
                             borderRadius: BorderRadius.circular(20.r),
                             border: Border.all(
-                              color: AllColor.blueColor.withValues(alpha: 0.4),
+                              color: const Color(0x666200EE),
                             ),
                           ),
                           child: Row(
@@ -126,11 +126,11 @@ class BottomNavScreen extends StatelessWidget {
                 color: AllColor.whiteColor,
                 width: 3.5.w,
               ),
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
-                  color: AllColor.blueColor.withValues(alpha: 0.45),
+                  color: Color(0x736200EE),
                   blurRadius: 16,
-                  offset: const Offset(0, 6),
+                  offset: Offset(0, 6),
                 ),
               ],
             ),
@@ -166,7 +166,7 @@ class BottomNavScreen extends StatelessWidget {
             () => AnimatedBottomNavigationBar.builder(
           itemCount: 2,
           tabBuilder: (int index, bool isActive) {
-            final Color color = isActive ? AllColor.yellowColor : AllColor.whiteColor.withValues(alpha: 0.85);
+            final Color color = isActive ? AllColor.yellowColor : const Color(0xD9FFFFFF);
             final String label = index == 0 ? 'Home' : 'Settings';
             final IconData icon = index == 0 ? Icons.home_rounded : Icons.settings_rounded;
 
@@ -194,11 +194,11 @@ class BottomNavScreen extends StatelessWidget {
           rightCornerRadius: 24.r,
           backgroundColor: AllColor.blueColor,
           onTap: bottomNavController.changeIndex,
-          shadow: BoxShadow(
-            color: Colors.black.withValues(alpha: 0.25),
+          shadow: const BoxShadow(
+            color: Color(0x40000000),
             blurRadius: 16,
             spreadRadius: 2,
-            offset: const Offset(0, -4),
+            offset: Offset(0, -4),
           ),
         ),
       ),

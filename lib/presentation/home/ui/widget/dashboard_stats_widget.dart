@@ -331,17 +331,7 @@ class DashboardStatsWidget extends StatelessWidget {
                 padding: EdgeInsets.all(18.r),
                 child: Row(
                   children: [
-                    SizedBox(
-                      width: 125.w,
-                      height: 125.h,
-                      child: PieChart(
-                        PieChartData(
-                          sectionsSpace: 3,
-                          centerSpaceRadius: 28.r,
-                          sections: _buildPieSections(data.categoriesBreakdown),
-                        ),
-                      ),
-                    ),
+                    MovablePieChart(categories: data.categoriesBreakdown),
                     const Gap(18),
                     Expanded(
                       child: Column(
@@ -418,27 +408,6 @@ class DashboardStatsWidget extends StatelessWidget {
     );
   }
 
-  List<PieChartSectionData> _buildPieSections(Map<String, double> categories) {
-    final colors = [
-      AllColor.blueColor,
-      AllColor.yellowColor,
-      AllColor.redColor,
-      const Color(0xFF00B4D8),
-      Colors.teal,
-    ];
-    int index = 0;
-    return categories.entries.map((entry) {
-      final sectionColor = colors[index % colors.length];
-      index++;
-      return PieChartSectionData(
-        color: sectionColor,
-        value: entry.value,
-        title: "",
-        radius: 26.r,
-      );
-    }).toList();
-  }
-
   List<Widget> _buildDynamicLegends(Map<String, double> categories) {
     final colors = [
       AllColor.blueColor,
@@ -491,6 +460,81 @@ class DashboardStatsWidget extends StatelessWidget {
             ),
           ],
         ),
+      );
+    }).toList();
+  }
+}
+
+class MovablePieChart extends StatefulWidget {
+  final Map<String, double> categories;
+  const MovablePieChart({super.key, required this.categories});
+
+  @override
+  State<MovablePieChart> createState() => _MovablePieChartState();
+}
+
+class _MovablePieChartState extends State<MovablePieChart> {
+  double currentDegreeOffset = 0.0;
+  int activeTouchedIndex = -1;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onPanUpdate: (dragDetails) {
+        setState(() {
+          currentDegreeOffset = (currentDegreeOffset + dragDetails.delta.dx * 1.8) % 360;
+        });
+      },
+      child: SizedBox(
+        width: 128.w,
+        height: 128.h,
+        child: PieChart(
+          PieChartData(
+            startDegreeOffset: currentDegreeOffset,
+            sectionsSpace: 3,
+            centerSpaceRadius: 28.r,
+            pieTouchData: PieTouchData(
+              touchCallback: (FlTouchEvent touchEvent, pieTouchResponse) {
+                setState(() {
+                  if (!touchEvent.isInterestedForInteractions ||
+                      pieTouchResponse == null ||
+                      pieTouchResponse.touchedSection == null) {
+                    activeTouchedIndex = -1;
+                    return;
+                  }
+                  activeTouchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
+                });
+              },
+            ),
+            sections: _createPieSections(widget.categories, activeTouchedIndex),
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<PieChartSectionData> _createPieSections(Map<String, double> categories, int touchedIndex) {
+    final colors = [
+      AllColor.blueColor,
+      AllColor.yellowColor,
+      AllColor.redColor,
+      const Color(0xFF00B4D8),
+      Colors.teal,
+    ];
+    int idx = 0;
+    return categories.entries.map((entry) {
+      final isHovered = idx == touchedIndex;
+      final sectionColor = colors[idx % colors.length];
+      idx++;
+
+      return PieChartSectionData(
+        color: sectionColor,
+        value: entry.value,
+        title: "",
+        radius: isHovered ? 34.r : 26.r,
+        borderSide: isHovered
+            ? BorderSide(color: Colors.white, width: 2.w)
+            : const BorderSide(color: Colors.transparent),
       );
     }).toList();
   }

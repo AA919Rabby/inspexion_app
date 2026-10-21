@@ -11,15 +11,16 @@ class BottomNavController extends GetxController {
     selectedIndex.value = index;
   }
 
+  // brief tap feedback before showing picker sheet
   Future<void> onCameraTap({required VoidCallback onComplete}) async {
     if (isCameraLoading.value) return;
     isCameraLoading.value = true;
-    await Future.delayed(const Duration(milliseconds: 400));
+    await Future.delayed(const Duration(milliseconds: 350));
     isCameraLoading.value = false;
     onComplete();
   }
 
-  final List<Widget> pages = [
+  final List<Widget> pages = const [
     HomeScreen(),
     SettingsScreen(),
   ];

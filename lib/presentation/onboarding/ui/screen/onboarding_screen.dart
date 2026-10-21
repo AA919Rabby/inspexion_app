@@ -10,7 +10,6 @@ import 'package:inspexion_ai/presentation/auth/controller/auth_controller.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../controller/onboarding_controller.dart';
 
-
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
 
@@ -42,17 +41,18 @@ class OnboardingScreen extends StatelessWidget {
                             child: Stack(
                               fit: StackFit.expand,
                               children: [
+                                // stable elevated image card without any moving or floating effect
                                 Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.only(
                                       bottomLeft: Radius.circular(32.r),
                                       bottomRight: Radius.circular(32.r),
                                     ),
-                                    boxShadow: [
+                                    boxShadow: const [
                                       BoxShadow(
-                                        color: Colors.black.withValues(alpha: 0.1),
-                                        blurRadius: 14,
-                                        offset: const Offset(0, 6),
+                                        color: Color(0x1A000000),
+                                        blurRadius: 16,
+                                        offset: Offset(0, 6),
                                       ),
                                     ],
                                   ),
@@ -69,6 +69,7 @@ class OnboardingScreen extends StatelessWidget {
                                     ),
                                   ),
                                 ),
+
                                 Positioned(
                                   top: MediaQuery.of(context).padding.top + 12.h,
                                   right: 18.w,
@@ -79,10 +80,10 @@ class OnboardingScreen extends StatelessWidget {
                                       child: Container(
                                         padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
                                         decoration: BoxDecoration(
-                                          color: Colors.black.withValues(alpha: 0.42),
+                                          color: const Color(0x6B000000),
                                           borderRadius: BorderRadius.circular(20.r),
                                           border: Border.all(
-                                            color: Colors.white.withValues(alpha: 0.25),
+                                            color: const Color(0x40FFFFFF),
                                             width: 1.w,
                                           ),
                                         ),
@@ -192,7 +193,7 @@ class OnboardingScreen extends StatelessWidget {
                   ? Container(
                 width: double.infinity,
                 height: double.infinity,
-                color: Colors.black.withValues(alpha: 0.65),
+                color: const Color(0xA6000000),
                 child: const Center(
                   child: CircularProgressIndicator(),
                 ),
