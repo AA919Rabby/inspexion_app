@@ -7,6 +7,42 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1018837083142:android:3739a3f2a7101a05b30f87",
+        "android_client_info": {
+          "package_name": "com.inspexion.ai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1018837083142-djl6au9ver94edknnou7gb981ftj5qgs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBX2d7S88kSBAjbN43H4GN5qh677Ac_gss"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1018837083142-djl6au9ver94edknnou7gb981ftj5qgs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1018837083142-0kklhtj7arvpfovjmknnov7m59d1q0np.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.inspexionAi"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1018837083142:android:5fa64bd6f91a83d5b30f87",
         "android_client_info": {
           "package_name": "com.yourcompany.inspexionai"
@@ -37,6 +73,13 @@
             {
               "client_id": "1018837083142-djl6au9ver94edknnou7gb981ftj5qgs.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1018837083142-0kklhtj7arvpfovjmknnov7m59d1q0np.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.inspexionAi"
+              }
             }
           ]
         }

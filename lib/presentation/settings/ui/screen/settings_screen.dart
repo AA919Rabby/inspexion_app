@@ -97,7 +97,7 @@ class SettingsScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                const Gap(20),
+                const Gap(21),
               ],
             ),
           ),

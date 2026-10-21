@@ -52,12 +52,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBX2d7S88kSBAjbN43H4GN5qh677Ac_gss',
-    appId: '1:1018837083142:android:5fa64bd6f91a83d5b30f87',
+    appId: '1:1018837083142:android:3739a3f2a7101a05b30f87',
     messagingSenderId: '1018837083142',
     projectId: 'inspexion-ai',
     storageBucket: 'inspexion-ai.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAj4mf6y6dR6iG379WM5-AU9N08EKLZ0MM',
     appId: '1:1018837083142:ios:41213e4a4641ea8bb30f87',
@@ -68,7 +67,6 @@ class DefaultFirebaseOptions {
     iosClientId: '1018837083142-l0obet1llit9j69hu6s19f1mfr9aht36.apps.googleusercontent.com',
     iosBundleId: 'com.yourcompany.inspexionai',
   );
-
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyAj4mf6y6dR6iG379WM5-AU9N08EKLZ0MM',
     appId: '1:1018837083142:ios:55024ce3dcf752d1b30f87',
