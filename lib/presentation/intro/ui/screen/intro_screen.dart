@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_gap/flutter_gap.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
@@ -38,8 +37,32 @@ class IntroScreen extends StatelessWidget {
             children: [
               const Spacer(flex: 3),
 
-              // 3d rotating logo badge
-              const Real3DLogoScene(),
+              // static glowing logo badge
+              Container(
+                height: 110.r,
+                width: 110.r,
+                padding: EdgeInsets.all(12.r),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: const Color(0x10FFFFFF),
+                  border: Border.all(
+                    color: const Color(0x33FFFFFF),
+                    width: 1.5.w,
+                  ),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color(0x4700B4D8),
+                      blurRadius: 32,
+                      spreadRadius: 6,
+                      offset: Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: Image.asset(
+                  "asset/image/logo.png",
+                  fit: BoxFit.contain,
+                ),
+              ),
               const Gap(18),
 
               CustomText(
@@ -84,81 +107,6 @@ class IntroScreen extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-// 3d scene with real perspective matrix
-class Real3DLogoScene extends StatefulWidget {
-  const Real3DLogoScene({super.key});
-
-  @override
-  State<Real3DLogoScene> createState() => _Real3DLogoSceneState();
-}
-
-class _Real3DLogoSceneState extends State<Real3DLogoScene>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animController;
-
-  @override
-  void initState() {
-    super.initState();
-    _animController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 4),
-    )..repeat();
-  }
-
-  @override
-  void dispose() {
-    _animController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _animController,
-      builder: (context, child) {
-        final double progress = _animController.value;
-        final double angleY = math.sin(progress * 2 * math.pi) * 0.35;
-        final double angleX = math.cos(progress * 2 * math.pi) * 0.22;
-        final double elevation = math.sin(progress * 2 * math.pi) * 10;
-
-        return Transform(
-          alignment: Alignment.center,
-          // standard non-deprecated translation constructor
-          transform: Matrix4.translationValues(0.0, -elevation, 0.0)
-            ..setEntry(3, 2, 0.002)
-            ..rotateX(angleX)
-            ..rotateY(angleY),
-          child: Container(
-            height: 110.r,
-            width: 110.r,
-            padding: EdgeInsets.all(12.r),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: const Color(0x10FFFFFF),
-              border: Border.all(
-                color: const Color(0x33FFFFFF),
-                width: 1.5.w,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0x4700B4D8),
-                  blurRadius: 32,
-                  spreadRadius: 6,
-                  offset: Offset(angleY * 20, 8),
-                ),
-              ],
-            ),
-            child: Image.asset(
-              "asset/image/logo.png",
-              fit: BoxFit.contain,
-            ),
-          ),
-        );
-      },
     );
   }
 }
